@@ -50,12 +50,18 @@ public class History {
     protected void setRoundScore(int[][] roundScore) {
         this.roundScore = roundScore;
         selfMatchResults.put(currentOpponent, roundScore);
-//        if (selfName.equals("TIT_FOR_TAT")) {
-//            System.out.println(currentOpponent);
-//            System.out.println(selfMatchResults.get(currentOpponent)[currentRound][0]);
-//            System.out.println(selfMatchResults.get(currentOpponent)[currentRound][1]);
-//        }
 
+//        ROUND SCORE WORKS
+//        System.out.println(selfName+" vs. "+currentOpponent);
+//        System.out.println("round: "+currentRound);
+//        System.out.println(roundScore[currentRound][0]);
+//        System.out.println(roundScore[currentRound][1]);
+
+//        ROUND SCORE WORKS TOO
+//        System.out.println(selfName+" vs. "+currentOpponent);
+//        System.out.println("round: "+currentRound);
+//        System.out.println(selfMatchResults.get(currentOpponent)[currentRound][0]);
+//        System.out.println(selfMatchResults.get(currentOpponent)[currentRound][1]);
     }
 
     public HashMap<String, int[][]> getSelfMatchResults() {
@@ -66,18 +72,36 @@ public class History {
         return opponentMatchResults;
     }
 
-    public void calculateMatchScores() {
-        String toReturn = selfName;
+    public void calculateMatchScores(boolean tournamentSum, boolean matchSum, boolean roundSum) {
 
-        System.out.println(selfName + " vs.: ");
-        for (Map.Entry entry : selfMatchResults.entrySet()) {
-            System.out.println(entry.getKey());
-            int[][] value = (int[][]) entry.getValue();
-            for (int i = 0; i < value.length; i++) {
-                System.out.println(value[i][0]);
-//                System.out.println(value[i][1]);
+        int sum = 0;
+
+        for (Map.Entry<String, int[][]> entry : selfMatchResults.entrySet()) {
+            if (matchSum || roundSum) {
+                sum = 0;
+            }
+            String opponentName = entry.getKey();
+            if (matchSum || roundSum) {
+                System.out.println(selfName + " vs. " + opponentName);
+            }
+            int[][] actualRoundScore = entry.getValue();
+            for (int i = 0; i < actualRoundScore.length; i++) {
+                if (tournamentSum || matchSum) {
+                    sum += selfMatchResults.get(opponentName)[i][0];
+                } else if (roundSum) {
+                    System.out.println("round: " + i);
+                    System.out.println(selfMatchResults.get(opponentName)[i][0]);
+                    System.out.println(selfMatchResults.get(opponentName)[i][1]);
+                }
+            }
+            if (matchSum) {
+                System.out.println(selfName + " match score: " + sum);
+                System.out.println();
             }
         }
-    }
 
+        if (tournamentSum) {
+            System.out.println(selfName + " tournament score: " + sum);
+        }
+    }
 }

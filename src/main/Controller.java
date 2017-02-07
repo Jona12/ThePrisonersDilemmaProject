@@ -9,7 +9,7 @@ import java.util.HashMap;
 public class Controller {
 
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
         ArrayList<String> strategyArrayList = new ArrayList<>();
         strategyArrayList.add("ALWAYS_COOPERATE");
         strategyArrayList.add("ALWAYS_DEFECT");
@@ -18,8 +18,8 @@ public class Controller {
 
         Tournament tournament = new Tournament(strategyArrayList, Tournament.TournamentMode.MODE_ORIGINAL);
         tournament.executeMatches();
-//        tournament.printScore();
-//        tournament.printTournamentResult();
+        tournament.printMatchScores(true, false, false);
+        tournament.printTournamentScores();
 //        tournament.getTournamentResult();
     }
 

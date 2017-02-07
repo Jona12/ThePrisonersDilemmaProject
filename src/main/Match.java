@@ -61,8 +61,8 @@ public class Match {
         try {
             for (int i = 0; i < noOfRounds; i++) {
                 if (i != 0) {
-                    historyStrategyOne.setRoundScore(tempOne);
-                    historyStrategyTwo.setRoundScore(tempTwo);
+//                    historyStrategyOne.setRoundScore(tempOne);
+//                    historyStrategyTwo.setRoundScore(tempTwo);
 
 //                    System.out.println(strategyNameOne);
 //                    System.out.println(historyStrategyOne.getRoundScore()[i-1][0]);
