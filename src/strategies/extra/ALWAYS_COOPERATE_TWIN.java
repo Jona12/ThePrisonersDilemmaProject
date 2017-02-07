@@ -6,7 +6,7 @@ import main.Variables;
 /**
  * Created by dbrisingr on 06/02/2017.
  */
-public class COOPERATE_TWIN {
+public class ALWAYS_COOPERATE_TWIN {
     public String calculate(History h){
         return Variables.COOPERATE;
     }

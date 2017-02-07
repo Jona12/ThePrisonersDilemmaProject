@@ -27,19 +27,19 @@ public class History {
         return selfName;
     }
 
-    public String getCurrentOpponent(){
+    public String getCurrentOpponent() {
         return currentOpponent;
     }
 
-    protected void setCurrentOpponent(String currentOpponent){
+    protected void setCurrentOpponent(String currentOpponent) {
         this.currentOpponent = currentOpponent;
     }
 
-    protected void setCurrentRound(int currentRound){
+    protected void setCurrentRound(int currentRound) {
         this.currentRound = currentRound;
     }
 
-    public int getCurrentRound(){
+    public int getCurrentRound() {
         return currentRound;
     }
 
@@ -47,32 +47,33 @@ public class History {
         return roundScore;
     }
 
-    protected void setRoundScore(int[][] roundScore){
+    protected void setRoundScore(int[][] roundScore) {
+        this.roundScore = roundScore;
         selfMatchResults.put(currentOpponent, roundScore);
-        if(selfName.equals("COOPERATE")){
+//        if (selfName.equals("TIT_FOR_TAT")) {
 //            System.out.println(currentOpponent);
 //            System.out.println(selfMatchResults.get(currentOpponent)[currentRound][0]);
-//        System.out.println(selfMatchResults.get(currentOpponent)[currentRound][1]);
-        }
+//            System.out.println(selfMatchResults.get(currentOpponent)[currentRound][1]);
+//        }
 
     }
 
-    public HashMap<String, int[][]> getSelfMatchResults(){
+    public HashMap<String, int[][]> getSelfMatchResults() {
         return selfMatchResults;
     }
 
-    public HashMap<String, int[][]> getOpponentMatchResults(){
+    public HashMap<String, int[][]> getOpponentMatchResults() {
         return opponentMatchResults;
     }
 
-    public void calculateMatchScores(){
+    public void calculateMatchScores() {
         String toReturn = selfName;
 
-        System.out.println(selfName+" vs.: ");
-        for(Map.Entry entry : selfMatchResults.entrySet()){
+        System.out.println(selfName + " vs.: ");
+        for (Map.Entry entry : selfMatchResults.entrySet()) {
             System.out.println(entry.getKey());
             int[][] value = (int[][]) entry.getValue();
-            for(int i=0; i < value.length; i++){
+            for (int i = 0; i < value.length; i++) {
                 System.out.println(value[i][0]);
 //                System.out.println(value[i][1]);
             }

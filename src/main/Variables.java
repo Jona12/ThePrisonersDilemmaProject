@@ -44,10 +44,13 @@ public class Variables {
 
         if(score1 == DRAW_C_SCORE && score2 == DRAW_C_SCORE){
             output[0] = COOPERATE; output[1] = COOPERATE;
+
         }else if(score1 == LOSE_SCORE && score2 == WIN_SCORE){
             output[0] = COOPERATE; output[1] = DEFECT;
+
         }else if(score1 == WIN_SCORE && score2 == LOSE_SCORE){
             output[0] = DEFECT; output[1] = COOPERATE;
+
         }else{
             output[0] = DEFECT; output[1] = DEFECT;
         }

@@ -11,15 +11,15 @@ public class Controller {
 
     public static void main(String[] args){
         ArrayList<String> strategyArrayList = new ArrayList<>();
-        strategyArrayList.add("COOPERATE");
-        strategyArrayList.add("DEFECT");
-        strategyArrayList.add("TRIAL");
+        strategyArrayList.add("ALWAYS_COOPERATE");
+        strategyArrayList.add("ALWAYS_DEFECT");
+        strategyArrayList.add("TIT_FOR_TAT");
 //        strategyArrayList.add("RANDOM");
 
         Tournament tournament = new Tournament(strategyArrayList, Tournament.TournamentMode.MODE_ORIGINAL);
         tournament.executeMatches();
-        tournament.printScore();
-        tournament.printTournamentResult();
+//        tournament.printScore();
+//        tournament.printTournamentResult();
 //        tournament.getTournamentResult();
     }
 

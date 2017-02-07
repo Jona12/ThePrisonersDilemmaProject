@@ -44,7 +44,8 @@ public class Match {
         currentScoreTwo = 0;
         matchResult = new int[2];
 
-        tempOne = new int[noOfRounds][2]; tempTwo = new int[noOfRounds][2];
+        tempOne = new int[noOfRounds][2];
+        tempTwo = new int[noOfRounds][2];
     }
 
     public void runMatch() {
@@ -54,18 +55,41 @@ public class Match {
         historyStrategyOne.setCurrentOpponent(strategyNameTwo);
         historyStrategyTwo.setCurrentOpponent(strategyNameOne);
 
-        historyStrategyOne.setRoundScore(tempOne);
-        historyStrategyTwo.setRoundScore(tempTwo);
+//        historyStrategyOne.setRoundScore(tempOne);
+//        historyStrategyTwo.setRoundScore(tempTwo);
 
         try {
             for (int i = 0; i < noOfRounds; i++) {
+                if (i != 0) {
+                    historyStrategyOne.setRoundScore(tempOne);
+                    historyStrategyTwo.setRoundScore(tempTwo);
+
+//                    System.out.println(strategyNameOne);
+//                    System.out.println(historyStrategyOne.getRoundScore()[i-1][0]);
+//                    System.out.println(historyStrategyOne.getRoundScore()[i-1][1]);
+//                    System.out.println();
+//                    System.out.println(strategyNameTwo);
+//                    System.out.println(historyStrategyTwo.getRoundScore()[i-1][0]);
+//                    System.out.println(historyStrategyTwo.getRoundScore()[i-1][1]);
+//                    System.out.println();
+
+//                    System.out.println(strategyNameOne);
+//                    System.out.println(tempOne[i-1][0]);
+//                    System.out.println(tempOne[i-1][1]);
+//                    System.out.println();
+//                    System.out.println(strategyNameTwo);
+//                    System.out.println(tempTwo[i-1][0]);
+//                    System.out.println(tempTwo[i-1][1]);
+//                    System.out.println();
+                }
                 strategyOne = new StrategyManager(historyStrategyOne);
                 strategyTwo = new StrategyManager(historyStrategyTwo);
-                String resultStrategyOne = strategyOne.readStrategyClass();
-                String resultStrategyTwo = strategyTwo.readStrategyClass();
 
                 historyStrategyOne.setCurrentRound(i);
                 historyStrategyTwo.setCurrentRound(i);
+
+                String resultStrategyOne = strategyOne.readStrategyClass();
+                String resultStrategyTwo = strategyTwo.readStrategyClass();
 
                 calculateRoundScore(resultStrategyOne, resultStrategyTwo);
 
@@ -117,15 +141,6 @@ public class Match {
             tempTwo[currentRound][0] = draw_d_Score;
             tempTwo[currentRound][1] = draw_d_Score;
         }
-
-//        System.out.println(strategyNameOne);
-//        System.out.println(tempOne[currentRound][0]);
-//        System.out.println(tempOne[currentRound][1]);
-//        System.out.println();
-//        System.out.println(strategyNameTwo);
-//        System.out.println(tempTwo[currentRound][0]);
-//        System.out.println(tempTwo[currentRound][1]);
-//        System.out.println();
 
         historyStrategyOne.setRoundScore(tempOne);
         currentScoreOne += tempOne[currentRound][0];

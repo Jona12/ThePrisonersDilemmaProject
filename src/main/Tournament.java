@@ -11,8 +11,10 @@ import java.util.Map;
  */
 public class Tournament {
 
+    private ArrayList<String> strategyArrayList;
     private HashMap<String, HashMap<String, Object>> modeHashMap;
     private HashMap<String, History> historyHashMap;
+    private HashMap<String, History> twinHistoryHashMap;
 
     private int numberOfRounds;
 
@@ -26,8 +28,10 @@ public class Tournament {
 
     private int count;
 
+
     public Tournament(ArrayList<String> strategyArrayList, String mode) {
 
+        this.strategyArrayList = strategyArrayList;
         modeHashMap = Tournament.TournamentMode.getMode(mode);
 
         numberOfRounds = (int) modeHashMap.get(mode).get(Variables.ROUNDS);
@@ -42,11 +46,7 @@ public class Tournament {
         }
         if (random) historyHashMap.put("RANDOM", new History(numberOfRounds, "RANDOM"));
         if (twin) {
-            for (String strategy : strategyArrayList) {
-                History history = new History(numberOfRounds, (strategy + "_TWIN"));
-                history.getSelfName();
-                historyHashMap.put(strategy + "_TWIN", history);
-            }
+
         }
 
 
@@ -90,7 +90,7 @@ public class Tournament {
                 strategyOne = strategies[i];
                 strategyTwo = strategies[j];
 
-                String matchID = "#" + (count++) + strategyOne.substring(0, 2) + strategyTwo.substring(0, 2);
+                String matchID = "#" + (count++) + strategyOne.substring(0, 4) + strategyTwo.substring(0, 4);
                 match = new Match(matchID, historyHashMap.get(strategyOne), historyHashMap.get(strategyTwo), numberOfRounds);
                 match.runMatch();
 
@@ -106,14 +106,21 @@ public class Tournament {
         Match match;
         String strategyOne, strategyTwo;
 
+        twinHistoryHashMap = new HashMap<>();
+
+        for (String strategy : strategyArrayList) {
+            History history = new History(numberOfRounds, (strategy + "_TWIN"));
+            twinHistoryHashMap.put(strategy + "_TWIN", history);
+        }
+
         for (String s : strategies) {
             strategyOne = s;
             strategyTwo = s + "_TWIN";
 
             String matchID = "#" + (count++) + s.substring(0, 2) + "T";
 
-            System.out.println(historyHashMap.get(strategyTwo));
-            match = new Match(matchID, historyHashMap.get(strategyOne), historyHashMap.get(strategyTwo), numberOfRounds);
+            System.out.println(twinHistoryHashMap.get(strategyTwo));
+            match = new Match(matchID, historyHashMap.get(strategyOne), twinHistoryHashMap.get(strategyTwo), numberOfRounds);
             match.runMatch();
 
             tournamentResult.put(matchID, match.getMatchResult());
@@ -176,10 +183,10 @@ public class Tournament {
                     };
 
                     tempTable.put(Variables.STRATEGIES, strategiesTemp);
-                    tempTable.put(Variables.ROUNDS, 1);
+                    tempTable.put(Variables.ROUNDS, 2);
                     tempTable.put(Variables.ENTRIES, 16);
                     tempTable.put(Variables.REPEAT, false);
-                    tempTable.put(Variables.TWIN, false);
+                    tempTable.put(Variables.TWIN, true);
                     tempTable.put(Variables.RANDOM, false);
                     tempTable.put(Variables.SCORE_MATRIX, scoreMatrix);
 

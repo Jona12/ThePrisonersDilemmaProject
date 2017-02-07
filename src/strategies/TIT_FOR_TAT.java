@@ -11,8 +11,12 @@ import static main.Variables.calculateOutputFromScore;
 public class TIT_FOR_TAT {
 
     public String calculate(History h){
+
+//        System.out.println("hi");
         if(h.getCurrentRound()!=0){
-            String[] previousScores = Variables.calculateOutputFromScore(h.getRoundScore()[h.getCurrentRound()]);
+            int[][] x = h.getRoundScore();
+            String[] previousScores = Variables.calculateOutputFromScore(h.getRoundScore()[h.getCurrentRound()-1]);
+//            System.out.println("opponent "+h.getCurrentOpponent()+" with score "+previousScores[1]);
             if(previousScores[1].equals(Variables.COOPERATE)){
                 return Variables.COOPERATE;
             }else{
