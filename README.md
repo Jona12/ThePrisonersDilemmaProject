@@ -1,4 +1,4 @@
-# ThePrisonersDilemmaProject
+# The Prisoners Dilemma Project
 
 [this is a work in progress as part of my final year project, a LOT more to follow]
 
