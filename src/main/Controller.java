@@ -19,7 +19,6 @@ public class Controller {
         Tournament tournament = new Tournament(strategyArrayList, Tournament.TournamentMode.MODE_ORIGINAL);
         tournament.executeMatches();
         tournament.printMatchScores(true, false, false);
-        tournament.printTournamentScores();
 //        tournament.getTournamentResult();
     }
 

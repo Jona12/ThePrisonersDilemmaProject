@@ -54,15 +54,6 @@ public class Tournament {
         strategies = new String[historyHashMap.size()];
     }
 
-
-    public void printMatchScores(boolean tournamentSum, boolean matchSum, boolean roundSum) {
-
-        HashMap<String, Integer> finalScore = new HashMap<>();
-        for (Map.Entry<String, History> entry : historyHashMap.entrySet()) {
-            entry.getValue().calculateMatchScores(tournamentSum, matchSum, roundSum);
-        }
-    }
-
     public void executeMatches() {
         runDefault();
         if (twin) {
@@ -114,7 +105,7 @@ public class Tournament {
             strategyOne = s;
             strategyTwo = s;
 
-            String matchID = "#" + (count++) + s + "T";
+            String matchID = "#" + (count++) + s + "_TWIN";
 
             match = new Match(matchID, historyHashMap.get(strategyOne), twinHistoryHashMap.get(strategyTwo), numberOfRounds);
             match.runMatch();
@@ -124,7 +115,22 @@ public class Tournament {
     }
 
     public void runRandom() {
+        Match match;
+        String strategyOne, strategyTwo;
+
         twinHistoryHashMap.put("RANDOM", new History(numberOfRounds, "RANDOM"));
+
+        for( String s : strategies){
+            strategyOne = s;
+            strategyTwo = "RANDOM";
+
+            String matchID = "#" + (count++) + s + "_RAND";
+
+            match = new Match(matchID, historyHashMap.get(strategyOne), twinHistoryHashMap.get(strategyTwo), numberOfRounds);
+            match.runMatch();
+
+            tournamentResult.put(matchID, match.getMatchResult());
+        }
 
     }
 
@@ -132,9 +138,11 @@ public class Tournament {
         return tournamentResult;
     }
 
-    public void printTournamentScores() {
-        for (Map.Entry<String, int[]> entry : tournamentResult.entrySet()) {
+    public void printMatchScores(boolean tournamentSum, boolean matchSum, boolean roundSum) {
 
+//        HashMap<String, Integer> finalScore = new HashMap<>();
+        for (Map.Entry<String, History> entry : historyHashMap.entrySet()) {
+            entry.getValue().calculateMatchScores(tournamentSum, matchSum, roundSum);
         }
     }
 
@@ -146,11 +154,12 @@ public class Tournament {
         public final static String MODE_NO_TWIN = "NO_TWIN";
         public final static String MODE_NO_RANDOM_NO_TWIN = "NO_RANDOM_NO_TWIN";
         public final static String MODE_ORIGINAL_WITH_REPEAT = "ORIGINAL MODE WITH 2X THE ROUNDS";
+        public final static String MODE_CUSTOM = "CUSTOM MODE";
 
         private static HashMap<String, HashMap<String, Object>> modesHashMap;
 
         private static String[] originalModesArray = {
-                MODE_ORIGINAL, MODE_ORIGINAL_V2, MODE_NO_RANDOM, MODE_NO_TWIN, MODE_NO_RANDOM_NO_TWIN, MODE_ORIGINAL_WITH_REPEAT
+                MODE_ORIGINAL, MODE_ORIGINAL_V2, MODE_NO_RANDOM, MODE_NO_TWIN, MODE_NO_RANDOM_NO_TWIN, MODE_ORIGINAL_WITH_REPEAT, MODE_CUSTOM
         };
 
         public static HashMap<String, HashMap<String, Object>> getMode(String mode) {
@@ -171,11 +180,11 @@ public class Tournament {
                     };
 
                     tempTable.put(Variables.STRATEGIES, strategiesTemp);
-                    tempTable.put(Variables.ROUNDS, 2);
+                    tempTable.put(Variables.ROUNDS, 200);
                     tempTable.put(Variables.ENTRIES, 16);
                     tempTable.put(Variables.REPEAT, false);
-                    tempTable.put(Variables.TWIN, false);
-                    tempTable.put(Variables.RANDOM, false);
+                    tempTable.put(Variables.TWIN, true);
+                    tempTable.put(Variables.RANDOM, true);
                     tempTable.put(Variables.SCORE_MATRIX, scoreMatrix);
 
                     modesHashMap.put(MODE_ORIGINAL, tempTable);
@@ -194,6 +203,8 @@ public class Tournament {
                 case MODE_NO_RANDOM_NO_TWIN:
                     break;
                 case MODE_ORIGINAL_WITH_REPEAT:
+                    break;
+                case MODE_CUSTOM:
                     break;
                 case "":
                     System.out.println("mode not valid");
