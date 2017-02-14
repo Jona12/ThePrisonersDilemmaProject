@@ -32,7 +32,7 @@ public class Tournament {
     public Tournament(ArrayList<String> strategyArrayList, String mode) {
 
         this.strategyArrayList = strategyArrayList;
-        modeHashMap = Tournament.TournamentMode.getMode(mode);
+        modeHashMap = Tournament.TournamentMode.getModesHashMap();
 
         numberOfRounds = (int) modeHashMap.get(mode).get(Variables.ROUNDS);
         repeat = (boolean) modeHashMap.get(mode).get(Variables.REPEAT);
@@ -138,12 +138,20 @@ public class Tournament {
         return tournamentResult;
     }
 
-    public void printMatchScores(boolean tournamentSum, boolean matchSum, boolean roundSum) {
+    public HashMap<String, Integer> printTournamentScores(boolean tournamentSum, boolean matchSum, boolean roundSum) {
 
-//        HashMap<String, Integer> finalScore = new HashMap<>();
+        HashMap<String, Integer> finalScore = new HashMap<>();
+        int score;
         for (Map.Entry<String, History> entry : historyHashMap.entrySet()) {
-            entry.getValue().calculateMatchScores(tournamentSum, matchSum, roundSum);
+            score = entry.getValue().calculateMatchScores(tournamentSum, matchSum, roundSum);
+            finalScore.put(entry.getKey(), score);
         }
+
+        return finalScore;
+    }
+
+    public void saveMatchScores(boolean tournamentSum, boolean matchSum, boolean roundSum){
+
     }
 
     public static class TournamentMode {
@@ -162,57 +170,35 @@ public class Tournament {
                 MODE_ORIGINAL, MODE_ORIGINAL_V2, MODE_NO_RANDOM, MODE_NO_TWIN, MODE_NO_RANDOM_NO_TWIN, MODE_ORIGINAL_WITH_REPEAT, MODE_CUSTOM
         };
 
-        public static HashMap<String, HashMap<String, Object>> getMode(String mode) {
+        public static HashMap<String, Object> getVariables(String mode){
+            return modesHashMap.get(mode);
+        }
+
+        public static HashMap<String, HashMap<String, Object>> getModesHashMap() {
 
             modesHashMap = new HashMap<>();
             HashMap<String, Object> tempTable = new HashMap<>();
 
             int[] scoreMatrix = new int[4];
-            switch (mode) {
-                case MODE_ORIGINAL:
+            MODE_ORIGINAL:
 
-                    scoreMatrix[0] = 5;
-                    scoreMatrix[1] = 0;
-                    scoreMatrix[2] = 3;
-                    scoreMatrix[3] = 1;
-                    String[] strategiesTemp = {
-                            "TIT FOR TAT"
-                    };
+            scoreMatrix[0] = 5;
+            scoreMatrix[1] = 0;
+            scoreMatrix[2] = 3;
+            scoreMatrix[3] = 1;
+            String[] strategiesTemp = {
+                    "TIT FOR TAT"
+            };
 
-                    tempTable.put(Variables.STRATEGIES, strategiesTemp);
-                    tempTable.put(Variables.ROUNDS, 200);
-                    tempTable.put(Variables.ENTRIES, 16);
-                    tempTable.put(Variables.REPEAT, false);
-                    tempTable.put(Variables.TWIN, true);
-                    tempTable.put(Variables.RANDOM, true);
-                    tempTable.put(Variables.SCORE_MATRIX, scoreMatrix);
+            tempTable.put(Variables.STRATEGIES, strategiesTemp);
+            tempTable.put(Variables.ENTRIES, 16);
+            tempTable.put(Variables.ROUNDS, 200);
+            tempTable.put(Variables.SCORE_MATRIX, scoreMatrix);
+            tempTable.put(Variables.REPEAT, false);
+            tempTable.put(Variables.TWIN, true);
+            tempTable.put(Variables.RANDOM, true);
 
-                    modesHashMap.put(MODE_ORIGINAL, tempTable);
-                    break;
-
-                case MODE_ORIGINAL_V2:
-
-                    break;
-
-                case MODE_NO_RANDOM:
-
-                    break;
-
-                case MODE_NO_TWIN:
-                    break;
-                case MODE_NO_RANDOM_NO_TWIN:
-                    break;
-                case MODE_ORIGINAL_WITH_REPEAT:
-                    break;
-                case MODE_CUSTOM:
-                    break;
-                case "":
-                    System.out.println("mode not valid");
-                    break;
-                default:
-
-                    break;
-            }
+            modesHashMap.put(MODE_ORIGINAL, tempTable);
 
             return modesHashMap;
         }

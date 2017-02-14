@@ -6,7 +6,7 @@ import java.util.HashMap;
 /**
  * Created by dbrisingr on 06/02/2017.
  */
-public class Controller {
+public class Main {
 
 
     public static void main(String[] args) {
@@ -18,7 +18,7 @@ public class Controller {
 
         Tournament tournament = new Tournament(strategyArrayList, Tournament.TournamentMode.MODE_ORIGINAL);
         tournament.executeMatches();
-        tournament.printMatchScores(true, false, false);
+        tournament.printTournamentScores(false, true, false);
 //        tournament.getTournamentResult();
     }
 

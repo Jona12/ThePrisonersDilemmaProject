@@ -9,8 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.ControllerWelcome">
    <top>
       <BorderPane prefHeight="200.0" prefWidth="200.0">
          <center>
@@ -21,7 +20,7 @@
             </Label>
          </center>
          <bottom>
-            <Label text="Welcome to the Prisoner's Dilemma Tournament application. This application can be used to simulate Robert Axelrod's original Prisoner's Dilemma tournament as well as modifying the tournament variables. On top of this you will also be able to create your own strategies or alternatively pick a strategy that was used in the original tournament. Please click on the topics below to find out more information about this application, including how to devise your own custom strategies." textAlignment="CENTER" wrapText="true" BorderPane.alignment="CENTER">
+            <Label focusTraversable="false" text="Welcome to the Prisoner's Dilemma Tournament application. This application can be used to simulate Robert Axelrod's original Prisoner's Dilemma tournament as well as modifying the tournament variables. On top of this you will also be able to create your own strategies or alternatively pick a strategy that was used in the original tournament. Please click on the topics below to find out more information about this application, including how to devise your own custom strategies." textAlignment="CENTER" wrapText="true" BorderPane.alignment="CENTER">
                <BorderPane.margin>
                   <Insets />
                </BorderPane.margin>
@@ -39,8 +38,8 @@
                <children>
                   <ButtonBar buttonOrder="U+FBIX_NCYOA_R" prefHeight="200.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <buttons>
-                      <Button mnemonicParsing="false" text="Iterated Prisoner's Dilemma" />
-                        <Button mnemonicParsing="false" text="Axelrod's Tournament" />
+                      <Button fx:id="welcomeIteratedButton" focusTraversable="false" mnemonicParsing="false" text="Iterated Prisoner's Dilemma" />
+                        <Button fx:id="welcomeAxelrodButton" focusTraversable="false" mnemonicParsing="false" text="Axelrod's Tournament" />
                     </buttons>
                   </ButtonBar>
                </children>
@@ -49,8 +48,8 @@
                <children>
                   <ButtonBar buttonOrder="U+FBIX_NCYOA_R" prefHeight="133.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <buttons>
-                      <Button mnemonicParsing="false" text="Strategies" />
-                        <Button mnemonicParsing="false" text="Custom Strategies" />
+                      <Button fx:id="welcomeStrategiesButton" focusTraversable="false" mnemonicParsing="false" text="Strategies" />
+                        <Button fx:id="welcomeCustomStrategiesButton" focusTraversable="false" mnemonicParsing="false" text="Custom Strategies" />
                     </buttons>
                   </ButtonBar>
                </children>
@@ -59,8 +58,8 @@
                <children>
                   <ButtonBar buttonOrder="U+FBIX_NCYOA_R" prefHeight="134.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <buttons>
-                      <Button mnemonicParsing="false" text="Tournament" />
-                        <Button mnemonicParsing="false" text="Analysis" />
+                      <Button fx:id="welcomeTournamentButton" focusTraversable="false" mnemonicParsing="false" text="Tournament" />
+                        <Button fx:id="welcomeAnalysisButton" focusTraversable="false" mnemonicParsing="false" text="Analysis" />
                     </buttons>
                   </ButtonBar>
                </children>
@@ -69,7 +68,7 @@
       </VBox>
    </bottom>
    <center>
-      <Label text="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" textAlignment="CENTER" wrapText="true" BorderPane.alignment="CENTER">
+      <Label focusTraversable="false" text="nyxYmJRTVwLcuPNMOo8JIphgQ2Pp24bqOjwKp127WISEgWxJVrjcdaINskuXTS0mUuLfELypuv2lEHcvkqYmNnqiPI6yvY0rp2RmZ83LdTPQxYXZ5mJyWPwmZtIIyq4asaZB1ezHzWfxEg0Zt4NvZfT4DQNVZB3qOUnWBTVCrbaVUsVwUspEGj4nlKdeDOQGW3YS0pHmQ8xP0TaPOWDeSRGPke9sSHUYaqQ08F1slBsBYoVAWJ9HghnDjjYwmYzFIqpiz94Dj09hyo7B1x1otQ8vi4bCleRHRzVDaFPG7NWPijz3q20O6FoxiUESsB5P27jL8IG69u9U7LroUGGp2Uwk9AlmSKkxg4YlDyb8CCSdj0Cw4X9Uv6jqIBLeks1hBYN6Yy5Hw1Wo9ck13tar6tQPmrzAXNxh4SEeAYTHAvjrkPhhsMf2ZTIcak3LbB2jgONKrC1cAd4aOiKBdczaiWcYN5iS3nGjvumPtp1bnaIwo5uxgJ2jBIAnLnRLxK7BQ4usF71rP1gTgTlwBXMZEVErTaKP8Qj2q7sIQKEiFyP1Trh03dV2MXgH3Ftd87YE5xHB6moZ6X9vfew8ZZK8Nbj4CYL3SUwnEYPqzwWFCi5Wmq5ITNzdIYwFhqD8U3tO2oQcuwpjxy7qyKzCLobbTeXMyPOV2XkUDbMyHyIH0emq4lApJhlVKkcNnIGEfnSn5EZfV5S9Gv9KPeZ8L5N7vt6KE4jR11mTcqYJyquK0XG61WXKBInvQ9kzF3kIcmxRnWrOi04JUiJEmIC9RaI4OEvmSQPqjXujFFgmBp2GU77xaarihbQwPF4TzkLagyIdDdRsKdpm8PXpB5sI2xaYbWWdJMcO7ez5m6PMmCALYCmXNSfIKYx8554mqzouqEe9WAHnx3aIm2Ev3PrjenIhltV7hHd39SCc5Cy6UCS0KKi9tviBCnzS9hjC19VtJ9XGWvB91BMoygPxCjWgoIAk7fan7Y3Hw16HYT9Ax0u9ojW7qH4QT5XMnR2cBudtNPqlm0touVR2rmtz5xcb85FZ5aGDhtgUOsun9TFMT4zmGU9LZ1dNFBZaXSNxpf0gmJh2RHdl5dpiQsExIELKDx67TiUeiYkacq0KmTWjSqxvnI9okyyWHW6jj5bnpSdiuA88hnOFvjK4e29KUurahiqJSLhvGA5hpP7PKh1wDLw4Nyiq3AIzGT3iHQm3KSOJDONzr6TiL0qfEQ8WtKJIXz0hvWjHENrG7pqPjKwPIQwy0yRHAEZBtLExWOJlEvmDLb62GoEFVRWeznaaUSQ7o45PltdM1FqfepZy38UBoc6a2PkOMiBcBnfrQcE96MvGm1VMnoZfagqRt5KnLJ2hkWbPNLdj5WntYHFccaVodzVF25pQywlyGjx2NjviQWdUNPnOAI93qHr3CRWLQD0Gos3uwS7aYq6wYosCv3RZu4ETzSXAKLHQsqmTEHH5OUbL96pv2yI6McrSgG1jh9zhMGdiviVgGLr3ueqhUmTN4jqw260AhMlaxKbs8jOfr43mvp8m3sACEleAepCHl3mSVDp4AqqLgCDSWXGHx2Uj5pZwS9QZTXVOU1NkIPzAQfAWf8R0otZkwAn71ptLFVPIztdoZeSgK1LohIFEubH8Qox1TVmzgWn5COBRLBxQyLRKe32hxjQMpQP0GyKVpRte8IMBoTscCycU4VDTrpKbWr9nS1ZUTxoyGRmYNBdoLXESMwSroMtO03ptgPWHo1YJoDYJHqWgj7yhQVXWfcTOPOr3hPaDKI4XJglBfBba55Lu2d6VorDO1jmmH0UGtLB2mUNGFlk4UJCQDlLKjRGL9IOQ9S2f5mEt5S4geLiG1umFHoiWSYWyeNCZdvUtaKEf5lAroZtuSFqmPauIYxrn9m8esWf8DwRejT0BgBAYzvfo" textAlignment="CENTER" wrapText="true" BorderPane.alignment="CENTER">
          <padding>
             <Insets left="15.0" right="15.0" />
          </padding>

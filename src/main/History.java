@@ -1,5 +1,6 @@
 package main;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -72,8 +73,9 @@ public class History {
         return opponentMatchResults;
     }
 
-    public void calculateMatchScores(boolean tournamentSum, boolean matchSum, boolean roundSum) {
+    public int calculateMatchScores(boolean tournamentSum, boolean matchSum, boolean roundSum) {
 
+        ArrayList<String> toReturn = new ArrayList<>();
         int sum = 0;
 
         for (Map.Entry<String, int[][]> entry : selfMatchResults.entrySet()) {
@@ -82,26 +84,39 @@ public class History {
             }
             String opponentName = entry.getKey();
             if (matchSum || roundSum) {
-                System.out.println(selfName + " vs. " + opponentName);
+//                System.out.println(selfName + " vs. " + opponentName);
+
+                toReturn.add(selfName + " vs. " + opponentName);
             }
             int[][] actualRoundScore = entry.getValue();
             for (int i = 0; i < actualRoundScore.length; i++) {
                 if (tournamentSum || matchSum) {
                     sum += selfMatchResults.get(opponentName)[i][0];
                 } else if (roundSum) {
-                    System.out.println("round: " + i);
-                    System.out.println(selfMatchResults.get(opponentName)[i][0]);
-                    System.out.println(selfMatchResults.get(opponentName)[i][1]);
+//                    System.out.println("round: " + i);
+//                    System.out.println(selfMatchResults.get(opponentName)[i][0]);
+//                    System.out.println(selfMatchResults.get(opponentName)[i][1]);
+
+                    toReturn.add("round: " + i);
+                    toReturn.add(""+selfMatchResults.get(opponentName)[i][0]);
+                    toReturn.add(""+selfMatchResults.get(opponentName)[i][1]);
                 }
             }
             if (matchSum) {
-                System.out.println(selfName + " match score: " + sum);
-                System.out.println();
+//                System.out.println(selfName + " match score: " + sum);
+//                System.out.println();
+
+                toReturn.add(selfName + " match score: " + sum);
+                toReturn.add("");
             }
         }
 
         if (tournamentSum) {
             System.out.println(selfName + " tournament score: " + sum);
+
+            toReturn.add(selfName + " tournament score: " + sum);
         }
+
+        return sum;
     }
 }

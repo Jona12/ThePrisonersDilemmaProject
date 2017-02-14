@@ -13,14 +13,14 @@ public class Variables {
     public static int DRAW_C_SCORE;
     public static int DRAW_D_SCORE;
 
-    public final static String STRATEGIES = "STRATEGIES INCLUDED";
-    public final static String REPEAT = "NUMBER OF ROUND REPEATS";
-    public final static String ROUNDS = "NUMBER OF ROUNDS";
-    public final static String CURRENT_ROUND = "CURRENT ROUND";
-    public final static String ENTRIES= "NUMBER OF ENTRIES";
-    public final static String RANDOM = "RANDOM";
-    public final static String TWIN = "TWIN";
-    public final static String SCORE_MATRIX = "SCORE MATRIX";
+    public final static String STRATEGIES = "Strategies included";
+    public final static String REPEAT = "Repeat entire tournament?";
+    public final static String ROUNDS = "Number of total rounds";
+    public final static String CURRENT_ROUND = "current round";
+    public final static String ENTRIES= "number of rounds";
+    public final static String RANDOM = "Is the RANDOM strategy included?";
+    public final static String TWIN = "Will the strategies play against their twins?";
+    public final static String SCORE_MATRIX = "Score matrix";
 
     public final static String PAST_SELF_ROUNDS = "PAST SELF ROUNDS";
     public final static String PAST_SELF_MATCHES = "PAST SELF MATCHES";
