@@ -157,7 +157,6 @@ public class Tournament {
     public static class TournamentMode {
 
         public final static String MODE_ORIGINAL = "ORIGINAL";
-        public final static String MODE_ORIGINAL_V2 = "ORIGINAL_V2";
         public final static String MODE_NO_RANDOM = "NO_RANDOM";
         public final static String MODE_NO_TWIN = "NO_TWIN";
         public final static String MODE_NO_RANDOM_NO_TWIN = "NO_RANDOM_NO_TWIN";
@@ -167,7 +166,7 @@ public class Tournament {
         private static HashMap<String, HashMap<String, Object>> modesHashMap;
 
         private static String[] originalModesArray = {
-                MODE_ORIGINAL, MODE_ORIGINAL_V2, MODE_NO_RANDOM, MODE_NO_TWIN, MODE_NO_RANDOM_NO_TWIN, MODE_ORIGINAL_WITH_REPEAT, MODE_CUSTOM
+                MODE_ORIGINAL, MODE_NO_RANDOM, MODE_NO_TWIN, MODE_NO_RANDOM_NO_TWIN, MODE_ORIGINAL_WITH_REPEAT, MODE_CUSTOM
         };
 
         public static HashMap<String, Object> getVariables(String mode){
@@ -180,25 +179,108 @@ public class Tournament {
             HashMap<String, Object> tempTable = new HashMap<>();
 
             int[] scoreMatrix = new int[4];
-            MODE_ORIGINAL:
 
-            scoreMatrix[0] = 5;
-            scoreMatrix[1] = 0;
-            scoreMatrix[2] = 3;
-            scoreMatrix[3] = 1;
-            String[] strategiesTemp = {
-                    "TIT FOR TAT"
-            };
+            {
+                scoreMatrix[0] = 5;
+                scoreMatrix[1] = 0;
+                scoreMatrix[2] = 3;
+                scoreMatrix[3] = 1;
+                String[] strategiesTemp = {
+                        "TIT FOR TAT"
+                };
 
-            tempTable.put(Variables.STRATEGIES, strategiesTemp);
-            tempTable.put(Variables.ENTRIES, 16);
-            tempTable.put(Variables.ROUNDS, 200);
-            tempTable.put(Variables.SCORE_MATRIX, scoreMatrix);
-            tempTable.put(Variables.REPEAT, false);
-            tempTable.put(Variables.TWIN, true);
-            tempTable.put(Variables.RANDOM, true);
+                tempTable.put(Variables.STRATEGIES, strategiesTemp);
+                tempTable.put(Variables.ENTRIES, 16);
+                tempTable.put(Variables.ROUNDS, 200);
+                tempTable.put(Variables.SCORE_MATRIX, scoreMatrix);
+                tempTable.put(Variables.REPEAT, false);
+                tempTable.put(Variables.TWIN, true);
+                tempTable.put(Variables.RANDOM, true);
 
-            modesHashMap.put(MODE_ORIGINAL, tempTable);
+                modesHashMap.put(MODE_ORIGINAL, tempTable);
+            }
+
+            {
+                scoreMatrix[0] = 5;
+                scoreMatrix[1] = 0;
+                scoreMatrix[2] = 3;
+                scoreMatrix[3] = 1;
+
+                tempTable = new HashMap<>();
+                tempTable.put(Variables.ROUNDS, 200);
+                tempTable.put(Variables.SCORE_MATRIX, scoreMatrix);
+                tempTable.put(Variables.REPEAT, false);
+                tempTable.put(Variables.TWIN, true);
+                tempTable.put(Variables.RANDOM, false);
+
+                modesHashMap.put(MODE_NO_RANDOM, tempTable);
+            }
+
+            {
+                scoreMatrix[0] = 5;
+                scoreMatrix[1] = 0;
+                scoreMatrix[2] = 3;
+                scoreMatrix[3] = 1;
+
+                tempTable = new HashMap<>();
+                tempTable.put(Variables.ROUNDS, 200);
+                tempTable.put(Variables.SCORE_MATRIX, scoreMatrix);
+                tempTable.put(Variables.REPEAT, false);
+                tempTable.put(Variables.TWIN, false);
+                tempTable.put(Variables.RANDOM, true);
+
+                modesHashMap.put(MODE_NO_TWIN, tempTable);
+            }
+
+            {
+                scoreMatrix[0] = 5;
+                scoreMatrix[1] = 0;
+                scoreMatrix[2] = 3;
+                scoreMatrix[3] = 1;
+
+                tempTable = new HashMap<>();
+                tempTable.put(Variables.ROUNDS, 200);
+                tempTable.put(Variables.SCORE_MATRIX, scoreMatrix);
+                tempTable.put(Variables.REPEAT, false);
+                tempTable.put(Variables.TWIN, false);
+                tempTable.put(Variables.RANDOM, false);
+
+                modesHashMap.put(MODE_NO_RANDOM_NO_TWIN, tempTable);
+            }
+
+            {
+                scoreMatrix[0] = 5;
+                scoreMatrix[1] = 0;
+                scoreMatrix[2] = 3;
+                scoreMatrix[3] = 1;
+
+                tempTable = new HashMap<>();
+                tempTable.put(Variables.ROUNDS, 200);
+                tempTable.put(Variables.SCORE_MATRIX, scoreMatrix);
+                tempTable.put(Variables.REPEAT, true);
+                tempTable.put(Variables.TWIN, false);
+                tempTable.put(Variables.RANDOM, false);
+
+                modesHashMap.put(MODE_ORIGINAL_WITH_REPEAT, tempTable);
+            }
+
+            {
+                scoreMatrix[0] = 5;
+                scoreMatrix[1] = 0;
+                scoreMatrix[2] = 3;
+                scoreMatrix[3] = 1;
+
+                tempTable = new HashMap<>();
+                tempTable.put(Variables.ROUNDS, 200);
+                tempTable.put(Variables.SCORE_MATRIX, scoreMatrix);
+                tempTable.put(Variables.REPEAT, true);
+                tempTable.put(Variables.TWIN, true);
+                tempTable.put(Variables.RANDOM, true);
+
+                modesHashMap.put(MODE_CUSTOM, tempTable);
+            }
+
+
 
             return modesHashMap;
         }

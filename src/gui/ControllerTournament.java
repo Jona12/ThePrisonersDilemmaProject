@@ -2,20 +2,29 @@ package gui;
 
 import gui.data_structures.ModeData;
 import gui.data_structures.RankData;
+import gui.data_structures.StrategyData;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.chart.LineChart;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.util.Callback;
 import main.Tournament;
 import main.Variables;
 
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
+import java.nio.file.DirectoryStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -105,7 +114,7 @@ public class ControllerTournament implements Initializable {
 
 
         tournamentAccordion.setExpandedPane(tournament_modeSelection);
-        tournament_modeSelection.setAnimated(false);
+//        tournament_modeSelection.setAnimated(false);
 //        tournament_tournamentEntriesSelection.setAnimated(false);
         resultsAccordion.setExpandedPane(tournament_rankTable);
 //        tournament_rankTable.setAnimated(false);
@@ -113,6 +122,7 @@ public class ControllerTournament implements Initializable {
 
         setListViews();
         setSelectedModeColumns();
+        setTournamentEntriesColumns();
         setRankColumns();
     }
 
@@ -123,6 +133,10 @@ public class ControllerTournament implements Initializable {
             public void changed(ObservableValue observable, Object oldValue, Object newValue) {
                 HashMap<String, HashMap<String, Object>> modeHashMap = Tournament.TournamentMode.getModesHashMap();
 
+                int[] scoreMatrix = (int[]) modeHashMap.get(newValue).get(Variables.SCORE_MATRIX);
+                String finalMatrix = "WIN: " + scoreMatrix[0] + "\r\n" + "LOSE: " + scoreMatrix[1] +
+                        "\r\n" + "DRAW_C: " + scoreMatrix[2] + "\r\n" + "DRAW_D: " + scoreMatrix[3];
+
                 int numberOfRounds = (int) modeHashMap.get(newValue).get(Variables.ROUNDS);
                 boolean repeat = (boolean) modeHashMap.get(newValue).get(Variables.REPEAT);
                 boolean twin = (boolean) modeHashMap.get(newValue).get(Variables.TWIN);
@@ -130,22 +144,79 @@ public class ControllerTournament implements Initializable {
 
                 ObservableList<ModeData> modeData = Observables.getModeData();
                 modeData.clear();
-                modeData.add(new ModeData(Variables.ROUNDS, ""+numberOfRounds));
-                modeData.add(new ModeData(Variables.REPEAT, ""+repeat));
-                modeData.add(new ModeData(Variables.TWIN, ""+twin));
-                modeData.add(new ModeData(Variables.RANDOM, ""+random));
+
+                Observables.setStrategy((String) newValue);
+                modeData.add(new ModeData(Variables.SCORE_MATRIX, finalMatrix));
+                modeData.add(new ModeData(Variables.ROUNDS, "" + numberOfRounds));
+                modeData.add(new ModeData(Variables.REPEAT, "" + repeat));
+                modeData.add(new ModeData(Variables.TWIN, "" + twin));
+                modeData.add(new ModeData(Variables.RANDOM, "" + random));
                 Observables.setModeData(modeData);
             }
         });
     }
 
-    private void setSelectedModeColumns(){
+    private void setSelectedModeColumns() {
 
         tournament_modeSelection_selectedModeSettings_tableView_variablesColumn.setPrefWidth(300);
+        tournament_modeSelection_selectedModeSettings_tableView_valuesColumn.setPrefWidth(100);
 
         tournament_modeSelection_selectedModeSettings_tableView_variablesColumn.setCellValueFactory(new PropertyValueFactory<ModeData, String>("variable"));
         tournament_modeSelection_selectedModeSettings_tableView_valuesColumn.setCellValueFactory(new PropertyValueFactory<ModeData, String>("value"));
         tournament_modeSelection_selectedModeSettings_tableView.setItems(Observables.getModeData());
+    }
+
+    private void setTournamentEntriesColumns() {
+
+        tournament_tournamentEntriesSelection_tableView.setEditable(true);
+        tournament_tournamentEntriesSelection_tableView_selectColumn.setEditable(true);
+
+        tournament_tournamentEntriesSelection_tableView_strategyColumn.setPrefWidth(300);
+        tournament_tournamentEntriesSelection_tableView_strategyColumn.setCellValueFactory(new PropertyValueFactory<StrategyData, String>("strategy"));
+        tournament_tournamentEntriesSelection_tableView_selectColumn.setCellValueFactory(new PropertyValueFactory<StrategyData, String>("select"));
+
+        tournament_tournamentEntriesSelection_tableView_selectColumn.setCellFactory(new Callback<TableColumn, TableCell>() {
+            @Override
+            public TableCell call(TableColumn param) {
+                return new CheckBoxTableCell<StrategyData, Boolean>() {
+                    {
+                        setEditable(true);
+                        setAlignment(Pos.CENTER);
+                    }
+
+                    @Override
+                    public void updateItem(Boolean item, boolean empty) {
+                        if (!empty) {
+                            TableRow row = getTableRow();
+
+                            if (row != null) {
+                                int rowNo = row.getIndex();
+                                TableView.TableViewSelectionModel sm = getTableView().getSelectionModel();
+                                if (item) {
+//                                    if (tournament_tournamentEntriesSelection.isExpanded()) {}
+                                        sm.select(rowNo);
+                                } else {
+
+                                    sm.clearSelection(rowNo);
+                                }
+                            }
+                        }
+
+                        super.updateItem(item, empty);
+                    }
+                };
+
+            }
+        });
+
+        ObservableList<StrategyData> strategyData = Observables.getStrategyData();
+        ArrayList<String> strategies = getStrategies();
+
+        for(String s : strategies){
+            strategyData.add(new StrategyData(s.substring(0, s.indexOf(".java")), false));
+        }
+
+        tournament_tournamentEntriesSelection_tableView.setItems(Observables.getStrategyData());
     }
 
     private void setRankColumns() {
@@ -159,6 +230,29 @@ public class ControllerTournament implements Initializable {
 
     }
 
+    private ArrayList<String> getStrategies(){
+        File currentDir = new File("."); // Read current file location
+        File srcDir;
+        File strategiesDir;
+        ArrayList<String> strategies = new ArrayList<>();
+        try {
+            srcDir = new File(currentDir.getCanonicalFile(), "src"); // Construct the target directory file with the right parent directory
+            strategiesDir = new File(srcDir, "strategies");
+
+            DirectoryStream<Path> dirStream = Files.newDirectoryStream(strategiesDir.toPath());
+            for (Path p : dirStream) {
+                if (!p.toFile().isDirectory()) {
+                    strategies.add(p.getFileName().toString());
+                }
+//            if (p.toFile().isDirectory()) {
+//                listDirectoryAndFiles(p);
+//            }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return strategies;
+    }
 
 //    private HashMap<String, Object> getStringHashMap() {
 //        HashMap<String, Object> stringObjectHashMap = new HashMap<>();
@@ -205,29 +299,43 @@ public class ControllerTournament implements Initializable {
 
     public static class Observables {
 
+        static String strategy = "";
         static ObservableList<ModeData> modeData = FXCollections.observableArrayList();
-        static ObservableList<RankData> rankData = FXCollections.observableArrayList(new RankData(0, "RANDOM", 0),
-                new RankData(0, "TIT_FOR_TAT", 0));
+        static ObservableList<RankData> rankData = FXCollections.observableArrayList();
+        static ObservableList<StrategyData> strategyData = FXCollections.observableArrayList();
         static ObservableList<String> originalModesData = FXCollections.observableArrayList(Tournament.TournamentMode.getOriginalModes());
 
 
+        public static String getStrategy(){return strategy;}
+        public static void setStrategy(String strategy1){strategy = strategy1;}
         public static void setModeData(ObservableList<ModeData> modeData1) {
             modeData = modeData1;
         }
-        public static ObservableList<ModeData> getModeData(){
+
+        public static ObservableList<ModeData> getModeData() {
             return modeData;
         }
 
         public static void setRankData(ObservableList<RankData> rankData1) {
             rankData = rankData1;
         }
+
         public static ObservableList<RankData> getRankData() {
             return rankData;
         }
 
-        public static void setOriginalModesData(ObservableList<String> originalModesData1){
+        public void setStrategyData(ObservableList<StrategyData> strategyData1) {
+            strategyData = strategyData1;
+        }
+
+        public static ObservableList<StrategyData> getStrategyData() {
+            return strategyData;
+        }
+
+        public static void setOriginalModesData(ObservableList<String> originalModesData1) {
             originalModesData = originalModesData1;
         }
+
         public static ObservableList<String> getOriginalModesData() {
             return originalModesData;
         }

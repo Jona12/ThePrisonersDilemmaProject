@@ -1,6 +1,7 @@
 package gui;
 
 import gui.data_structures.ModeData;
+import gui.data_structures.StrategyData;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -60,30 +61,18 @@ public class CustomEventHandler implements EventHandler {
         } else {
             if(text.equals("run_simulation")){
                 ArrayList<String> strategyArrayList = new ArrayList<>();
-                strategyArrayList.add("ALWAYS_COOPERATE");
-                strategyArrayList.add("ALWAYS_DEFECT");
-                strategyArrayList.add("TIT_FOR_TAT");
-                Tournament tournament = new Tournament(strategyArrayList, Tournament.TournamentMode.MODE_ORIGINAL);
+                ObservableList<StrategyData> strategyData = ControllerTournament.Observables.getStrategyData();
+                for(StrategyData s : strategyData){
+                    if(s.selectProperty().getValue()){
+                        strategyArrayList.add(s.strategyProperty().getValue());
+                    }
+                }
+                System.out.println(ControllerTournament.Observables.getStrategy());
+                Tournament tournament = new Tournament(strategyArrayList, ControllerTournament.Observables.getStrategy());
                 tournament.executeMatches();
-                tournament.printTournamentScores(true, false, false);
+//                tournament.printTournamentScores(true, false, false);
             }else if(text.equals("stop_simulation")){
 
-            }else if(text.equals("listView")){
-                ListView<String> listView = (ListView<String>) event.getSource();
-                String s = listView.getSelectionModel().getSelectedItem();
-
-                HashMap<String, HashMap<String, Object>> modeHashMap = Tournament.TournamentMode.getModesHashMap();
-
-                int numberOfRounds = (int) modeHashMap.get(s).get(Variables.ROUNDS);
-                boolean repeat = (boolean) modeHashMap.get(s).get(Variables.REPEAT);
-                boolean twin = (boolean) modeHashMap.get(s).get(Variables.TWIN);
-                boolean random = (boolean) modeHashMap.get(s).get(Variables.RANDOM);
-
-                ObservableList<ModeData> modeData = ControllerTournament.Observables.getModeData();
-                modeData.add(new ModeData(Variables.ROUNDS, ""+numberOfRounds));
-                modeData.add(new ModeData(Variables.REPEAT, ""+repeat));
-                modeData.add(new ModeData(Variables.TWIN, ""+twin));
-                modeData.add(new ModeData(Variables.RANDOM, ""+random));
             }
         }
     }
