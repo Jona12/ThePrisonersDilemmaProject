@@ -12,6 +12,8 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -26,7 +28,6 @@ import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
@@ -41,8 +42,6 @@ public class ControllerTournament implements Initializable {
     private TitledPane tournament_modeSelection;
     @FXML
     private ListView tournament_modeSelection_listView;
-    @FXML
-    private Button tournament_modeSelection_selectButton;
     @FXML
     private Button tournament_modeSelection_editButton;
     @FXML
@@ -88,7 +87,7 @@ public class ControllerTournament implements Initializable {
 
     private Object[] objects = {
             tournamentAccordion, tournament_modeSelection, tournament_modeSelection_listView,
-            tournament_modeSelection_selectButton, tournament_modeSelection_editButton,
+            tournament_modeSelection_editButton,
             tournament_modeSelection_selectedModeSettings_tableView,
             tournament_modeSelection_selectedModeSettings_tableView_variablesColumn,
             tournament_modeSelection_selectedModeSettings_tableView_valuesColumn, tournament_tournamentEntriesSelection,
@@ -102,16 +101,14 @@ public class ControllerTournament implements Initializable {
             tournament_saveResultButton
     };
 
+    private Observables observables;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
+        observables = new Observables();
         CustomEventHandler customEventHandlerLauncher = new CustomEventHandler(getNodeHashMap());
-        CustomEventHandler customEventHandlerSimulate = new CustomEventHandler("run_simulation");
-        CustomEventHandler customEventHandlerListView = new CustomEventHandler("listView");
-
-        tournament_runSimulationButton.setOnAction(customEventHandlerSimulate);
-
+        CustomEventHandler customEventHandlerSimulate = new CustomEventHandler("run_simulation", observables);
 
         tournamentAccordion.setExpandedPane(tournament_modeSelection);
 //        tournament_modeSelection.setAnimated(false);
@@ -120,14 +117,18 @@ public class ControllerTournament implements Initializable {
 //        tournament_rankTable.setAnimated(false);
 //        tournament_payoff.setAnimated(false);
 
+        tournament_runSimulationButton.setOnAction(customEventHandlerSimulate);
+
         setListViews();
         setSelectedModeColumns();
         setTournamentEntriesColumns();
         setRankColumns();
+        setPayoffGraph();
     }
 
     private void setListViews() {
-        tournament_modeSelection_listView.setItems(Observables.getOriginalModesData());
+
+        tournament_modeSelection_listView.setItems(observables.getOriginalModesData());
         tournament_modeSelection_listView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
             @Override
             public void changed(ObservableValue observable, Object oldValue, Object newValue) {
@@ -142,16 +143,16 @@ public class ControllerTournament implements Initializable {
                 boolean twin = (boolean) modeHashMap.get(newValue).get(Variables.TWIN);
                 boolean random = (boolean) modeHashMap.get(newValue).get(Variables.RANDOM);
 
-                ObservableList<ModeData> modeData = Observables.getModeData();
+                ObservableList<ModeData> modeData = observables.getModeData();
                 modeData.clear();
 
-                Observables.setStrategy((String) newValue);
+                observables.setMode((String) newValue);
                 modeData.add(new ModeData(Variables.SCORE_MATRIX, finalMatrix));
                 modeData.add(new ModeData(Variables.ROUNDS, "" + numberOfRounds));
                 modeData.add(new ModeData(Variables.REPEAT, "" + repeat));
                 modeData.add(new ModeData(Variables.TWIN, "" + twin));
                 modeData.add(new ModeData(Variables.RANDOM, "" + random));
-                Observables.setModeData(modeData);
+                observables.setModeData(modeData);
             }
         });
     }
@@ -163,7 +164,7 @@ public class ControllerTournament implements Initializable {
 
         tournament_modeSelection_selectedModeSettings_tableView_variablesColumn.setCellValueFactory(new PropertyValueFactory<ModeData, String>("variable"));
         tournament_modeSelection_selectedModeSettings_tableView_valuesColumn.setCellValueFactory(new PropertyValueFactory<ModeData, String>("value"));
-        tournament_modeSelection_selectedModeSettings_tableView.setItems(Observables.getModeData());
+        tournament_modeSelection_selectedModeSettings_tableView.setItems(observables.getModeData());
     }
 
     private void setTournamentEntriesColumns() {
@@ -194,7 +195,7 @@ public class ControllerTournament implements Initializable {
                                 TableView.TableViewSelectionModel sm = getTableView().getSelectionModel();
                                 if (item) {
 //                                    if (tournament_tournamentEntriesSelection.isExpanded()) {}
-                                        sm.select(rowNo);
+                                    sm.select(rowNo);
                                 } else {
 
                                     sm.clearSelection(rowNo);
@@ -209,28 +210,39 @@ public class ControllerTournament implements Initializable {
             }
         });
 
-        ObservableList<StrategyData> strategyData = Observables.getStrategyData();
+        ObservableList<StrategyData> strategyData = observables.getStrategyData();
         ArrayList<String> strategies = getStrategies();
 
-        for(String s : strategies){
+        for (String s : strategies) {
             strategyData.add(new StrategyData(s.substring(0, s.indexOf(".java")), false));
         }
 
-        tournament_tournamentEntriesSelection_tableView.setItems(Observables.getStrategyData());
+        tournament_tournamentEntriesSelection_tableView.setItems(observables.getStrategyData());
     }
 
     private void setRankColumns() {
 
-        tournament_rankTable_tableView_entryColumn.setPrefWidth(100);
+        tournament_rankTable_tableView_entryColumn.setPrefWidth(300);
 
         tournament_rankTable_tableView_rankColumn.setCellValueFactory(new PropertyValueFactory<RankData, Integer>("rank"));
         tournament_rankTable_tableView_entryColumn.setCellValueFactory(new PropertyValueFactory<RankData, String>("entry"));
         tournament_rankTable_tableView_scoreColumn.setCellValueFactory(new PropertyValueFactory<RankData, Integer>("score"));
-        tournament_rankTable_tableView.setItems(Observables.getRankData());
+        tournament_rankTable_tableView.setItems(observables.getRankData());
 
     }
 
-    private ArrayList<String> getStrategies(){
+    private void setPayoffGraph() {
+
+        tournament_payoffGraph.setCreateSymbols(false);
+        tournament_payoffGraph.getXAxis().setLabel("Rounds");
+        tournament_payoffGraph.getYAxis().setLabel("Average Payoff");
+        tournament_payoffGraph.setData(observables.getGraphData());
+        NumberAxis x = (NumberAxis) tournament_payoffGraph.getXAxis();
+        x.setTickUnit(100);
+
+    }
+
+    private ArrayList<String> getStrategies() {
         File currentDir = new File("."); // Read current file location
         File srcDir;
         File strategiesDir;
@@ -297,30 +309,39 @@ public class ControllerTournament implements Initializable {
         return nodeHashMap;
     }
 
-    public static class Observables {
+    public class Observables {
 
-        static String strategy = "";
-        static ObservableList<ModeData> modeData = FXCollections.observableArrayList();
-        static ObservableList<RankData> rankData = FXCollections.observableArrayList();
-        static ObservableList<StrategyData> strategyData = FXCollections.observableArrayList();
-        static ObservableList<String> originalModesData = FXCollections.observableArrayList(Tournament.TournamentMode.getOriginalModes());
+        String mode = "";
+        ObservableList<ModeData> modeData = FXCollections.observableArrayList();
+        ObservableList<RankData> rankData = FXCollections.observableArrayList();
+        ObservableList<StrategyData> strategyData = FXCollections.observableArrayList();
+        ObservableList<String> originalModesData = FXCollections.observableArrayList(Tournament.TournamentMode.getOriginalModes());
+        ObservableList<XYChart.Series> graphData = FXCollections.observableArrayList();
 
+        public Observables() {
+        }
 
-        public static String getStrategy(){return strategy;}
-        public static void setStrategy(String strategy1){strategy = strategy1;}
-        public static void setModeData(ObservableList<ModeData> modeData1) {
+        public String getMode() {
+            return mode;
+        }
+
+        public void setMode(String mode1) {
+            mode = mode1;
+        }
+
+        public void setModeData(ObservableList<ModeData> modeData1) {
             modeData = modeData1;
         }
 
-        public static ObservableList<ModeData> getModeData() {
+        public ObservableList<ModeData> getModeData() {
             return modeData;
         }
 
-        public static void setRankData(ObservableList<RankData> rankData1) {
+        public void setRankData(ObservableList<RankData> rankData1) {
             rankData = rankData1;
         }
 
-        public static ObservableList<RankData> getRankData() {
+        public ObservableList<RankData> getRankData() {
             return rankData;
         }
 
@@ -328,16 +349,24 @@ public class ControllerTournament implements Initializable {
             strategyData = strategyData1;
         }
 
-        public static ObservableList<StrategyData> getStrategyData() {
+        public ObservableList<StrategyData> getStrategyData() {
             return strategyData;
         }
 
-        public static void setOriginalModesData(ObservableList<String> originalModesData1) {
+        public void setOriginalModesData(ObservableList<String> originalModesData1) {
             originalModesData = originalModesData1;
         }
 
-        public static ObservableList<String> getOriginalModesData() {
+        public ObservableList<String> getOriginalModesData() {
             return originalModesData;
+        }
+
+        public void setGraphData(ObservableList<XYChart.Series> graphData1) {
+            graphData = graphData1;
+        }
+
+        public ObservableList<XYChart.Series> getGraphData() {
+            return graphData;
         }
     }
 }

@@ -59,6 +59,14 @@ public class Variables {
         return output;
     }
 
+    public static String getSelfOutput(int[][] input, int round){
+        return calculateOutputFromScore(input[round])[0];
+    }
+
+    public static String getOpponentOutput(int[][] input, int round){
+        return calculateOutputFromScore(input[round])[1];
+    }
+
     public static void setScoreMatrix(int[] scoreMatrix){
         WIN_SCORE = scoreMatrix[0];
         LOSE_SCORE = scoreMatrix[1];

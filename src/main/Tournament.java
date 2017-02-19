@@ -1,10 +1,7 @@
 package main;
 
-import org.omg.CORBA.INITIALIZE;
-
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by dbrisingr on 06/02/2017.
@@ -13,6 +10,11 @@ public class Tournament {
 
     private ArrayList<String> strategyArrayList;
     private HashMap<String, HashMap<String, Object>> modeHashMap;
+
+    public HashMap<String, History> getHistoryHashMap() {
+        return historyHashMap;
+    }
+
     private HashMap<String, History> historyHashMap;
     private HashMap<String, History> twinHistoryHashMap;
 
@@ -120,7 +122,7 @@ public class Tournament {
 
         twinHistoryHashMap.put("RANDOM", new History(numberOfRounds, "RANDOM"));
 
-        for( String s : strategies){
+        for (String s : strategies) {
             strategyOne = s;
             strategyTwo = "RANDOM";
 
@@ -138,21 +140,8 @@ public class Tournament {
         return tournamentResult;
     }
 
-    public HashMap<String, Integer> printTournamentScores(boolean tournamentSum, boolean matchSum, boolean roundSum) {
 
-        HashMap<String, Integer> finalScore = new HashMap<>();
-        int score;
-        for (Map.Entry<String, History> entry : historyHashMap.entrySet()) {
-            score = entry.getValue().calculateMatchScores(tournamentSum, matchSum, roundSum);
-            finalScore.put(entry.getKey(), score);
-        }
 
-        return finalScore;
-    }
-
-    public void saveMatchScores(boolean tournamentSum, boolean matchSum, boolean roundSum){
-
-    }
 
     public static class TournamentMode {
 
@@ -169,7 +158,7 @@ public class Tournament {
                 MODE_ORIGINAL, MODE_NO_RANDOM, MODE_NO_TWIN, MODE_NO_RANDOM_NO_TWIN, MODE_ORIGINAL_WITH_REPEAT, MODE_CUSTOM
         };
 
-        public static HashMap<String, Object> getVariables(String mode){
+        public static HashMap<String, Object> getVariables(String mode) {
             return modesHashMap.get(mode);
         }
 
@@ -271,7 +260,7 @@ public class Tournament {
                 scoreMatrix[3] = 1;
 
                 tempTable = new HashMap<>();
-                tempTable.put(Variables.ROUNDS, 200);
+                tempTable.put(Variables.ROUNDS, 20);
                 tempTable.put(Variables.SCORE_MATRIX, scoreMatrix);
                 tempTable.put(Variables.REPEAT, true);
                 tempTable.put(Variables.TWIN, true);
@@ -279,7 +268,6 @@ public class Tournament {
 
                 modesHashMap.put(MODE_CUSTOM, tempTable);
             }
-
 
 
             return modesHashMap;

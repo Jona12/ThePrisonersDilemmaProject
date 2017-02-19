@@ -19,7 +19,10 @@ public class History {
     private String selfName;
     private String currentOpponent;
 
+    private int numberOfRounds;
+
     public History(int numberOfRounds, String selfName) {
+        this.numberOfRounds = numberOfRounds;
         this.selfName = selfName;
         selfMatchResults = new HashMap<>();
     }
@@ -112,11 +115,23 @@ public class History {
         }
 
         if (tournamentSum) {
-            System.out.println(selfName + " tournament score: " + sum);
-
             toReturn.add(selfName + " tournament score: " + sum);
         }
 
         return sum;
+    }
+
+    public int[] calculateAverageRoundScores(){
+        int[] averageScores = new int[numberOfRounds];
+        int count = 0;
+        for(Map.Entry<String, int[][]> entry : selfMatchResults.entrySet()){
+            for(int i=0; i < numberOfRounds; i++){
+                averageScores[i] += entry.getValue()[i][0];
+            }
+        }
+        for(int i=0; i < numberOfRounds; i++){
+            averageScores[i] = averageScores[i]/selfMatchResults.size();
+        }
+        return averageScores;
     }
 }

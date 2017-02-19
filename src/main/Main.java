@@ -37,7 +37,7 @@ public class Main {
 //
 //        Tournament tournament = new Tournament(strategyArrayList, Tournament.TournamentMode.MODE_ORIGINAL);
 //        tournament.executeMatches();
-//        tournament.printTournamentScores(false, true, false);
+//        tournament.fetchTournamentScores(false, true, false);
 ////        tournament.getTournamentResult();
     }
 
