@@ -13,6 +13,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.CheckBoxTableCell;
@@ -79,7 +80,8 @@ public class ControllerTournament implements Initializable {
     @FXML
     private TitledPane tournament_payoff;
     @FXML
-    private LineChart tournament_payoffGraph;
+    private PieChart tournament_payoffGraph;
+    //    private LineChart tournament_payoffGraph;
     @FXML
     private Button tournament_GoToAnalysisButton;
     @FXML
@@ -146,6 +148,7 @@ public class ControllerTournament implements Initializable {
                 ObservableList<ModeData> modeData = observables.getModeData();
                 modeData.clear();
 
+                System.out.println("newValue: " + newValue);
                 observables.setMode((String) newValue);
                 modeData.add(new ModeData(Variables.SCORE_MATRIX, finalMatrix));
                 modeData.add(new ModeData(Variables.ROUNDS, "" + numberOfRounds));
@@ -211,10 +214,10 @@ public class ControllerTournament implements Initializable {
         });
 
         ObservableList<StrategyData> strategyData = observables.getStrategyData();
-        ArrayList<String> strategies = getStrategies();
+        ArrayList<String> strategies = Variables.getStrategies();
 
         for (String s : strategies) {
-            strategyData.add(new StrategyData(s.substring(0, s.indexOf(".java")), false));
+            strategyData.add(new StrategyData(s, false));
         }
 
         tournament_tournamentEntriesSelection_tableView.setItems(observables.getStrategyData());
@@ -233,37 +236,16 @@ public class ControllerTournament implements Initializable {
 
     private void setPayoffGraph() {
 
-        tournament_payoffGraph.setCreateSymbols(false);
-        tournament_payoffGraph.getXAxis().setLabel("Rounds");
-        tournament_payoffGraph.getYAxis().setLabel("Average Payoff");
-        tournament_payoffGraph.setData(observables.getGraphData());
-        NumberAxis x = (NumberAxis) tournament_payoffGraph.getXAxis();
-        x.setTickUnit(100);
+//        tournament_payoffGraph.setCreateSymbols(false);
+//        tournament_payoffGraph.getXAxis().setLabel("Rounds");
+//        tournament_payoffGraph.getYAxis().setLabel("Average Payoff");
+//        tournament_payoffGraph.setData(observables.getGraphData());
+//        NumberAxis x = (NumberAxis) tournament_payoffGraph.getXAxis();
+//        x.setTickUnit(100);
 
-    }
+        tournament_payoffGraph.setTitle("Strategy Payoff Graph");
+        tournament_payoffGraph.setData(observables.getPieChartData());
 
-    private ArrayList<String> getStrategies() {
-        File currentDir = new File("."); // Read current file location
-        File srcDir;
-        File strategiesDir;
-        ArrayList<String> strategies = new ArrayList<>();
-        try {
-            srcDir = new File(currentDir.getCanonicalFile(), "src"); // Construct the target directory file with the right parent directory
-            strategiesDir = new File(srcDir, "strategies");
-
-            DirectoryStream<Path> dirStream = Files.newDirectoryStream(strategiesDir.toPath());
-            for (Path p : dirStream) {
-                if (!p.toFile().isDirectory()) {
-                    strategies.add(p.getFileName().toString());
-                }
-//            if (p.toFile().isDirectory()) {
-//                listDirectoryAndFiles(p);
-//            }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return strategies;
     }
 
 //    private HashMap<String, Object> getStringHashMap() {
@@ -318,6 +300,8 @@ public class ControllerTournament implements Initializable {
         ObservableList<String> originalModesData = FXCollections.observableArrayList(Tournament.TournamentMode.getOriginalModes());
         ObservableList<XYChart.Series> graphData = FXCollections.observableArrayList();
 
+        ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
+
         public Observables() {
         }
 
@@ -367,6 +351,14 @@ public class ControllerTournament implements Initializable {
 
         public ObservableList<XYChart.Series> getGraphData() {
             return graphData;
+        }
+
+        public ObservableList<PieChart.Data> getPieChartData() {
+            return pieChartData;
+        }
+
+        public void setPieChartData(ObservableList<PieChart.Data> pieChartData) {
+            this.pieChartData = pieChartData;
         }
     }
 }

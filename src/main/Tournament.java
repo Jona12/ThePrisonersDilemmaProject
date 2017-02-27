@@ -64,6 +64,9 @@ public class Tournament {
         if (random) {
             runRandom();
         }
+        if (repeat) {
+
+        }
     }
 
     public void runDefault() {
@@ -83,6 +86,28 @@ public class Tournament {
                 strategyTwo = strategies[j];
 
                 String matchID = "#" + (count++) + strategyOne + "_" + strategyTwo;
+                match = new Match(matchID, historyHashMap.get(strategyOne), historyHashMap.get(strategyTwo), numberOfRounds);
+                match.runMatch();
+
+//                historyHashMap.put(strategyOne, temp[0]);
+//                historyHashMap.put(strategyTwo, temp[1]);
+
+                tournamentResult.put(matchID, match.getMatchResult());
+            }
+        }
+    }
+
+    public void runRepeat() {
+        Match match;
+        String strategyOne, strategyTwo;
+
+        count = 0;
+        for (int i = 0; i < strategies.length; i++) {
+            for (int j = historyHashMap.size() - 1; j > i; j--) {
+                strategyOne = strategies[i];
+                strategyTwo = strategies[j];
+
+                String matchID = "#" + (count++) + strategyOne + "_" + strategyTwo + "REPEAT";
                 match = new Match(matchID, historyHashMap.get(strategyOne), historyHashMap.get(strategyTwo), numberOfRounds);
                 match.runMatch();
 
@@ -141,8 +166,6 @@ public class Tournament {
     }
 
 
-
-
     public static class TournamentMode {
 
         public final static String MODE_ORIGINAL = "ORIGINAL";
@@ -170,6 +193,7 @@ public class Tournament {
             int[] scoreMatrix = new int[4];
 
             {
+//                WIN, LOSE, DRAW C, DRAW D
                 scoreMatrix[0] = 5;
                 scoreMatrix[1] = 0;
                 scoreMatrix[2] = 3;

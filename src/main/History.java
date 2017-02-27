@@ -14,17 +14,20 @@ public class History {
     private HashMap<String, int[][]> opponentMatchResults;
 
     private int currentRound;
-    private int[][] roundScore;
+    private int[][] integerMatchScore;
 
     private String selfName;
     private String currentOpponent;
 
     private int numberOfRounds;
 
+    private HashMap<String, Object> strategyVariables;
+
     public History(int numberOfRounds, String selfName) {
         this.numberOfRounds = numberOfRounds;
         this.selfName = selfName;
         selfMatchResults = new HashMap<>();
+        strategyVariables = new HashMap<>();
     }
 
     public String getSelfName() {
@@ -47,25 +50,25 @@ public class History {
         return currentRound;
     }
 
-    public int[][] getRoundScore() {
-        return roundScore;
+    public String[] getPreviousRoundScore() {
+        return Variables.calculateRoundScoreString(integerMatchScore[currentRound - 1]);
     }
 
-    protected void setRoundScore(int[][] roundScore) {
-        this.roundScore = roundScore;
-        selfMatchResults.put(currentOpponent, roundScore);
+    public String[][] getMatchScore() {
+        return Variables.calculateMatchScoreString(integerMatchScore);
+    }
 
-//        ROUND SCORE WORKS
-//        System.out.println(selfName+" vs. "+currentOpponent);
-//        System.out.println("round: "+currentRound);
-//        System.out.println(roundScore[currentRound][0]);
-//        System.out.println(roundScore[currentRound][1]);
+    public HashMap<String, Object> getStrategyVariables() {
+        return strategyVariables;
+    }
 
-//        ROUND SCORE WORKS TOO
-//        System.out.println(selfName+" vs. "+currentOpponent);
-//        System.out.println("round: "+currentRound);
-//        System.out.println(selfMatchResults.get(currentOpponent)[currentRound][0]);
-//        System.out.println(selfMatchResults.get(currentOpponent)[currentRound][1]);
+    public void setStrategyVariables(HashMap<String, Object> strategyVariables) {
+        this.strategyVariables = strategyVariables;
+    }
+
+    protected void setIntegerMatchScore(int[][] matchScore) {
+        this.integerMatchScore = matchScore;
+        selfMatchResults.put(currentOpponent, matchScore);
     }
 
     public HashMap<String, int[][]> getSelfMatchResults() {
@@ -74,6 +77,10 @@ public class History {
 
     public HashMap<String, int[][]> getOpponentMatchResults() {
         return opponentMatchResults;
+    }
+
+    public int getNumberOfRounds() {
+        return numberOfRounds;
     }
 
     public int calculateMatchScores(boolean tournamentSum, boolean matchSum, boolean roundSum) {
@@ -101,8 +108,8 @@ public class History {
 //                    System.out.println(selfMatchResults.get(opponentName)[i][1]);
 
                     toReturn.add("round: " + i);
-                    toReturn.add(""+selfMatchResults.get(opponentName)[i][0]);
-                    toReturn.add(""+selfMatchResults.get(opponentName)[i][1]);
+                    toReturn.add("" + selfMatchResults.get(opponentName)[i][0]);
+                    toReturn.add("" + selfMatchResults.get(opponentName)[i][1]);
                 }
             }
             if (matchSum) {
@@ -121,16 +128,16 @@ public class History {
         return sum;
     }
 
-    public int[] calculateAverageRoundScores(){
+    public int[] calculateAverageRoundScores() {
         int[] averageScores = new int[numberOfRounds];
         int count = 0;
-        for(Map.Entry<String, int[][]> entry : selfMatchResults.entrySet()){
-            for(int i=0; i < numberOfRounds; i++){
+        for (Map.Entry<String, int[][]> entry : selfMatchResults.entrySet()) {
+            for (int i = 0; i < numberOfRounds; i++) {
                 averageScores[i] += entry.getValue()[i][0];
             }
         }
-        for(int i=0; i < numberOfRounds; i++){
-            averageScores[i] = averageScores[i]/selfMatchResults.size();
+        for (int i = 0; i < numberOfRounds; i++) {
+            averageScores[i] = averageScores[i] / selfMatchResults.size();
         }
         return averageScores;
     }

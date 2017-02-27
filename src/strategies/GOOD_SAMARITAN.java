@@ -10,26 +10,24 @@ public class GOOD_SAMARITAN {
 
     public String calculate(History h) {
         int currentRound = h.getCurrentRound();
-        int[][] roundScore = h.getRoundScore();
 
         boolean defectTwice;
         boolean alternatePairs;
 
-        if (h.getCurrentRound() > 0) {
-            String currentOpponentOutput = Variables.getOpponentOutput(roundScore, currentRound);
-            String previousOpponentOutput = Variables.getOpponentOutput(roundScore, currentRound - 1);
+        if (h.getCurrentRound() > 1) {
+            String currentOpponentOutput = h.getPreviousRoundScore()[1];
+            String previousOpponentOutput = h.getMatchScore()[currentRound - 2][1];
 
             defectTwice = currentOpponentOutput.equals(Variables.DEFECT)
                     && previousOpponentOutput.equals(Variables.DEFECT);
 
-            if (h.getCurrentRound() > 2) {
+            if (h.getCurrentRound() > 3) {
 
-                String previousPreviousOpponentOutput = Variables.getOpponentOutput(roundScore, currentRound - 2);
-                String previousPreviousPreviousOpponentOutput = Variables.getOpponentOutput(roundScore, currentRound - 3);
+                String previousPreviousOpponentOutput = h.getMatchScore()[currentRound - 3][1];
+                String previousPreviousPreviousOpponentOutput = h.getMatchScore()[currentRound - 4][1];
 
-                alternatePairs = !currentOpponentOutput.equals(previousOpponentOutput)
-                        && !previousOpponentOutput.equals(previousPreviousOpponentOutput)
-                        && !previousPreviousOpponentOutput.equals(previousPreviousPreviousOpponentOutput);
+                alternatePairs = currentOpponentOutput.equals(previousPreviousOpponentOutput)
+                        && previousOpponentOutput.equals(previousPreviousPreviousOpponentOutput);
 
                 if (alternatePairs) return Variables.DEFECT;
             }

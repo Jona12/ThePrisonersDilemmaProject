@@ -23,11 +23,15 @@ public class StrategyManager {
 
         Class<?> classStrategy = null;
         Object objectStrategy;
+
+        if (strategyName.contains("built-in")) {
+            strategyName = strategyName.substring(0, strategyName.indexOf(" (built-in)"));
+        }
         try {
             classStrategy = Class.forName("strategies." + strategyName);
         } catch (ClassNotFoundException e) {
             try {
-                classStrategy = Class.forName("strategies.extra." + strategyName);
+                classStrategy = Class.forName("strategies.built_in." + strategyName);
             } catch (ClassNotFoundException e1) {
                 e1.printStackTrace();
             }

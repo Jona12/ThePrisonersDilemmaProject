@@ -1,7 +1,5 @@
 package main;
 
-import java.util.HashMap;
-
 /**
  * Created by dbrisingr on 06/02/2017.
  */
@@ -34,7 +32,6 @@ public class Match {
         this.historyStrategyTwo = historyStrategyTwo;
         this.strategyNameOne = historyStrategyOne.getSelfName();
         this.strategyNameTwo = historyStrategyTwo.getSelfName();
-//        this.matchName = matchID + ": " + strategyName + " vs. " + strategyNameTwo;
         this.winScore = Variables.WIN_SCORE;
         this.loseScore = Variables.LOSE_SCORE;
         this.draw_c_Score = Variables.DRAW_C_SCORE;
@@ -55,33 +52,9 @@ public class Match {
         historyStrategyOne.setCurrentOpponent(strategyNameTwo);
         historyStrategyTwo.setCurrentOpponent(strategyNameOne);
 
-//        historyStrategyOne.setRoundScore(tempOne);
-//        historyStrategyTwo.setRoundScore(tempTwo);
-
         try {
             for (int i = 0; i < noOfRounds; i++) {
-                if (i != 0) {
-//                    historyStrategyOne.setRoundScore(tempOne);
-//                    historyStrategyTwo.setRoundScore(tempTwo);
 
-//                    System.out.println(strategyNameOne);
-//                    System.out.println(historyStrategyOne.getRoundScore()[i-1][0]);
-//                    System.out.println(historyStrategyOne.getRoundScore()[i-1][1]);
-//                    System.out.println();
-//                    System.out.println(strategyNameTwo);
-//                    System.out.println(historyStrategyTwo.getRoundScore()[i-1][0]);
-//                    System.out.println(historyStrategyTwo.getRoundScore()[i-1][1]);
-//                    System.out.println();
-
-//                    System.out.println(strategyNameOne);
-//                    System.out.println(tempOne[i-1][0]);
-//                    System.out.println(tempOne[i-1][1]);
-//                    System.out.println();
-//                    System.out.println(strategyNameTwo);
-//                    System.out.println(tempTwo[i-1][0]);
-//                    System.out.println(tempTwo[i-1][1]);
-//                    System.out.println();
-                }
                 strategyOne = new StrategyManager(historyStrategyOne);
                 strategyTwo = new StrategyManager(historyStrategyTwo);
 
@@ -142,9 +115,9 @@ public class Match {
             tempTwo[currentRound][1] = draw_d_Score;
         }
 
-        historyStrategyOne.setRoundScore(tempOne);
+        historyStrategyOne.setIntegerMatchScore(tempOne);
         currentScoreOne += tempOne[currentRound][0];
-        historyStrategyTwo.setRoundScore(tempTwo);
+        historyStrategyTwo.setIntegerMatchScore(tempTwo);
         currentScoreTwo += tempOne[currentRound][1];
 
     }

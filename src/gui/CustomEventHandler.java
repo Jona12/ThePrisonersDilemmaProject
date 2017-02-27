@@ -10,6 +10,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Alert;
 import javafx.scene.shape.Rectangle;
@@ -114,19 +115,26 @@ public class CustomEventHandler implements EventHandler {
                                 rankData.add(new RankData(counter++, entry.getKey(), entry.getValue()));
                             }
 
-                            ObservableList<XYChart.Series> graphData = observables.getGraphData();
-                            graphData.clear();
-
-
-                            for (Map.Entry<String, History> entry : tempHashMap.entrySet()) {
-                                int[] averageScore = entry.getValue().calculateAverageRoundScores();
-                                XYChart.Series series = new XYChart.Series();
-                                series.setName(entry.getKey());
-                                for (int i = 0; i < averageScore.length; i++) {
-                                    series.getData().add(new XYChart.Data<>(i + 1, averageScore[i]));
-                                }
-                                graphData.add(series);
+                            ObservableList<PieChart.Data> pieData = observables.getPieChartData();
+                            pieData.clear();
+                            for (Map.Entry<String, Integer> entry : hashMap.entrySet()) {
+                                pieData.add(new PieChart.Data(entry.getKey(), entry.getValue()));
                             }
+
+                            // GRAPH DATA
+//                            ObservableList<XYChart.Series> graphData = observables.getGraphData();
+//                            graphData.clear();
+//
+//
+//                            for (Map.Entry<String, History> entry : tempHashMap.entrySet()) {
+//                                int[] averageScore = entry.getValue().calculateAverageRoundScores();
+//                                XYChart.Series series = new XYChart.Series();
+//                                series.setName(entry.getKey());
+//                                for (int i = 0; i < averageScore.length; i++) {
+//                                    series.getData().add(new XYChart.Data<>(i + 1, averageScore[i]));
+//                                }
+//                                graphData.add(series);
+//                            }
                         }
                     });
 
