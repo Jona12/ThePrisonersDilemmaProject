@@ -1,4 +1,4 @@
-package strategies.built_in;
+package strategies.original;
 
 import main.History;
 import main.Variables;

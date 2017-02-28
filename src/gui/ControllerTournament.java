@@ -122,14 +122,12 @@ public class ControllerTournament implements Initializable {
     private void setOnAction() {
         observables = new Observables();
         CustomEventHandler customEventHandlerLauncher = new CustomEventHandler(getNodeHashMap());
-        CustomEventHandler customEventHandlerRun = new CustomEventHandler("run_simulation", observables);
-        CustomEventHandler customEventHandlerSelectAll = new CustomEventHandler("select_all", observables);
-        CustomEventHandler customEventHandlerdeselectAll = new CustomEventHandler("deselect_all", observables);
+        CustomEventHandler customEventHandler = new CustomEventHandler(observables);
 
-        tournament_tournamentEntriesSelection_editCustomStrategiesButton.setOnAction(customEventHandlerdeselectAll);
-        tournament_tournamentEntriesSelection_selectDeselectButton.setOnAction(customEventHandlerSelectAll);
-        tournament_runSimulationButton.setOnAction(customEventHandlerRun);
-
+        tournament_tournamentEntriesSelection_editCustomStrategiesButton.setOnAction(customEventHandler);
+        tournament_tournamentEntriesSelection_selectDeselectButton.setOnAction(customEventHandler);
+        tournament_runSimulationButton.setOnAction(customEventHandler);
+        tournament_stopSimulationButton.setOnAction(customEventHandler);
     }
 
     private void setListViews() {
@@ -251,16 +249,6 @@ public class ControllerTournament implements Initializable {
         tournament_payoffGraph.setData(observables.getPieChartData());
 
     }
-
-//    private HashMap<String, Object> getStringHashMap() {
-//        HashMap<String, Object> stringObjectHashMap = new HashMap<>();
-//        ArrayList<String> stringArrayList = new ArrayList<>(Arrays.asList(objects.toString()));
-//        int count = 0;
-//        for (String s : stringArrayList) {
-//            stringObjectHashMap.put(s, objects[count++]);
-//        }
-//        return stringObjectHashMap;
-//    }
 
     private HashMap<Node, Object[]> getNodeHashMap() {
 

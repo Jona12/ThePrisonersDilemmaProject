@@ -115,6 +115,13 @@ public class Variables {
                         toAdd += " (built-in)";
                         strategies.add(toAdd);
                     }
+                } else if (p.toFile().isDirectory() && p.toFile().getName().equals("original")) {
+                    for (Path path : Files.newDirectoryStream(p)) {
+                        toAdd = path.getFileName().toString();
+                        toAdd = toAdd.substring(0, toAdd.indexOf(".java"));
+                        toAdd += " (original)";
+                        strategies.add(toAdd);
+                    }
                 } else {
                     toAdd = p.getFileName().toString();
                     toAdd = toAdd.substring(0, toAdd.indexOf(".java"));

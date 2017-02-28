@@ -34,11 +34,16 @@ public class CustomEventHandler implements EventHandler {
 
     HashMap<Node, Object[]> nodeHashMap;
     private Observables observables;
-    boolean isLauncher;
+
+    private boolean isLauncher;
+    private boolean isRun;
+
     private static String select_all = "Select All";
     private static String deselect_all = "Deselect All";
     private static String run_simulation = "Run Simulation";
     private static String stop_simulation = "Stop Simulation";
+
+    private Task task;
 
     public CustomEventHandler(HashMap<Node, Object[]> nodeHashMap) {
         isLauncher = true;
@@ -46,7 +51,8 @@ public class CustomEventHandler implements EventHandler {
     }
 
     // for non-launcher buttons
-    public CustomEventHandler(String text, Observables observables) {
+    public CustomEventHandler(Observables observables) {
+        isRun = false;
         isLauncher = false;
         this.observables = observables;
     }
@@ -64,7 +70,9 @@ public class CustomEventHandler implements EventHandler {
             } else if (text.equals(run_simulation)) {
                 handleSimulation();
             } else if (text.equals(stop_simulation)) {
-
+                if(isRun){
+                    isRun = false;
+                }
             }
         }
     }
@@ -111,6 +119,9 @@ public class CustomEventHandler implements EventHandler {
     }
 
     private void handleSimulation() {
+
+        isRun = true;
+
         // GET ALL THE STRATEGIES
         ArrayList<String> strategyArrayList = new ArrayList<>();
         ObservableList<StrategyData> strategyData = observables.getStrategyData();
@@ -137,7 +148,7 @@ public class CustomEventHandler implements EventHandler {
         } else {
             // RUN AND EXECUTE TOURNAMENT
             Tournament tournament = new Tournament(strategyArrayList, observables.getMode());
-            Task task = new Task() {
+            task = new Task() {
                 @Override
                 protected Object call() throws Exception {
 

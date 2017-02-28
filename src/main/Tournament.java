@@ -199,7 +199,8 @@ public class Tournament {
                 scoreMatrix[2] = 3;
                 scoreMatrix[3] = 1;
                 String[] strategiesTemp = {
-                        "TIT FOR TAT"
+                        "TIT FOR TAT", "DAVIS", "DOWNING", "FELD", "GROFMAN", "JOSS", "NYDEGGER", "SHUBIK", "TULLOCK",
+                        "UNKNOWN"
                 };
 
                 tempTable.put(Variables.STRATEGIES, strategiesTemp);
