@@ -42,7 +42,7 @@ public class DOWNING {
 
         double c = 6.0 * good - 8.0 * bad - 2;
         double alt = 4.0 * good - 5.0 * bad - 1;
-        String toReturn = "";
+        String toReturn;
 
         if (c >= 0 && c >= alt) {
             toReturn = Variables.COOPERATE;

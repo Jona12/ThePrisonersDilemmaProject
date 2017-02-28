@@ -1,9 +1,12 @@
 package gui;
 
+import com.sun.javafx.tk.Toolkit;
+import gui.data_structures.Observables;
 import gui.data_structures.RankData;
 import gui.data_structures.StrategyData;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
@@ -30,7 +33,7 @@ import java.util.Map;
 public class CustomEventHandler implements EventHandler {
 
     HashMap<Node, Object[]> nodeHashMap;
-    private ControllerTournament.Observables observables;
+    private Observables observables;
     boolean isLauncher;
     private static String select_all = "Select All";
     private static String deselect_all = "Deselect All";
@@ -43,7 +46,7 @@ public class CustomEventHandler implements EventHandler {
     }
 
     // for non-launcher buttons
-    public CustomEventHandler(String text, ControllerTournament.Observables observables) {
+    public CustomEventHandler(String text, Observables observables) {
         isLauncher = false;
         this.observables = observables;
     }
@@ -55,7 +58,6 @@ public class CustomEventHandler implements EventHandler {
         if (isLauncher) {
             handleWindowLaunches(event);
         } else {
-
             if (text.equals(select_all) || text.equals(deselect_all)) {
                 Button button = (Button) event.getSource();
                 handleSelection(button);
@@ -135,28 +137,36 @@ public class CustomEventHandler implements EventHandler {
         } else {
             // RUN AND EXECUTE TOURNAMENT
             Tournament tournament = new Tournament(strategyArrayList, observables.getMode());
-            Platform.runLater(new Runnable() {
+            Task task = new Task() {
                 @Override
-                public void run() {
+                protected Object call() throws Exception {
+
                     tournament.executeMatches();
 
                     HashMap<String, History> tempHashMap = tournament.getHistoryHashMap();
                     Analysis analysis = new Analysis(tempHashMap);
                     HashMap<String, Integer> hashMap = analysis.fetchTournamentScores(true, false, false);
 
-                    ObservableList<RankData> rankData = observables.getRankData();
-                    rankData.clear();
 
-                    int counter = 1;
-                    for (Map.Entry<String, Integer> entry : hashMap.entrySet()) {
-                        rankData.add(new RankData(counter++, entry.getKey(), entry.getValue()));
-                    }
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            ObservableList<RankData> rankData = observables.getRankData();
+                            rankData.clear();
 
-                    ObservableList<PieChart.Data> pieData = observables.getPieChartData();
-                    pieData.clear();
-                    for (Map.Entry<String, Integer> entry : hashMap.entrySet()) {
-                        pieData.add(new PieChart.Data(entry.getKey(), entry.getValue()));
-                    }
+                            int counter = 1;
+                            for (Map.Entry<String, Integer> entry : hashMap.entrySet()) {
+                                rankData.add(new RankData(counter++, entry.getKey(), entry.getValue()));
+                            }
+
+                            ObservableList<PieChart.Data> pieData = observables.getPieChartData();
+                            pieData.clear();
+                            for (Map.Entry<String, Integer> entry : hashMap.entrySet()) {
+                                pieData.add(new PieChart.Data(entry.getKey(), entry.getValue()));
+                            }
+                        }
+                    });
+
 
                     // GRAPH DATA
 //                            ObservableList<XYChart.Series> graphData = observables.getGraphData();
@@ -172,8 +182,12 @@ public class CustomEventHandler implements EventHandler {
 //                                }
 //                                graphData.add(series);
 //                            }
+
+
+                    return null;
                 }
-            });
+            };
+            new Thread(task).start();
         }
     }
 }
