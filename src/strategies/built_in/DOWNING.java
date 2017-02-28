@@ -12,7 +12,7 @@ public class DOWNING {
         return calculateDowning(h, false);
     }
 
-    protected String calculateDowning(History h, boolean isRevised) {
+    public String calculateDowning(History h, boolean isRevised) {
         int good, bad, nice1, nice2, total_C, total_D;
         good = 1;
         bad = nice1 = nice2 = total_C = total_D = 0;

@@ -12,6 +12,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.stage.Stage;
 import main.Analysis;
 import main.History;
@@ -29,33 +30,38 @@ import java.util.Map;
 public class CustomEventHandler implements EventHandler {
 
     HashMap<Node, Object[]> nodeHashMap;
-    String text;
     private ControllerTournament.Observables observables;
-
+    boolean isLauncher;
+    private static String select_all = "Select All";
+    private static String deselect_all = "Deselect All";
+    private static String run_simulation = "Run Simulation";
+    private static String stop_simulation = "Stop Simulation";
 
     public CustomEventHandler(HashMap<Node, Object[]> nodeHashMap) {
+        isLauncher = true;
         this.nodeHashMap = nodeHashMap;
-        text = "";
     }
 
     // for non-launcher buttons
     public CustomEventHandler(String text, ControllerTournament.Observables observables) {
-        this.text = text;
+        isLauncher = false;
         this.observables = observables;
     }
 
     @Override
     public void handle(Event event) {
 
-
-        if (text.equals("")) {
+        String text = ((Button) event.getSource()).getText();
+        if (isLauncher) {
             handleWindowLaunches(event);
         } else {
-            if (text.equals("select_all") || text.equals("deselect_all")) {
-                handleSelection(text);
-            } else if (text.equals("run_simulation")) {
+
+            if (text.equals(select_all) || text.equals(deselect_all)) {
+                Button button = (Button) event.getSource();
+                handleSelection(button);
+            } else if (text.equals(run_simulation)) {
                 handleSimulation();
-            } else if (text.equals("stop_simulation")) {
+            } else if (text.equals(stop_simulation)) {
 
             }
         }
@@ -84,16 +90,21 @@ public class CustomEventHandler implements EventHandler {
         }
     }
 
-    private void handleSelection(String text) {
+    private void handleSelection(Button button) {
         ObservableList<StrategyData> strategyData = observables.getStrategyData();
-        if (text.equals("select_all")) {
+
+        String text = button.getText();
+
+        if (text.equals(select_all)) {
             for (StrategyData s : strategyData) {
                 s.setSelect(true);
             }
+            button.setText(deselect_all);
         } else {
             for (StrategyData s : strategyData) {
                 s.setSelect(false);
             }
+            button.setText(select_all);
         }
     }
 

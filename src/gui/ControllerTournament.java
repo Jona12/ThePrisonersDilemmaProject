@@ -55,9 +55,9 @@ public class ControllerTournament implements Initializable {
     @FXML
     private TableColumn tournament_tournamentEntriesSelection_tableView_selectColumn;
     @FXML
-    private Button tournament_tournamentEntriesSelection_selectAllButton;
+    private Button tournament_tournamentEntriesSelection_editCustomStrategiesButton;
     @FXML
-    private Button tournament_tournamentEntriesSelection_deselectAllButton;
+    private Button tournament_tournamentEntriesSelection_selectDeselectButton;
     @FXML
     private Button tournament_runSimulationButton;
     @FXML
@@ -93,8 +93,8 @@ public class ControllerTournament implements Initializable {
             tournament_tournamentEntriesSelection_selectMoreLabel, tournament_tournamentEntriesSelection_tableView,
             tournament_tournamentEntriesSelection_tableView_strategyColumn,
             tournament_tournamentEntriesSelection_tableView_selectColumn,
-            tournament_tournamentEntriesSelection_selectAllButton,
-            tournament_tournamentEntriesSelection_deselectAllButton, tournament_runSimulationButton,
+            tournament_tournamentEntriesSelection_editCustomStrategiesButton,
+            tournament_tournamentEntriesSelection_selectDeselectButton, tournament_runSimulationButton,
             tournament_stopSimulationButton, resultsAccordion, tournament_rankTable, tournament_rankTable_tableView,
             tournament_rankTable_tableView_rankColumn, tournament_rankTable_tableView_entryColumn,
             tournament_rankTable_tableView_scoreColumn, tournament_payoff, tournament_payoffGraph,
@@ -107,28 +107,28 @@ public class ControllerTournament implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
+        tournamentAccordion.setExpandedPane(tournament_modeSelection);
+        resultsAccordion.setExpandedPane(tournament_rankTable);
+
+        setOnAction();
+        setListViews();
+        setSelectedModeColumns();
+        setTournamentEntriesColumns();
+        setRankColumns();
+        setPayoffGraph();
+    }
+
+    private void setOnAction() {
         observables = new Observables();
         CustomEventHandler customEventHandlerLauncher = new CustomEventHandler(getNodeHashMap());
         CustomEventHandler customEventHandlerRun = new CustomEventHandler("run_simulation", observables);
         CustomEventHandler customEventHandlerSelectAll = new CustomEventHandler("select_all", observables);
         CustomEventHandler customEventHandlerdeselectAll = new CustomEventHandler("deselect_all", observables);
 
-        tournamentAccordion.setExpandedPane(tournament_modeSelection);
-//        tournament_modeSelection.setAnimated(false);
-//        tournament_tournamentEntriesSelection.setAnimated(false);
-        resultsAccordion.setExpandedPane(tournament_rankTable);
-//        tournament_rankTable.setAnimated(false);
-//        tournament_payoff.setAnimated(false);
-
-        tournament_tournamentEntriesSelection_selectAllButton.setOnAction(customEventHandlerSelectAll);
+        tournament_tournamentEntriesSelection_editCustomStrategiesButton.setOnAction(customEventHandlerdeselectAll);
+        tournament_tournamentEntriesSelection_selectDeselectButton.setOnAction(customEventHandlerSelectAll);
         tournament_runSimulationButton.setOnAction(customEventHandlerRun);
-        tournament_tournamentEntriesSelection_deselectAllButton.setOnAction(customEventHandlerdeselectAll);
 
-        setListViews();
-        setSelectedModeColumns();
-        setTournamentEntriesColumns();
-        setRankColumns();
-        setPayoffGraph();
     }
 
     private void setListViews() {

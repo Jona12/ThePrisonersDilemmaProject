@@ -89,8 +89,8 @@
                                                    <bottom>
                                                       <ButtonBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                                                         <buttons>
-                                                          <Button fx:id="tournament_tournamentEntriesSelection_selectAllButton" mnemonicParsing="false" text="Select All" />
-                                                            <Button fx:id="tournament_tournamentEntriesSelection_deselectAllButton" mnemonicParsing="false" text="Deselect All" />
+                                                            <Button fx:id="tournament_tournamentEntriesSelection_editCustomStrategiesButton" mnemonicParsing="false" text="Edit Strategies" />
+                                                          <Button fx:id="tournament_tournamentEntriesSelection_selectDeselectButton" mnemonicParsing="false" text="Select All" />
                                                         </buttons>
                                                       </ButtonBar>
                                                    </bottom>
