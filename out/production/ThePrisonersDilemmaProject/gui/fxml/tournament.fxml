@@ -86,6 +86,14 @@
                                                    <top>
                                                       <Label fx:id="tournament_tournamentEntriesSelection_selectMoreLabel" alignment="CENTER" focusTraversable="false" text="You can select: x more" BorderPane.alignment="CENTER" />
                                                    </top>
+                                                   <bottom>
+                                                      <ButtonBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                                                        <buttons>
+                                                          <Button fx:id="tournament_tournamentEntriesSelection_selectAllButton" mnemonicParsing="false" text="Select All" />
+                                                            <Button fx:id="tournament_tournamentEntriesSelection_deselectAllButton" mnemonicParsing="false" text="Deselect All" />
+                                                        </buttons>
+                                                      </ButtonBar>
+                                                   </bottom>
                                                 </BorderPane>
                                              </children>
                                           </AnchorPane>

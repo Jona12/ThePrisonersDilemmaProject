@@ -11,9 +11,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.PieChart;
-import javafx.scene.chart.XYChart;
 import javafx.scene.control.Alert;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import main.Analysis;
 import main.History;
@@ -34,6 +32,7 @@ public class CustomEventHandler implements EventHandler {
     String text;
     private ControllerTournament.Observables observables;
 
+
     public CustomEventHandler(HashMap<Node, Object[]> nodeHashMap) {
         this.nodeHashMap = nodeHashMap;
         text = "";
@@ -47,81 +46,108 @@ public class CustomEventHandler implements EventHandler {
 
     @Override
     public void handle(Event event) {
-        Parent root;
+
 
         if (text.equals("")) {
-            try {
-                String window = (String) nodeHashMap.get(event.getSource())[0];
-                System.out.println("window: " + window);
-                String title = (String) nodeHashMap.get(event.getSource())[1];
-                System.out.println("title: " + title);
-                root = FXMLLoader.load(getClass().getResource(window));
-                Stage stage = new Stage();
-                stage.setTitle("Iterated Prisoner's Dilemma - " + title);
-                Scene scene = new Scene(root);
-                File f = new File("src/gui/css/alignment.css");
-                scene.getStylesheets().add(f.toURI().toURL().toExternalForm());
-                stage.setScene(scene);
-                stage.setMaximized(true);
-                stage.show();
-                // Hide this current window (if this is what you want)
+            handleWindowLaunches(event);
+        } else {
+            if (text.equals("select_all") || text.equals("deselect_all")) {
+                handleSelection(text);
+            } else if (text.equals("run_simulation")) {
+                handleSimulation();
+            } else if (text.equals("stop_simulation")) {
+
+            }
+        }
+    }
+
+    private void handleWindowLaunches(Event event) {
+        Parent root;
+        try {
+            String window = (String) nodeHashMap.get(event.getSource())[0];
+            System.out.println("window: " + window);
+            String title = (String) nodeHashMap.get(event.getSource())[1];
+            System.out.println("title: " + title);
+            root = FXMLLoader.load(getClass().getResource(window));
+            Stage stage = new Stage();
+            stage.setTitle("Iterated Prisoner's Dilemma - " + title);
+            Scene scene = new Scene(root);
+            File f = new File("src/gui/css/alignment.css");
+            scene.getStylesheets().add(f.toURI().toURL().toExternalForm());
+            stage.setScene(scene);
+            stage.setMaximized(true);
+            stage.show();
+            // Hide this current window (if this is what you want)
 //                    ((Node)(event.getSource())).getScene().getWindow().hide();
-            } catch (IOException e) {
-                e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void handleSelection(String text) {
+        ObservableList<StrategyData> strategyData = observables.getStrategyData();
+        if (text.equals("select_all")) {
+            for (StrategyData s : strategyData) {
+                s.setSelect(true);
             }
         } else {
-            if (text.equals("run_simulation")) {
+            for (StrategyData s : strategyData) {
+                s.setSelect(false);
+            }
+        }
+    }
 
-                // GET ALL THE STRATEGIES
-                ArrayList<String> strategyArrayList = new ArrayList<>();
-                ObservableList<StrategyData> strategyData = observables.getStrategyData();
-                for (StrategyData s : strategyData) {
-                    if (s.selectProperty().getValue()) {
-                        strategyArrayList.add(s.strategyProperty().getValue());
+    private void handleSimulation() {
+        // GET ALL THE STRATEGIES
+        ArrayList<String> strategyArrayList = new ArrayList<>();
+        ObservableList<StrategyData> strategyData = observables.getStrategyData();
+        for (StrategyData s : strategyData) {
+            if (s.selectProperty().getValue()) {
+                strategyArrayList.add(s.strategyProperty().getValue());
+            }
+        }
+
+        // CHECK IF A MODE IS SELECTED
+        if (observables.getMode().equals("")) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Mode not selected");
+            alert.setHeaderText(null);
+            alert.setContentText("Please select a mode first");
+            alert.showAndWait();
+        }
+        if (strategyArrayList.size() == 0) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Not enough strategies selected");
+            alert.setHeaderText(null);
+            alert.setContentText("Please select enough strategies and try again");
+            alert.showAndWait();
+        } else {
+            // RUN AND EXECUTE TOURNAMENT
+            Tournament tournament = new Tournament(strategyArrayList, observables.getMode());
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    tournament.executeMatches();
+
+                    HashMap<String, History> tempHashMap = tournament.getHistoryHashMap();
+                    Analysis analysis = new Analysis(tempHashMap);
+                    HashMap<String, Integer> hashMap = analysis.fetchTournamentScores(true, false, false);
+
+                    ObservableList<RankData> rankData = observables.getRankData();
+                    rankData.clear();
+
+                    int counter = 1;
+                    for (Map.Entry<String, Integer> entry : hashMap.entrySet()) {
+                        rankData.add(new RankData(counter++, entry.getKey(), entry.getValue()));
                     }
-                }
 
-                // CHECK IF A MODE IS SELECTED
-                if (observables.getMode().equals("")) {
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Mode not selected");
-                    alert.setHeaderText(null);
-                    alert.setContentText("Please select a mode first");
-                    alert.showAndWait();
-                }
-                if (strategyArrayList.size() == 0) {
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Not enough strategies selected");
-                    alert.setHeaderText(null);
-                    alert.setContentText("Please select enough strategies and try again");
-                    alert.showAndWait();
-                } else {
-                    // RUN AND EXECUTE TOURNAMENT
-                    Tournament tournament = new Tournament(strategyArrayList, observables.getMode());
-                    Platform.runLater(new Runnable() {
-                        @Override
-                        public void run() {
-                            tournament.executeMatches();
+                    ObservableList<PieChart.Data> pieData = observables.getPieChartData();
+                    pieData.clear();
+                    for (Map.Entry<String, Integer> entry : hashMap.entrySet()) {
+                        pieData.add(new PieChart.Data(entry.getKey(), entry.getValue()));
+                    }
 
-                            HashMap<String, History> tempHashMap = tournament.getHistoryHashMap();
-                            Analysis analysis = new Analysis(tempHashMap);
-                            HashMap<String, Integer> hashMap = analysis.fetchTournamentScores(true, false, false);
-
-                            ObservableList<RankData> rankData = observables.getRankData();
-                            rankData.clear();
-
-                            int counter = 1;
-                            for (Map.Entry<String, Integer> entry : hashMap.entrySet()) {
-                                rankData.add(new RankData(counter++, entry.getKey(), entry.getValue()));
-                            }
-
-                            ObservableList<PieChart.Data> pieData = observables.getPieChartData();
-                            pieData.clear();
-                            for (Map.Entry<String, Integer> entry : hashMap.entrySet()) {
-                                pieData.add(new PieChart.Data(entry.getKey(), entry.getValue()));
-                            }
-
-                            // GRAPH DATA
+                    // GRAPH DATA
 //                            ObservableList<XYChart.Series> graphData = observables.getGraphData();
 //                            graphData.clear();
 //
@@ -135,14 +161,8 @@ public class CustomEventHandler implements EventHandler {
 //                                }
 //                                graphData.add(series);
 //                            }
-                        }
-                    });
-
-//                tournament.printTournamentScores(true, false, false);
                 }
-            } else if (text.equals("stop_simulation")) {
-
-            }
+            });
         }
     }
 }

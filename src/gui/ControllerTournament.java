@@ -11,8 +11,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.chart.LineChart;
-import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
@@ -22,12 +20,7 @@ import javafx.util.Callback;
 import main.Tournament;
 import main.Variables;
 
-import java.io.File;
-import java.io.IOException;
 import java.net.URL;
-import java.nio.file.DirectoryStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.ResourceBundle;
@@ -62,6 +55,10 @@ public class ControllerTournament implements Initializable {
     @FXML
     private TableColumn tournament_tournamentEntriesSelection_tableView_selectColumn;
     @FXML
+    private Button tournament_tournamentEntriesSelection_selectAllButton;
+    @FXML
+    private Button tournament_tournamentEntriesSelection_deselectAllButton;
+    @FXML
     private Button tournament_runSimulationButton;
     @FXML
     private Button tournament_stopSimulationButton;
@@ -95,7 +92,9 @@ public class ControllerTournament implements Initializable {
             tournament_modeSelection_selectedModeSettings_tableView_valuesColumn, tournament_tournamentEntriesSelection,
             tournament_tournamentEntriesSelection_selectMoreLabel, tournament_tournamentEntriesSelection_tableView,
             tournament_tournamentEntriesSelection_tableView_strategyColumn,
-            tournament_tournamentEntriesSelection_tableView_selectColumn, tournament_runSimulationButton,
+            tournament_tournamentEntriesSelection_tableView_selectColumn,
+            tournament_tournamentEntriesSelection_selectAllButton,
+            tournament_tournamentEntriesSelection_deselectAllButton, tournament_runSimulationButton,
             tournament_stopSimulationButton, resultsAccordion, tournament_rankTable, tournament_rankTable_tableView,
             tournament_rankTable_tableView_rankColumn, tournament_rankTable_tableView_entryColumn,
             tournament_rankTable_tableView_scoreColumn, tournament_payoff, tournament_payoffGraph,
@@ -110,7 +109,9 @@ public class ControllerTournament implements Initializable {
 
         observables = new Observables();
         CustomEventHandler customEventHandlerLauncher = new CustomEventHandler(getNodeHashMap());
-        CustomEventHandler customEventHandlerSimulate = new CustomEventHandler("run_simulation", observables);
+        CustomEventHandler customEventHandlerRun = new CustomEventHandler("run_simulation", observables);
+        CustomEventHandler customEventHandlerSelectAll = new CustomEventHandler("select_all", observables);
+        CustomEventHandler customEventHandlerdeselectAll = new CustomEventHandler("deselect_all", observables);
 
         tournamentAccordion.setExpandedPane(tournament_modeSelection);
 //        tournament_modeSelection.setAnimated(false);
@@ -119,7 +120,9 @@ public class ControllerTournament implements Initializable {
 //        tournament_rankTable.setAnimated(false);
 //        tournament_payoff.setAnimated(false);
 
-        tournament_runSimulationButton.setOnAction(customEventHandlerSimulate);
+        tournament_tournamentEntriesSelection_selectAllButton.setOnAction(customEventHandlerSelectAll);
+        tournament_runSimulationButton.setOnAction(customEventHandlerRun);
+        tournament_tournamentEntriesSelection_deselectAllButton.setOnAction(customEventHandlerdeselectAll);
 
         setListViews();
         setSelectedModeColumns();
