@@ -140,7 +140,7 @@ public class ControllerTournament implements Initializable {
         tournament_modeSelection_listView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
             @Override
             public void changed(ObservableValue observable, Object oldValue, Object newValue) {
-                HashMap<String, HashMap<String, Object>> modeHashMap = Tournament.TournamentMode.getModesHashMap();
+                HashMap<String, HashMap<Object, Object>> modeHashMap = Tournament.TournamentMode.getModesHashMap();
 
                 int[] scoreMatrix = (int[]) modeHashMap.get(newValue).get(Variables.SCORE_MATRIX);
                 String finalMatrix = "WIN: " + scoreMatrix[0] + "\r\n" + "LOSE: " + scoreMatrix[1] +

@@ -183,7 +183,7 @@ public class CustomEventHandler implements EventHandler {
                     Analysis analysis;
 
 
-                    HashMap<String, HashMap<String, Object>> modeHashMap = Tournament.TournamentMode.getModesHashMap();
+                    HashMap<String, HashMap<Object, Object>> modeHashMap = Tournament.TournamentMode.getModesHashMap();
                     if ((boolean) modeHashMap.get(observables.getMode()).get(Variables.RANDOM)) {
                         analysis = new Analysis(tournament.getTournamentLinkedList(), tournament.getRandomLinkedList());
                     } else {
@@ -200,12 +200,20 @@ public class CustomEventHandler implements EventHandler {
                             int counter = 1;
                             for (Map.Entry<String, Integer> entry : hashMap.entrySet()) {
                                 rankData.add(new RankData(counter++, entry.getKey(), entry.getValue()));
+                                if (Thread.interrupted()) {
+                                    // We've been interrupted: no more crunching.
+                                    return;
+                                }
                             }
 
                             ObservableList<PieChart.Data> pieData = observables.getPieChartData();
                             pieData.clear();
                             for (Map.Entry<String, Integer> entry : hashMap.entrySet()) {
                                 pieData.add(new PieChart.Data(entry.getKey(), entry.getValue()));
+                                if (Thread.interrupted()) {
+                                    // We've been interrupted: no more crunching.
+                                    return;
+                                }
                             }
                         }
                     });

@@ -1,8 +1,9 @@
 package main;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.*;
 
 /**
  * Created by dbrisingr on 06/02/2017.
@@ -10,7 +11,7 @@ import java.util.LinkedList;
 public class Tournament {
 
     private ArrayList<String> strategyArrayList;
-    private HashMap<String, HashMap<String, Object>> modeHashMap;
+    private HashMap<String, HashMap<Object, Object>> modeHashMap;
 
     private LinkedList<HashMap<String, History>> tournamentLinkedList;
     private LinkedList<History> randomLinkedList;
@@ -191,10 +192,10 @@ public class Tournament {
         public final static String MODE_NO_RANDOM = "NO_RANDOM";
         public final static String MODE_NO_TWIN = "NO_TWIN";
         public final static String MODE_NO_RANDOM_NO_TWIN = "NO_RANDOM_NO_TWIN";
-        public final static String MODE_ORIGINAL_WITH_REPEAT = "ORIGINAL MODE WITH 2X THE ROUNDS";
+        public final static String MODE_ORIGINAL_WITH_REPEAT = "ORIGINAL MODE, WITH 1 REPEAT";
         public final static String MODE_CUSTOM = "CUSTOM MODE";
 
-        private static HashMap<String, HashMap<String, Object>> modesHashMap;
+        private static HashMap<String, HashMap<Object, Object>> modesHashMap;
 
         private static String[] originalStrategies = {
                 "TIT_FOR_TAT (original)", "DAVIS (original)", "DOWNING_REVISED (original)", "FELD (original)",
@@ -202,118 +203,26 @@ public class Tournament {
                 "TULLOCK (original)", "UNKNOWN (original)"
         };
 
-        private static String[] originalModesArray = {
+        private static final String[] originalModesArray = {
                 MODE_ORIGINAL, MODE_NO_RANDOM, MODE_NO_TWIN, MODE_NO_RANDOM_NO_TWIN, MODE_ORIGINAL_WITH_REPEAT, MODE_CUSTOM
         };
 
-        public static HashMap<String, Object> getVariables(String mode) {
+        public static HashMap<Object, Object> getVariables(String mode) {
             return modesHashMap.get(mode);
         }
 
-        public static HashMap<String, HashMap<String, Object>> getModesHashMap() {
+        public static HashMap<String, HashMap<Object, Object>> getModesHashMap() {
 
             modesHashMap = new HashMap<>();
-            HashMap<String, Object> tempTable = new HashMap<>();
 
-            int[] scoreMatrix = new int[4];
+            modesHashMap.put(MODE_ORIGINAL, prepareTempHashMap(MODE_ORIGINAL));
+            modesHashMap.put(MODE_NO_RANDOM, prepareTempHashMap(MODE_NO_RANDOM));
+            modesHashMap.put(MODE_NO_TWIN, prepareTempHashMap(MODE_NO_TWIN));
+            modesHashMap.put(MODE_NO_RANDOM_NO_TWIN, prepareTempHashMap(MODE_NO_RANDOM_NO_TWIN));
+            modesHashMap.put(MODE_ORIGINAL_WITH_REPEAT, prepareTempHashMap(MODE_ORIGINAL_WITH_REPEAT));
 
-            {
-//                WIN, LOSE, DRAW C, DRAW D
-                scoreMatrix[0] = 5;
-                scoreMatrix[1] = 0;
-                scoreMatrix[2] = 3;
-                scoreMatrix[3] = 1;
-
-                tempTable.put(Variables.ENTRIES, 16);
-                tempTable.put(Variables.ROUNDS, 200);
-                tempTable.put(Variables.SCORE_MATRIX, scoreMatrix);
-                tempTable.put(Variables.REPEAT, 0);
-                tempTable.put(Variables.TWIN, true);
-                tempTable.put(Variables.RANDOM, true);
-
-                modesHashMap.put(MODE_ORIGINAL, tempTable);
-            }
-
-            {
-                scoreMatrix[0] = 5;
-                scoreMatrix[1] = 0;
-                scoreMatrix[2] = 3;
-                scoreMatrix[3] = 1;
-
-                tempTable = new HashMap<>();
-                tempTable.put(Variables.ROUNDS, 200);
-                tempTable.put(Variables.SCORE_MATRIX, scoreMatrix);
-                tempTable.put(Variables.REPEAT, 0);
-                tempTable.put(Variables.TWIN, true);
-                tempTable.put(Variables.RANDOM, false);
-
-                modesHashMap.put(MODE_NO_RANDOM, tempTable);
-            }
-
-            {
-                scoreMatrix[0] = 5;
-                scoreMatrix[1] = 0;
-                scoreMatrix[2] = 3;
-                scoreMatrix[3] = 1;
-
-                tempTable = new HashMap<>();
-                tempTable.put(Variables.ROUNDS, 200);
-                tempTable.put(Variables.SCORE_MATRIX, scoreMatrix);
-                tempTable.put(Variables.REPEAT, 0);
-                tempTable.put(Variables.TWIN, false);
-                tempTable.put(Variables.RANDOM, true);
-
-                modesHashMap.put(MODE_NO_TWIN, tempTable);
-            }
-
-            {
-                scoreMatrix[0] = 5;
-                scoreMatrix[1] = 0;
-                scoreMatrix[2] = 3;
-                scoreMatrix[3] = 1;
-
-                tempTable = new HashMap<>();
-                tempTable.put(Variables.ROUNDS, 200);
-                tempTable.put(Variables.SCORE_MATRIX, scoreMatrix);
-                tempTable.put(Variables.REPEAT, 0);
-                tempTable.put(Variables.TWIN, false);
-                tempTable.put(Variables.RANDOM, false);
-
-                modesHashMap.put(MODE_NO_RANDOM_NO_TWIN, tempTable);
-            }
-
-            {
-                scoreMatrix[0] = 5;
-                scoreMatrix[1] = 0;
-                scoreMatrix[2] = 3;
-                scoreMatrix[3] = 1;
-
-                tempTable = new HashMap<>();
-                tempTable.put(Variables.ROUNDS, 200);
-                tempTable.put(Variables.SCORE_MATRIX, scoreMatrix);
-                tempTable.put(Variables.REPEAT, 1);
-                tempTable.put(Variables.TWIN, true);
-                tempTable.put(Variables.RANDOM, true);
-
-                modesHashMap.put(MODE_ORIGINAL_WITH_REPEAT, tempTable);
-            }
-
-            {
-                scoreMatrix[0] = 5;
-                scoreMatrix[1] = 0;
-                scoreMatrix[2] = 3;
-                scoreMatrix[3] = 1;
-
-                tempTable = new HashMap<>();
-                tempTable.put(Variables.ROUNDS, 20);
-                tempTable.put(Variables.SCORE_MATRIX, scoreMatrix);
-                tempTable.put(Variables.REPEAT, 1);
-                tempTable.put(Variables.TWIN, true);
-                tempTable.put(Variables.RANDOM, true);
-
-                modesHashMap.put(MODE_CUSTOM, tempTable);
-            }
-
+            HashMap<Object, Object> tempHashMap = loadTempMap();
+            modesHashMap.put(MODE_CUSTOM, tempHashMap);
 
             return modesHashMap;
         }
@@ -324,6 +233,114 @@ public class Tournament {
 
         public static String[] getOriginalStrategies() {
             return originalStrategies;
+        }
+
+        private static HashMap<Object, Object> prepareTempHashMap(String mode) {
+            HashMap<Object, Object> tempHashMap = new HashMap<>();
+
+            int numberOfRounds = 200;
+            int numberOfRepeats = 0;
+            boolean twin = true;
+            boolean random = true;
+
+            int[] scoreMatrix = new int[4];
+            scoreMatrix[0] = 5;
+            scoreMatrix[1] = 0;
+            scoreMatrix[2] = 3;
+            scoreMatrix[3] = 1;
+
+            switch (mode) {
+                case MODE_ORIGINAL:
+                    break;
+                case MODE_NO_RANDOM:
+                    random = false;
+                    break;
+                case MODE_NO_TWIN:
+                    twin = false;
+                    break;
+                case MODE_NO_RANDOM_NO_TWIN:
+                    random = false;
+                    twin = false;
+                    break;
+                case MODE_ORIGINAL_WITH_REPEAT:
+                    numberOfRepeats = 1;
+            }
+
+            tempHashMap.put(Variables.ROUNDS, numberOfRounds);
+            tempHashMap.put(Variables.SCORE_MATRIX, scoreMatrix);
+            tempHashMap.put(Variables.REPEAT, numberOfRepeats);
+            tempHashMap.put(Variables.TWIN, twin);
+            tempHashMap.put(Variables.RANDOM, random);
+
+            return tempHashMap;
+        }
+
+        private static Properties storeTempMap() {
+
+            int[] scoreMatrix = new int[4];
+            scoreMatrix[0] = 5;
+            scoreMatrix[1] = 0;
+            scoreMatrix[2] = 3;
+            scoreMatrix[3] = 1;
+
+            String roundsValue = String.valueOf(20);
+            String scoreMatrixValue = Arrays.toString(scoreMatrix);
+            String repeatValue = String.valueOf(1);
+            String twinValue = String.valueOf(true);
+            String randomValue = String.valueOf(true);
+
+            HashMap<Object, Object> temp = new HashMap<>();
+
+            temp.put(Variables.ROUNDS, roundsValue);
+            temp.put(Variables.SCORE_MATRIX, scoreMatrixValue);
+            temp.put(Variables.REPEAT, repeatValue);
+            temp.put(Variables.TWIN, twinValue);
+            temp.put(Variables.RANDOM, randomValue);
+
+            Properties properties = new Properties();
+            properties.putAll(temp);
+
+            try {
+                properties.store(new FileOutputStream("src/main/mode_data/data.properties"), null);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return properties;
+        }
+
+        private static HashMap<Object, Object> loadTempMap() {
+            Properties properties = new Properties();
+
+            try {
+                properties.load(new FileInputStream("src/main/mode_data/data.properties"));
+            } catch (IOException e) {
+                properties = storeTempMap();
+//                e.printStackTrace();
+            }
+
+            String arr = properties.getProperty(Variables.SCORE_MATRIX);
+            String[] items = arr.replaceAll("\\[", "").replaceAll("\\]", "").replaceAll("\\s", "").split(",");
+            int[] results = new int[items.length];
+            for (int i = 0; i < items.length; i++) {
+                results[i] = Integer.parseInt(items[i]);
+            }
+
+            int roundsValue = Integer.valueOf(properties.getProperty(Variables.ROUNDS));
+            int[] scoreMatrixValue = results;
+            int repeatValue = Integer.valueOf(properties.getProperty(Variables.REPEAT));
+            boolean twinValue = Boolean.valueOf(properties.getProperty(Variables.TWIN));
+            boolean randomValue = Boolean.valueOf(properties.getProperty(Variables.RANDOM));
+
+            properties.put(Variables.ROUNDS, roundsValue);
+            properties.put(Variables.SCORE_MATRIX, scoreMatrixValue);
+            properties.put(Variables.REPEAT, repeatValue);
+            properties.put(Variables.TWIN, twinValue);
+            properties.put(Variables.RANDOM, randomValue);
+
+            HashMap<Object, Object> tempHashMap = new HashMap<>(properties);
+
+
+            return tempHashMap;
         }
     }
 }
