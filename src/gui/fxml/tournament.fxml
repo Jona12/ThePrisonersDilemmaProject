@@ -13,7 +13,8 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 
-<SplitPane dividerPositions="0.4" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.ControllerTournament">
+<SplitPane dividerPositions="0.4" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="gui.ControllerTournament">
   <items>
       <AnchorPane>
          <children>
@@ -87,12 +88,19 @@
                                                       <Label fx:id="tournament_tournamentEntriesSelection_selectMoreLabel" alignment="CENTER" focusTraversable="false" text="You can select: x more" BorderPane.alignment="CENTER" />
                                                    </top>
                                                    <bottom>
-                                                      <ButtonBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-                                                        <buttons>
-                                                            <Button fx:id="tournament_tournamentEntriesSelection_editCustomStrategiesButton" mnemonicParsing="false" text="Edit Strategies" />
-                                                          <Button fx:id="tournament_tournamentEntriesSelection_selectDeselectButton" mnemonicParsing="false" text="Select All" />
-                                                        </buttons>
-                                                      </ButtonBar>
+                                                      <BorderPane BorderPane.alignment="CENTER">
+                                                         <center>
+                                                            <ButtonBar buttonMinWidth="150.0" prefHeight="40.0" prefWidth="200.0">
+                                                              <buttons>
+                                                                  <Button fx:id="tournament_tournamentEntriesSelection_selectOriginalButton" mnemonicParsing="false" text="Select Original" />
+                                                                <Button fx:id="tournament_tournamentEntriesSelection_selectDeselectButton" mnemonicParsing="false" text="Select All" />
+                                                              </buttons>
+                                                            </ButtonBar>
+                                                         </center>
+                                                         <left>
+                                                            <Button fx:id="tournament_tournamentEntriesSelection_editCustomStrategiesButton" mnemonicParsing="false" text="Edit Strategies" BorderPane.alignment="CENTER" />
+                                                         </left>
+                                                      </BorderPane>
                                                    </bottom>
                                                 </BorderPane>
                                              </children>
@@ -142,7 +150,7 @@
                                           </AnchorPane>
                                     </content>
                                   </TitledPane>
-                                  <TitledPane fx:id="tournament_payoff" expanded="false" focusTraversable="false" text="Average Payoff Graph">
+                                  <TitledPane fx:id="tournament_payoff" expanded="false" focusTraversable="false" text="Payoff Graph">
                                     <content>
                                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                              <children>

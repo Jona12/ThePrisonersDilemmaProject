@@ -1,0 +1,6 @@
+.custom-button {
+    -fx-border-color: dimgrey;
+    -fx-border-radius: 10 10 10 10;
+    -fx-background-radius: 10 10 10 10;
+    -fx-border-width: 2pt;
+}

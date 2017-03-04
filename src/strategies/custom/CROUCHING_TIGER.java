@@ -1,4 +1,4 @@
-package strategies;
+package strategies.custom;
 
 import main.History;
 import main.Variables;

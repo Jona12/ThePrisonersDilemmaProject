@@ -56,6 +56,8 @@ public class ControllerTournament implements Initializable {
     @FXML
     private TableColumn tournament_tournamentEntriesSelection_tableView_selectColumn;
     @FXML
+    private Button tournament_tournamentEntriesSelection_selectOriginalButton;
+    @FXML
     private Button tournament_tournamentEntriesSelection_editCustomStrategiesButton;
     @FXML
     private Button tournament_tournamentEntriesSelection_selectDeselectButton;
@@ -94,6 +96,7 @@ public class ControllerTournament implements Initializable {
             tournament_tournamentEntriesSelection_selectMoreLabel, tournament_tournamentEntriesSelection_tableView,
             tournament_tournamentEntriesSelection_tableView_strategyColumn,
             tournament_tournamentEntriesSelection_tableView_selectColumn,
+            tournament_tournamentEntriesSelection_selectOriginalButton,
             tournament_tournamentEntriesSelection_editCustomStrategiesButton,
             tournament_tournamentEntriesSelection_selectDeselectButton, tournament_runSimulationButton,
             tournament_stopSimulationButton, resultsAccordion, tournament_rankTable, tournament_rankTable_tableView,
@@ -124,6 +127,7 @@ public class ControllerTournament implements Initializable {
         CustomEventHandler customEventHandlerLauncher = new CustomEventHandler(getNodeHashMap());
         CustomEventHandler customEventHandler = new CustomEventHandler(observables);
 
+        tournament_tournamentEntriesSelection_selectOriginalButton.setOnAction(customEventHandler);
         tournament_tournamentEntriesSelection_editCustomStrategiesButton.setOnAction(customEventHandler);
         tournament_tournamentEntriesSelection_selectDeselectButton.setOnAction(customEventHandler);
         tournament_runSimulationButton.setOnAction(customEventHandler);
@@ -143,14 +147,13 @@ public class ControllerTournament implements Initializable {
                         "\r\n" + "DRAW_C: " + scoreMatrix[2] + "\r\n" + "DRAW_D: " + scoreMatrix[3];
 
                 int numberOfRounds = (int) modeHashMap.get(newValue).get(Variables.ROUNDS);
-                boolean repeat = (boolean) modeHashMap.get(newValue).get(Variables.REPEAT);
+                int repeat = (int) modeHashMap.get(newValue).get(Variables.REPEAT);
                 boolean twin = (boolean) modeHashMap.get(newValue).get(Variables.TWIN);
                 boolean random = (boolean) modeHashMap.get(newValue).get(Variables.RANDOM);
 
                 ObservableList<ModeData> modeData = observables.getModeData();
                 modeData.clear();
 
-                System.out.println("newValue: " + newValue);
                 observables.setMode((String) newValue);
                 modeData.add(new ModeData(Variables.SCORE_MATRIX, finalMatrix));
                 modeData.add(new ModeData(Variables.ROUNDS, "" + numberOfRounds));
@@ -245,7 +248,8 @@ public class ControllerTournament implements Initializable {
 //        NumberAxis x = (NumberAxis) tournament_payoffGraph.getXAxis();
 //        x.setTickUnit(100);
 
-        tournament_payoffGraph.setTitle("Strategy Payoff Graph");
+        tournament_payoffGraph.setLegendVisible(false);
+        tournament_payoffGraph.setTitle("Payoff of Entries");
         tournament_payoffGraph.setData(observables.getPieChartData());
 
     }

@@ -94,8 +94,6 @@ public class History {
             }
             String opponentName = entry.getKey();
             if (matchSum || roundSum) {
-//                System.out.println(selfName + " vs. " + opponentName);
-
                 toReturn.add(selfName + " vs. " + opponentName);
             }
             int[][] actualRoundScore = entry.getValue();
@@ -103,19 +101,12 @@ public class History {
                 if (tournamentSum || matchSum) {
                     sum += selfMatchResults.get(opponentName)[i][0];
                 } else if (roundSum) {
-//                    System.out.println("round: " + i);
-//                    System.out.println(selfMatchResults.get(opponentName)[i][0]);
-//                    System.out.println(selfMatchResults.get(opponentName)[i][1]);
-
                     toReturn.add("round: " + i);
                     toReturn.add("" + selfMatchResults.get(opponentName)[i][0]);
                     toReturn.add("" + selfMatchResults.get(opponentName)[i][1]);
                 }
             }
             if (matchSum) {
-//                System.out.println(selfName + " match score: " + sum);
-//                System.out.println();
-
                 toReturn.add(selfName + " match score: " + sum);
                 toReturn.add("");
             }
@@ -124,7 +115,6 @@ public class History {
         if (tournamentSum) {
             toReturn.add(selfName + " tournament score: " + sum);
         }
-
         return sum;
     }
 

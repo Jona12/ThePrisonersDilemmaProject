@@ -24,24 +24,23 @@ public class StrategyManager {
         Class<?> classStrategy = null;
         Object objectStrategy;
 
-        if (strategyName.contains("built-in")) {
-            strategyName = strategyName.substring(0, strategyName.indexOf(" (built-in)"));
-        }else if (strategyName.contains("original")) {
+        if (strategyName.contains("original")) {
             strategyName = strategyName.substring(0, strategyName.indexOf(" (original)"));
         }
         try {
-            classStrategy = Class.forName("strategies." + strategyName);
-        } catch (ClassNotFoundException e) {
+            classStrategy = Class.forName("strategies.original." + strategyName);
+        } catch (ClassNotFoundException e1) {
             try {
-                classStrategy = Class.forName("strategies.built_in." + strategyName);
-            } catch (ClassNotFoundException e1) {
+                classStrategy = Class.forName("strategies.custom." + strategyName);
+            } catch (ClassNotFoundException e2) {
                 try {
-                    classStrategy = Class.forName("strategies.original." + strategyName);
-                } catch (ClassNotFoundException e2) {
-                    e2.printStackTrace();
+                    classStrategy = Class.forName("strategies.built_in." + strategyName);
+                } catch (ClassNotFoundException e3) {
+                    e3.printStackTrace();
                 }
             }
         }
+
 
         try {
             Method[] allMethods = classStrategy.getDeclaredMethods();
@@ -61,6 +60,7 @@ public class StrategyManager {
         }
         return toReturn;
     }
+
 
     public void getProperties() {
 

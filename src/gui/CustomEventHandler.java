@@ -16,16 +16,16 @@ import javafx.scene.Scene;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import main.Analysis;
 import main.History;
 import main.Tournament;
+import main.Variables;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by dbrisingr on 09/02/2017.
@@ -36,12 +36,13 @@ public class CustomEventHandler implements EventHandler {
     private Observables observables;
 
     private boolean isLauncher;
-    private boolean isRun;
 
-    private static String select_all = "Select All";
-    private static String deselect_all = "Deselect All";
-    private static String run_simulation = "Run Simulation";
-    private static String stop_simulation = "Stop Simulation";
+    private final static String select_original = "Select Original";
+    private final static String deselect_original = "Deselect Original";
+    private final static String select_all = "Select All";
+    private final static String deselect_all = "Deselect All";
+    private final static String run_simulation = "Run Simulation";
+    private final static String stop_simulation = "Stop Simulation";
 
     private Task task;
 
@@ -52,10 +53,12 @@ public class CustomEventHandler implements EventHandler {
 
     // for non-launcher buttons
     public CustomEventHandler(Observables observables) {
-        isRun = false;
         isLauncher = false;
         this.observables = observables;
     }
+
+    private Thread thread;
+    private Button simulateButton;
 
     @Override
     public void handle(Event event) {
@@ -64,14 +67,18 @@ public class CustomEventHandler implements EventHandler {
         if (isLauncher) {
             handleWindowLaunches(event);
         } else {
-            if (text.equals(select_all) || text.equals(deselect_all)) {
-                Button button = (Button) event.getSource();
+            Button button = (Button) event.getSource();
+            if (text.equals(select_original) || text.equals(deselect_original)) {
+                handleOriginalSelection(button);
+            } else if (text.equals(select_all) || text.equals(deselect_all)) {
                 handleSelection(button);
             } else if (text.equals(run_simulation)) {
-                handleSimulation();
+                simulateButton = button;
+                thread = handleSimulation(button);
             } else if (text.equals(stop_simulation)) {
-                if(isRun){
-                    isRun = false;
+                if (thread != null && simulateButton != null) {
+                    thread.interrupt();
+                    simulateButton.setDisable(false);
                 }
             }
         }
@@ -81,22 +88,42 @@ public class CustomEventHandler implements EventHandler {
         Parent root;
         try {
             String window = (String) nodeHashMap.get(event.getSource())[0];
-            System.out.println("window: " + window);
             String title = (String) nodeHashMap.get(event.getSource())[1];
-            System.out.println("title: " + title);
             root = FXMLLoader.load(getClass().getResource(window));
             Stage stage = new Stage();
+            stage.getIcons().add(new Image("file:src/images/logo.png"));
             stage.setTitle("Iterated Prisoner's Dilemma - " + title);
             Scene scene = new Scene(root);
-            File f = new File("src/gui/css/alignment.css");
+            File f = new File("src/gui/css/stylesheet.css");
             scene.getStylesheets().add(f.toURI().toURL().toExternalForm());
             stage.setScene(scene);
             stage.setMaximized(true);
             stage.show();
-            // Hide this current window (if this is what you want)
-//                    ((Node)(event.getSource())).getScene().getWindow().hide();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    private void handleOriginalSelection(Button button) {
+        ObservableList<StrategyData> strategyData = observables.getStrategyData();
+        String text = button.getText();
+        String[] originalEntries = Tournament.TournamentMode.getOriginalStrategies();
+        List<String> temp = Arrays.asList(originalEntries);
+
+        if (text.equals(select_original)) {
+            for (StrategyData s : strategyData) {
+                if (temp.contains(s.strategyProperty().getValue())) {
+                    s.setSelect(true);
+                }
+            }
+            button.setText(deselect_original);
+        } else {
+            for (StrategyData s : strategyData) {
+                if (temp.contains(s.strategyProperty().getValue())) {
+                    s.setSelect(false);
+                }
+            }
+            button.setText(select_original);
         }
     }
 
@@ -118,10 +145,9 @@ public class CustomEventHandler implements EventHandler {
         }
     }
 
-    private void handleSimulation() {
+    private Thread handleSimulation(Button button) {
 
-        isRun = true;
-
+        Thread thread = null;
         // GET ALL THE STRATEGIES
         ArrayList<String> strategyArrayList = new ArrayList<>();
         ObservableList<StrategyData> strategyData = observables.getStrategyData();
@@ -145,7 +171,8 @@ public class CustomEventHandler implements EventHandler {
             alert.setHeaderText(null);
             alert.setContentText("Please select enough strategies and try again");
             alert.showAndWait();
-        } else {
+        } else if (!observables.getMode().equals("") && strategyArrayList.size() != 0) {
+            button.setDisable(true);
             // RUN AND EXECUTE TOURNAMENT
             Tournament tournament = new Tournament(strategyArrayList, observables.getMode());
             task = new Task() {
@@ -153,11 +180,16 @@ public class CustomEventHandler implements EventHandler {
                 protected Object call() throws Exception {
 
                     tournament.executeMatches();
+                    Analysis analysis;
 
-                    HashMap<String, History> tempHashMap = tournament.getHistoryHashMap();
-                    Analysis analysis = new Analysis(tempHashMap);
+
+                    HashMap<String, HashMap<String, Object>> modeHashMap = Tournament.TournamentMode.getModesHashMap();
+                    if ((boolean) modeHashMap.get(observables.getMode()).get(Variables.RANDOM)) {
+                        analysis = new Analysis(tournament.getTournamentLinkedList(), tournament.getRandomLinkedList());
+                    } else {
+                        analysis = new Analysis(tournament.getTournamentLinkedList());
+                    }
                     HashMap<String, Integer> hashMap = analysis.fetchTournamentScores(true, false, false);
-
 
                     Platform.runLater(new Runnable() {
                         @Override
@@ -193,12 +225,13 @@ public class CustomEventHandler implements EventHandler {
 //                                }
 //                                graphData.add(series);
 //                            }
-
-
+                    button.setDisable(false);
                     return null;
                 }
             };
-            new Thread(task).start();
+            thread = new Thread(task);
+            thread.start();
         }
+        return thread;
     }
 }

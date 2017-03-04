@@ -14,7 +14,7 @@ public class JOSS {
 
         if (h.getCurrentRound() > 0) {
             if (h.getPreviousRoundScore()[1].equals(Variables.COOPERATE)) {
-                StrategyFunctions.randomChoice(probability);
+                return StrategyFunctions.randomChoice(probability);
             }
         }
         return new TIT_FOR_TAT().calculate(h);
