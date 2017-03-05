@@ -43,13 +43,9 @@ public class StrategyManager {
 
 
         try {
-            Method[] allMethods = classStrategy.getDeclaredMethods();
+            Method method = classStrategy.getDeclaredMethod("calculate", History.class);
             objectStrategy = classStrategy.newInstance();
-
-//            Class param[] = {String.class};
-//            Method method = objectStrategy.getClass().getDeclaredMethod("strategy", param);
-//            toReturn = (String) method.invoke(objectStrategy, "a");
-            Object s = allMethods[0].invoke(objectStrategy, parameters);
+            Object s = method.invoke(objectStrategy, parameters);
             toReturn = (String) s;
         } catch (InvocationTargetException e) {
             e.printStackTrace();
@@ -57,12 +53,9 @@ public class StrategyManager {
             e.printStackTrace();
         } catch (InstantiationException e) {
             e.printStackTrace();
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
         }
         return toReturn;
-    }
-
-
-    public void getProperties() {
-
     }
 }

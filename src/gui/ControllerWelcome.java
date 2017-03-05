@@ -52,7 +52,7 @@ public class ControllerWelcome implements Initializable {
                 welcomeIteratedButton, welcomeAxelrodButton, welcomeRunningTournamentButton,
                 welcomeCustomStrategiesButton, welcomeAnalysisButton,
         };
-        String[][] values = new String[9][2];
+        String[][] values = new String[8][2];
 
         values[0][0] = "fxml/tournament.fxml";
         values[0][1] = "Tournament";
@@ -77,9 +77,6 @@ public class ControllerWelcome implements Initializable {
 
         values[7][0] = "fxml/run_tournament.fxml";
         values[7][1] = "Running A Tournament";
-
-        values[8][0] = "fxml/edit_custom_mode.fxml";
-        values[7][1] = "Custom Mode";
 
         int count = 0;
         for (String[] v : values) {

@@ -46,6 +46,11 @@ public class CustomEventHandler implements EventHandler {
 
     private Task task;
 
+    public CustomEventHandler(HashMap<Node, Object[]> nodeHashMap, Observables observables){
+        isLauncher = true;
+        this.nodeHashMap = nodeHashMap;
+        this.observables = observables;
+    }
     public CustomEventHandler(HashMap<Node, Object[]> nodeHashMap) {
         isLauncher = true;
         this.nodeHashMap = nodeHashMap;
@@ -89,15 +94,27 @@ public class CustomEventHandler implements EventHandler {
         try {
             String window = (String) nodeHashMap.get(event.getSource())[0];
             String title = (String) nodeHashMap.get(event.getSource())[1];
-            root = FXMLLoader.load(getClass().getResource(window));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(window));
+            root = loader.load();
             Stage stage = new Stage();
             stage.getIcons().add(new Image("file:src/images/logo.png"));
-            stage.setTitle("Iterated Prisoner's Dilemma - " + title);
+            stage.setTitle("Robin - " + title);
             Scene scene = new Scene(root);
             File f = new File("src/gui/css/stylesheet.css");
             scene.getStylesheets().add(f.toURI().toURL().toExternalForm());
             stage.setScene(scene);
-            stage.setMaximized(true);
+            if (!window.equals("fxml/edit_custom_mode.fxml")) {
+                stage.setMaximized(true);
+            } else {
+                ControllerCustomStrategies controller = loader.getController();
+                controller.setObservables(observables);
+
+                stage.setMinWidth(800);
+                stage.setMinHeight(500);
+                stage.setMaxWidth(800);
+                stage.setMaxHeight(500);
+            }
+
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();

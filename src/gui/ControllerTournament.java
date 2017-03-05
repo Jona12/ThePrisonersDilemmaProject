@@ -126,9 +126,13 @@ public class ControllerTournament implements Initializable {
         observables = new Observables();
         CustomEventHandler customEventHandlerLauncher = new CustomEventHandler(getNodeHashMap());
         CustomEventHandler customEventHandler = new CustomEventHandler(observables);
+        CustomEventHandler customEventHandler1 = new CustomEventHandler(getNodeHashMap(), observables);
+
+        tournament_modeSelection_editButton.setOnAction(customEventHandler1);
+        tournament_tournamentEntriesSelection_editCustomStrategiesButton.setOnAction(customEventHandlerLauncher);
+        tournament_GoToAnalysisButton.setOnAction(customEventHandlerLauncher);
 
         tournament_tournamentEntriesSelection_selectOriginalButton.setOnAction(customEventHandler);
-        tournament_tournamentEntriesSelection_editCustomStrategiesButton.setOnAction(customEventHandler);
         tournament_tournamentEntriesSelection_selectDeselectButton.setOnAction(customEventHandler);
         tournament_runSimulationButton.setOnAction(customEventHandler);
         tournament_stopSimulationButton.setOnAction(customEventHandler);
@@ -259,25 +263,21 @@ public class ControllerTournament implements Initializable {
         HashMap<Node, Object[]> nodeHashMap = new HashMap<>();
 
         Node[] keys = {
-                tournament_runSimulationButton, tournament_stopSimulationButton, tournament_GoToAnalysisButton, tournament_saveResultButton
+                tournament_modeSelection_editButton, tournament_tournamentEntriesSelection_editCustomStrategiesButton, tournament_GoToAnalysisButton
         };
-        Object[][] values = new String[4][2];
+        Object[][] values = new String[3][2];
 
-        //tournament_runSimulationButton
-        values[0][0] = "tournament_rankTable_tableView";
-        values[0][1] = "tournament_rankTable_tableView_rankColumn";
+        //tournament_modeSelection_editButton
+        values[0][0] = "fxml/edit_custom_mode.fxml";
+        values[0][1] = "Mode Customisation";
 
-        //tournament_stopSimulationButton
-        values[1][0] = "fxml/analysis.fxml";
-        values[1][1] = "Analysis";
+        //tournament_tournamentEntriesSelection_editCustomStrategiesButton
+        values[1][0] = "fxml/edit_strategy.fxml";
+        values[1][1] = "Custom Strategies";
 
         //tournament_GoToAnalysisButton
-        values[2][0] = "fxml/analysis.fxml";
-        values[2][1] = "Analysis";
-
-        //tournament_saveResultButton
-        values[3][0] = "fxml/analysis.fxml";
-        values[3][1] = "Analysis";
+        values[1][0] = "fxml/analysis.fxml";
+        values[1][1] = "Analysis";
 
         int count = 0;
         for (Object[] v : values) {

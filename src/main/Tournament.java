@@ -215,11 +215,10 @@ public class Tournament {
 
             modesHashMap = new HashMap<>();
 
-            modesHashMap.put(MODE_ORIGINAL, prepareTempHashMap(MODE_ORIGINAL));
-            modesHashMap.put(MODE_NO_RANDOM, prepareTempHashMap(MODE_NO_RANDOM));
-            modesHashMap.put(MODE_NO_TWIN, prepareTempHashMap(MODE_NO_TWIN));
-            modesHashMap.put(MODE_NO_RANDOM_NO_TWIN, prepareTempHashMap(MODE_NO_RANDOM_NO_TWIN));
-            modesHashMap.put(MODE_ORIGINAL_WITH_REPEAT, prepareTempHashMap(MODE_ORIGINAL_WITH_REPEAT));
+            for(String s : originalModesArray){
+                modesHashMap.put(s, prepareTempHashMap(s));
+            }
+            modesHashMap.remove(MODE_CUSTOM);
 
             HashMap<Object, Object> tempHashMap = loadTempMap();
             modesHashMap.put(MODE_CUSTOM, tempHashMap);

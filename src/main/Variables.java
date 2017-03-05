@@ -27,7 +27,7 @@ public class Variables {
     public final static String CURRENT_ROUND = "current round";
     public final static String ENTRIES = "number of rounds";
     public final static String RANDOM = "Is the RANDOM strategy included?";
-    public final static String TWIN = "Will the strategies play against their twins?";
+    public final static String TWIN = "Will twin strategies be included?";
     public final static String SCORE_MATRIX = "Score matrix";
 
     public final static String PAST_SELF_ROUNDS = "PAST SELF ROUNDS";

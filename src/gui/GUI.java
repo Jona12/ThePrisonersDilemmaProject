@@ -23,7 +23,7 @@ public class GUI extends Application {
             Scene scene = new Scene(root);
             scene.getStylesheets().add("gui/css/stylesheet.css");
             primaryStage.getIcons().add(new Image("file:src/images/logo.png"));
-            primaryStage.setTitle("Iteration - Welcome");
+            primaryStage.setTitle("Robin - Welcome");
             primaryStage.setScene(scene);
             primaryStage.setMinWidth(600);
             primaryStage.setMinHeight(500);
