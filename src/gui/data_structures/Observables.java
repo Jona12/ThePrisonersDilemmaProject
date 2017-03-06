@@ -5,6 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
 import main.Tournament;
+import main.TournamentMode;
 
 /**
  * Created by dbrisingr on 28/02/2017.
@@ -16,7 +17,7 @@ public class Observables {
     ObservableList<ModeData> modeData = FXCollections.observableArrayList();
     ObservableList<RankData> rankData = FXCollections.observableArrayList();
     ObservableList<StrategyData> strategyData = FXCollections.observableArrayList();
-    ObservableList<String> originalModesData = FXCollections.observableArrayList(Tournament.TournamentMode.getOriginalModes());
+    ObservableList<String> originalModesData = FXCollections.observableArrayList(TournamentMode.getOriginalModes());
     ObservableList<XYChart.Series> graphData = FXCollections.observableArrayList();
     ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
 

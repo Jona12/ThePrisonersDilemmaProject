@@ -42,6 +42,10 @@ public class History {
         this.currentOpponent = currentOpponent;
     }
 
+    protected void setOpponentMatchResults(HashMap<String, int[][]> opponentMatchResults) {
+        this.opponentMatchResults = opponentMatchResults;
+    }
+
     protected void setCurrentRound(int currentRound) {
         this.currentRound = currentRound;
     }

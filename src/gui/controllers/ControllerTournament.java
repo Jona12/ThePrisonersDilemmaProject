@@ -1,24 +1,23 @@
-package gui;
+package gui.controllers;
 
 import gui.data_structures.ModeData;
 import gui.data_structures.Observables;
 import gui.data_structures.RankData;
 import gui.data_structures.StrategyData;
+import gui.event_handlers.CustomEventHandler;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.chart.PieChart;
-import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.Callback;
-import main.Tournament;
+import main.TournamentMode;
 import main.Variables;
 
 import java.net.URL;
@@ -144,19 +143,38 @@ public class ControllerTournament implements Initializable {
         tournament_modeSelection_listView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
             @Override
             public void changed(ObservableValue observable, Object oldValue, Object newValue) {
-                HashMap<String, HashMap<Object, Object>> modeHashMap = Tournament.TournamentMode.getModesHashMap();
 
-                int[] scoreMatrix = (int[]) modeHashMap.get(newValue).get(Variables.SCORE_MATRIX);
-                String finalMatrix = "WIN: " + scoreMatrix[0] + "\r\n" + "LOSE: " + scoreMatrix[1] +
-                        "\r\n" + "DRAW_C: " + scoreMatrix[2] + "\r\n" + "DRAW_D: " + scoreMatrix[3];
-
-                int numberOfRounds = (int) modeHashMap.get(newValue).get(Variables.ROUNDS);
-                int repeat = (int) modeHashMap.get(newValue).get(Variables.REPEAT);
-                boolean twin = (boolean) modeHashMap.get(newValue).get(Variables.TWIN);
-                boolean random = (boolean) modeHashMap.get(newValue).get(Variables.RANDOM);
-
+                String finalMatrix;
+                int numberOfRounds;
+                int repeat;
+                boolean twin;
+                boolean random;
                 ObservableList<ModeData> modeData = observables.getModeData();
                 modeData.clear();
+
+                if (newValue.equals(TournamentMode.MODE_CUSTOM)) {
+                    HashMap<Object, Object> modeHashMap = TournamentMode.loadCustomModeData();
+
+                    int[] scoreMatrix = (int[]) modeHashMap.get(Variables.SCORE_MATRIX);
+                    finalMatrix = "WIN: " + scoreMatrix[0] + "\r\n" + "LOSE: " + scoreMatrix[1] +
+                            "\r\n" + "DRAW_C: " + scoreMatrix[2] + "\r\n" + "DRAW_D: " + scoreMatrix[3];
+
+                    numberOfRounds = (int) modeHashMap.get(Variables.ROUNDS);
+                    repeat = (int) modeHashMap.get(Variables.REPEAT);
+                    twin = (boolean) modeHashMap.get(Variables.TWIN);
+                    random = (boolean) modeHashMap.get(Variables.RANDOM);
+                } else {
+                    HashMap<String, HashMap<Object, Object>> modeHashMap = TournamentMode.getModesHashMap();
+
+                    int[] scoreMatrix = (int[]) modeHashMap.get(newValue).get(Variables.SCORE_MATRIX);
+                    finalMatrix = "WIN: " + scoreMatrix[0] + "\r\n" + "LOSE: " + scoreMatrix[1] +
+                            "\r\n" + "DRAW_C: " + scoreMatrix[2] + "\r\n" + "DRAW_D: " + scoreMatrix[3];
+
+                    numberOfRounds = (int) modeHashMap.get(newValue).get(Variables.ROUNDS);
+                    repeat = (int) modeHashMap.get(newValue).get(Variables.REPEAT);
+                    twin = (boolean) modeHashMap.get(newValue).get(Variables.TWIN);
+                    random = (boolean) modeHashMap.get(newValue).get(Variables.RANDOM);
+                }
 
                 observables.setMode((String) newValue);
                 modeData.add(new ModeData(Variables.SCORE_MATRIX, finalMatrix));

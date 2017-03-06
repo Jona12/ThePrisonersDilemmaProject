@@ -1,12 +1,23 @@
 package gui.data_structures;
 
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.Observable;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.util.Callback;
 
 /**
  * Created by dbrisingr on 13/02/2017.
  */
 public class ModeData {
+
+    public static Callback<ModeData, Observable[]> extractor() {
+        return new Callback<ModeData, Observable[]>() {
+            @Override
+            public Observable[] call(ModeData param) {
+                return new Observable[]{param.variable, param.value};
+            }
+        };
+    }
+
 
     private final SimpleStringProperty variable = new SimpleStringProperty("");
     private final SimpleStringProperty value = new SimpleStringProperty("");
@@ -37,7 +48,6 @@ public class ModeData {
     public SimpleStringProperty variableProperty() {
         return variable;
     }
-
     public SimpleStringProperty valueProperty() {
         return value;
     }

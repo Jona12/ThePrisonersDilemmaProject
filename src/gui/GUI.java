@@ -19,7 +19,7 @@ public class GUI extends Application {
     @Override
     public void start(Stage primaryStage) {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("fxml/welcome.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("event_handlers/fxml/welcome.fxml"));
             Scene scene = new Scene(root);
             scene.getStylesheets().add("gui/css/stylesheet.css");
             primaryStage.getIcons().add(new Image("file:src/images/logo.png"));

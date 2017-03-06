@@ -1,6 +1,6 @@
-package gui;
+package gui.event_handlers;
 
-import com.sun.javafx.tk.Toolkit;
+import gui.controllers.ControllerCustomStrategies;
 import gui.data_structures.Observables;
 import gui.data_structures.RankData;
 import gui.data_structures.StrategyData;
@@ -18,10 +18,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import main.Analysis;
-import main.History;
-import main.Tournament;
-import main.Variables;
+import main.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -107,6 +104,7 @@ public class CustomEventHandler implements EventHandler {
                 stage.setMaximized(true);
             } else {
                 ControllerCustomStrategies controller = loader.getController();
+
                 controller.setObservables(observables);
 
                 stage.setMinWidth(800);
@@ -124,7 +122,7 @@ public class CustomEventHandler implements EventHandler {
     private void handleOriginalSelection(Button button) {
         ObservableList<StrategyData> strategyData = observables.getStrategyData();
         String text = button.getText();
-        String[] originalEntries = Tournament.TournamentMode.getOriginalStrategies();
+        String[] originalEntries = TournamentMode.getOriginalStrategies();
         List<String> temp = Arrays.asList(originalEntries);
 
         if (text.equals(select_original)) {
@@ -200,7 +198,7 @@ public class CustomEventHandler implements EventHandler {
                     Analysis analysis;
 
 
-                    HashMap<String, HashMap<Object, Object>> modeHashMap = Tournament.TournamentMode.getModesHashMap();
+                    HashMap<String, HashMap<Object, Object>> modeHashMap = TournamentMode.getModesHashMap();
                     if ((boolean) modeHashMap.get(observables.getMode()).get(Variables.RANDOM)) {
                         analysis = new Analysis(tournament.getTournamentLinkedList(), tournament.getRandomLinkedList());
                     } else {

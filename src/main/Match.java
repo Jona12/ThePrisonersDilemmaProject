@@ -25,7 +25,7 @@ public class Match {
     private int currentScoreOne;
     private int currentScoreTwo;
 
-    public Match(String matchID, History historyStrategyOne, History historyStrategyTwo, int noOfRounds) {
+    public Match(History historyStrategyOne, History historyStrategyTwo, int noOfRounds) {
 
         this.noOfRounds = noOfRounds;
         this.historyStrategyOne = historyStrategyOne;
@@ -48,6 +48,9 @@ public class Match {
     public void runMatch() {
         StrategyManager strategyOne;
         StrategyManager strategyTwo;
+
+        historyStrategyOne.setOpponentMatchResults(historyStrategyTwo.getSelfMatchResults());
+        historyStrategyTwo.setOpponentMatchResults(historyStrategyOne.getSelfMatchResults());
 
         historyStrategyOne.setCurrentOpponent(strategyNameTwo);
         historyStrategyTwo.setCurrentOpponent(strategyNameOne);

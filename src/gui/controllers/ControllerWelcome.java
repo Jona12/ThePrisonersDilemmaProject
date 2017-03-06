@@ -1,5 +1,6 @@
-package gui;
+package gui.controllers;
 
+import gui.event_handlers.CustomEventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
