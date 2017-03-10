@@ -30,7 +30,7 @@ public class Tournament {
     public Tournament(ArrayList<String> strategyArrayList, String mode) {
 
         this.strategyArrayList = strategyArrayList;
-        modeHashMap = main.TournamentMode.getModesHashMap();
+        modeHashMap = main.TournamentMode.getInstance().getModesHashMap();
 
         numberOfRounds = (int) modeHashMap.get(mode).get(Variables.ROUNDS);
         repeat = (int) modeHashMap.get(mode).get(Variables.REPEAT);

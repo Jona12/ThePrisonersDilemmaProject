@@ -9,6 +9,10 @@ import java.util.Random;
  */
 public class StrategyFunctions {
 
+    public static void loadStrategyClass(){
+
+    }
+
     public static String randomChoice(float p) {
         if (p == 0) {
             return Variables.DEFECT;

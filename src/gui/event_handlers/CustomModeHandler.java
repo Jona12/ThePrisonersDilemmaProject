@@ -1,5 +1,8 @@
 package gui.event_handlers;
 
+import gui.data_structures.ModeData;
+import gui.data_structures.Observables;
+import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
@@ -14,7 +17,7 @@ import java.util.HashMap;
 /**
  * Created by dbrisingr on 06/03/2017.
  */
-public class CustomStrategiesHandler implements EventHandler {
+public class CustomModeHandler implements EventHandler {
 
     private HashMap<Object, Object> data;
 
@@ -27,8 +30,10 @@ public class CustomStrategiesHandler implements EventHandler {
     private ComboBox twin_value;
     private ComboBox random_value;
 
+    private Observables observables;
 
-    public CustomStrategiesHandler(Object[] components) {
+    public CustomModeHandler(Object[] components, Observables observables) {
+        this.observables = observables;
         TextField[] textFields = (TextField[]) components[0];
 
         win_value = textFields[0];
@@ -69,6 +74,26 @@ public class CustomStrategiesHandler implements EventHandler {
         temp.put(Variables.RANDOM, random);
 
         TournamentMode.storeCustomModeData(temp);
+
+        if (observables.getMode().equals(TournamentMode.MODE_CUSTOM)) {
+            ObservableList<ModeData> modeData = observables.getModeData();
+            modeData.clear();
+
+            String finalMatrix = "WIN: " + scoreMatrix[0] + "\r\n" + "LOSE: " + scoreMatrix[1] +
+                    "\r\n" + "DRAW_C: " + scoreMatrix[2] + "\r\n" + "DRAW_D: " + scoreMatrix[3];
+
+            String numberOfRoundsx = rounds_value.getText().toString();
+            String repeatx = repeat_value.getValue().toString();
+            String twinx = repeat_value.getValue().toString();
+            String randomx = random_value.getValue().toString();
+
+            modeData.add(new ModeData(Variables.SCORE_MATRIX, finalMatrix));
+            modeData.add(new ModeData(Variables.ROUNDS, numberOfRoundsx));
+            modeData.add(new ModeData(Variables.REPEAT, repeatx));
+            modeData.add(new ModeData(Variables.TWIN, twinx));
+            modeData.add(new ModeData(Variables.RANDOM, randomx));
+            observables.setModeData(modeData);
+        }
 
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Changes saved");

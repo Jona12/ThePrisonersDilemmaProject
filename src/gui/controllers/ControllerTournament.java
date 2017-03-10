@@ -241,13 +241,13 @@ public class ControllerTournament implements Initializable {
         });
 
         ObservableList<StrategyData> strategyData = observables.getStrategyData();
-        ArrayList<String> strategies = Variables.getStrategies();
+        ArrayList<String> strategies = Variables.getStrategies(true, false);
 
         for (String s : strategies) {
             strategyData.add(new StrategyData(s, false));
         }
 
-        tournament_tournamentEntriesSelection_tableView.setItems(observables.getStrategyData());
+        tournament_tournamentEntriesSelection_tableView.setItems(strategyData);
     }
 
     private void setRankColumns() {

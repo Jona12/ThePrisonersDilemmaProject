@@ -68,6 +68,7 @@
    <center>
         <ButtonBar buttonOrder="U+FBIX_NCYOA_R" prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
             <buttons>
+            <Button fx:id="welcomeLaunchStrategiesButton" mnemonicParsing="false" text="Launch Custom Strategies Window" />
                 <Button fx:id="welcomeLaunchTournamentButton" mnemonicParsing="false" text="Launch Tournament Window" />
                 <Button fx:id="welcomeLaunchAnalysisButton" mnemonicParsing="false" text="Launch Analysis Window" />
             </buttons>

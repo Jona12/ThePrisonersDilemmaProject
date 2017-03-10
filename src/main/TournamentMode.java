@@ -109,9 +109,7 @@ public class TournamentMode {
         HashMap<Object, Object> temp;
         if (toPut != null) {
             temp = toPut;
-            System.out.println("here1");
         } else {
-            System.out.println("here");
             int[] scoreMatrix = new int[4];
             scoreMatrix[0] = 5;
             scoreMatrix[1] = 0;

@@ -96,7 +96,7 @@ public class Variables {
         DRAW_D_SCORE = scoreMatrix[3];
     }
 
-    public static ArrayList<String> getStrategies() {
+    public static ArrayList<String> getStrategies(boolean all, boolean custom) {
         File currentDir = new File("."); // Read current file location
         File srcDir;
         File strategiesDir;
@@ -108,28 +108,27 @@ public class Variables {
             String toAdd;
             DirectoryStream<Path> dirStream = Files.newDirectoryStream(strategiesDir.toPath());
             for (Path p : dirStream) {
-                if (p.toFile().isDirectory() && p.toFile().getName().equals("original")) {
+                if (p.toFile().isDirectory() && p.toFile().getName().equals("original") && (all || !custom)) {
                     for (Path path : Files.newDirectoryStream(p)) {
                         toAdd = path.getFileName().toString();
                         toAdd = toAdd.substring(0, toAdd.indexOf(".java"));
                         toAdd += " (original)";
                         strategies.add(toAdd);
                     }
-                } else if (p.toFile().isDirectory() && p.toFile().getName().equals("custom")) {
+                } else if (p.toFile().isDirectory() && p.toFile().getName().equals("custom") && (custom || all)) {
                     for (Path path : Files.newDirectoryStream(p)) {
                         toAdd = path.getFileName().toString();
                         toAdd = toAdd.substring(0, toAdd.indexOf(".java"));
                         strategies.add(toAdd);
                     }
+                } else if (p.toFile().isDirectory() && p.toFile().getName().equals("built_in") && (all || !custom)) {
+                    for (Path path : Files.newDirectoryStream(p)) {
+                        toAdd = path.getFileName().toString();
+                        toAdd = toAdd.substring(0, toAdd.indexOf(".java"));
+                        toAdd += " (built-in)";
+                        strategies.add(toAdd);
+                    }
                 }
-//                if (p.toFile().isDirectory() && p.toFile().getName().equals("built_in")) {
-//                    for (Path path : Files.newDirectoryStream(p)) {
-//                        toAdd = path.getFileName().toString();
-//                        toAdd = toAdd.substring(0, toAdd.indexOf(".java"));
-//                        toAdd += " (built-in)";
-//                        strategies.add(toAdd);
-//                    }
-//                }
             }
         } catch (IOException e) {
             e.printStackTrace();

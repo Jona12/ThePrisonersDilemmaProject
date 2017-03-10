@@ -28,6 +28,8 @@ public class ControllerWelcome implements Initializable {
     @FXML
     private Button welcomeAnalysisButton;
     @FXML
+    private Button welcomeLaunchStrategiesButton;
+    @FXML
     private Button welcomeLaunchTournamentButton;
     @FXML
     private Button welcomeLaunchAnalysisButton;
@@ -35,12 +37,13 @@ public class ControllerWelcome implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
+        welcomeLaunchStrategiesButton.getStyleClass().add("custom-button");
         welcomeLaunchTournamentButton.getStyleClass().add("custom-button");
         welcomeLaunchAnalysisButton.getStyleClass().add("custom-button");
 
         CustomEventHandler customEventHandler = new CustomEventHandler(getNodeHashMap());
+        welcomeLaunchStrategiesButton.setOnAction(customEventHandler);
         welcomeLaunchTournamentButton.setOnAction(customEventHandler);
-        welcomeAxelrodButton.setOnAction(customEventHandler);
         welcomeDilemmaButton.setOnAction(customEventHandler);
     }
 
@@ -51,9 +54,9 @@ public class ControllerWelcome implements Initializable {
         Button[] keys = {
                 welcomeLaunchTournamentButton, welcomeLaunchAnalysisButton, welcomeDilemmaButton,
                 welcomeIteratedButton, welcomeAxelrodButton, welcomeRunningTournamentButton,
-                welcomeCustomStrategiesButton, welcomeAnalysisButton,
+                welcomeCustomStrategiesButton, welcomeAnalysisButton, welcomeLaunchStrategiesButton
         };
-        String[][] values = new String[8][2];
+        String[][] values = new String[9][2];
 
         values[0][0] = "fxml/tournament.fxml";
         values[0][1] = "Tournament";
@@ -79,6 +82,8 @@ public class ControllerWelcome implements Initializable {
         values[7][0] = "fxml/run_tournament.fxml";
         values[7][1] = "Running A Tournament";
 
+        values[8][0] = "fxml/strategies.fxml";
+        values[8][1] = "Custom Strategies";
         int count = 0;
         for (String[] v : values) {
             nodeHashMap.put(keys[count++], v);

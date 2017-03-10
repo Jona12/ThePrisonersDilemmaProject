@@ -1,4 +1,4 @@
-package strategies.custom;
+package strategies.built_in;
 
 import main.History;
 import strategies.original.DOWNING_REVISED;

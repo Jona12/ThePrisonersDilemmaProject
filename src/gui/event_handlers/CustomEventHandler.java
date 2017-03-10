@@ -1,6 +1,6 @@
 package gui.event_handlers;
 
-import gui.controllers.ControllerCustomStrategies;
+import gui.controllers.ControllerCustomMode;
 import gui.data_structures.Observables;
 import gui.data_structures.RankData;
 import gui.data_structures.StrategyData;
@@ -17,12 +17,16 @@ import javafx.scene.chart.PieChart;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import main.*;
 
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
+import java.util.List;
 
 /**
  * Created by dbrisingr on 09/02/2017.
@@ -43,11 +47,12 @@ public class CustomEventHandler implements EventHandler {
 
     private Task task;
 
-    public CustomEventHandler(HashMap<Node, Object[]> nodeHashMap, Observables observables){
+    public CustomEventHandler(HashMap<Node, Object[]> nodeHashMap, Observables observables) {
         isLauncher = true;
         this.nodeHashMap = nodeHashMap;
         this.observables = observables;
     }
+
     public CustomEventHandler(HashMap<Node, Object[]> nodeHashMap) {
         isLauncher = true;
         this.nodeHashMap = nodeHashMap;
@@ -79,7 +84,7 @@ public class CustomEventHandler implements EventHandler {
                 thread = handleSimulation(button);
             } else if (text.equals(stop_simulation)) {
                 if (thread != null && simulateButton != null) {
-                    thread.interrupt();
+                    task.cancel();
                     simulateButton.setDisable(false);
                 }
             }
@@ -93,19 +98,36 @@ public class CustomEventHandler implements EventHandler {
             String title = (String) nodeHashMap.get(event.getSource())[1];
             FXMLLoader loader = new FXMLLoader(getClass().getResource(window));
             root = loader.load();
+
             Stage stage = new Stage();
             stage.getIcons().add(new Image("file:src/images/logo.png"));
             stage.setTitle("Robin - " + title);
-            Scene scene = new Scene(root);
-            File f = new File("src/gui/css/stylesheet.css");
-            scene.getStylesheets().add(f.toURI().toURL().toExternalForm());
-            stage.setScene(scene);
-            if (!window.equals("fxml/edit_custom_mode.fxml")) {
-                stage.setMaximized(true);
-            } else {
-                ControllerCustomStrategies controller = loader.getController();
 
-                controller.setObservables(observables);
+            Scene scene = new Scene(root);
+            scene.getStylesheets().add("gui/css/stylesheet.css");
+
+            scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+                public void handle(KeyEvent ke) {
+                    if (ke.getCode() == KeyCode.W && !ke.isControlDown()) {
+                        stage.close();
+                    }
+
+                }
+            });
+
+            stage.setScene(scene);
+            if (!window.equals("fxml/edit_custom_mode.fxml") && !window.equals("fxml/strategies.fxml")) {
+                Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+                double width = screenSize.getWidth();
+                double height = screenSize.getHeight();
+                stage.setWidth(width);
+                stage.setHeight(height);
+
+            } else {
+                if (window.equals("fxml/edit_custom_mode.fxml")) {
+                    ControllerCustomMode controller = loader.getController();
+                    controller.setObservables(observables);
+                }
 
                 stage.setMinWidth(800);
                 stage.setMinHeight(500);
@@ -197,7 +219,7 @@ public class CustomEventHandler implements EventHandler {
                     tournament.executeMatches();
                     Analysis analysis;
 
-
+                    if(isCancelled()){return null;}
                     HashMap<String, HashMap<Object, Object>> modeHashMap = TournamentMode.getModesHashMap();
                     if ((boolean) modeHashMap.get(observables.getMode()).get(Variables.RANDOM)) {
                         analysis = new Analysis(tournament.getTournamentLinkedList(), tournament.getRandomLinkedList());
@@ -215,20 +237,12 @@ public class CustomEventHandler implements EventHandler {
                             int counter = 1;
                             for (Map.Entry<String, Integer> entry : hashMap.entrySet()) {
                                 rankData.add(new RankData(counter++, entry.getKey(), entry.getValue()));
-                                if (Thread.interrupted()) {
-                                    // We've been interrupted: no more crunching.
-                                    return;
-                                }
                             }
 
                             ObservableList<PieChart.Data> pieData = observables.getPieChartData();
                             pieData.clear();
                             for (Map.Entry<String, Integer> entry : hashMap.entrySet()) {
                                 pieData.add(new PieChart.Data(entry.getKey(), entry.getValue()));
-                                if (Thread.interrupted()) {
-                                    // We've been interrupted: no more crunching.
-                                    return;
-                                }
                             }
                         }
                     });

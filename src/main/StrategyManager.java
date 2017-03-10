@@ -26,6 +26,8 @@ public class StrategyManager {
 
         if (strategyName.contains("original")) {
             strategyName = strategyName.substring(0, strategyName.indexOf(" (original)"));
+        } else if (strategyName.contains(" (built-in)")) {
+            strategyName = strategyName.substring(0, strategyName.indexOf(" (built-in)"));
         }
         try {
             classStrategy = Class.forName("strategies.original." + strategyName);
