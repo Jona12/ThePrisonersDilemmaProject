@@ -1,5 +1,6 @@
 package main;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -7,7 +8,7 @@ import java.util.Map;
 /**
  * Created by dbrisingr on 06/02/2017.
  */
-public class History {
+public class History implements Serializable{
 
     private History opponentHistory;
     private HashMap<String, int[][]> selfMatchResults;

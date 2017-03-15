@@ -45,6 +45,7 @@ public class ControllerWelcome implements Initializable {
         welcomeLaunchStrategiesButton.setOnAction(customEventHandler);
         welcomeLaunchTournamentButton.setOnAction(customEventHandler);
         welcomeDilemmaButton.setOnAction(customEventHandler);
+        welcomeLaunchAnalysisButton.setOnAction(customEventHandler);
     }
 
     private HashMap<Node, Object[]> getNodeHashMap() {

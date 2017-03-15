@@ -92,6 +92,13 @@ public class CustomStrategyHandler implements EventHandler {
 
             }
             listView_custom.setItems(FXCollections.observableArrayList(Variables.getStrategies(false, true)));
+
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Strategy saved");
+            alert.setHeaderText(null);
+            alert.setContentText("The new strategy have been successfully saved");
+            alert.showAndWait();
+
             save.setDisable(true);
         }
     }

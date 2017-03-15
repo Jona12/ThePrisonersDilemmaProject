@@ -10,6 +10,12 @@ import java.util.*;
  */
 public class Tournament {
 
+    private boolean cancel;
+
+    public void setCancel(boolean cancel) {
+        this.cancel = cancel;
+    }
+
     private ArrayList<String> strategyArrayList;
     private HashMap<String, HashMap<Object, Object>> modeHashMap;
 
@@ -84,8 +90,12 @@ public class Tournament {
 //        }
 
         count = 0;
+        loop:
         for (int i = 0; i < strategyArrayList.size(); i++) {
             for (int j = historyHashMap.size() - 1; j > i; j--) {
+                if (cancel) {
+                    break loop;
+                }
                 strategyOne = strategyArrayList.get(i);
                 strategyTwo = strategyArrayList.get(j);
 

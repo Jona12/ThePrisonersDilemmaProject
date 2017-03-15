@@ -20,7 +20,7 @@
                 </Label>
             </center>
             <bottom>
-                <Label text="Welcome to Robin. Robin is an application that is able to simulate Robert Axelrod’s iterated Prisoner’s Dilemma tournament. The tournament settings can also be modified in order for you to run your own tournament. Tournaments can be saved, and Iteration will also provide useful statistics and information through its Analysis feature." textAlignment="CENTER" wrapText="true" BorderPane.alignment="CENTER">
+                <Label text="Welcome to Robin. Robin is an application that is able to simulate Robert Axelrod’s iterated Prisoner’s Dilemma tournament. The tournament settings can also be modified in order for you to run your own tournament. Tournaments can be saved, and Robin will also provide useful statistics and information through its Analysis feature." textAlignment="CENTER" wrapText="true" BorderPane.alignment="CENTER">
                     <padding>
                         <Insets left="15.0" right="15.0" />
                     </padding>

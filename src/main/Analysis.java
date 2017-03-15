@@ -1,5 +1,9 @@
 package main;
 
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -10,6 +14,14 @@ public class Analysis {
 
     private LinkedList<HashMap<String, History>> tournamentLinkedList;
     private LinkedList<History> randomLinkedList;
+
+    public LinkedList<HashMap<String, History>> getTournamentLinkedList() {
+        return tournamentLinkedList;
+    }
+
+    public LinkedList<History> getRandomLinkedList() {
+        return randomLinkedList;
+    }
 
     public Analysis(LinkedList<HashMap<String, History>> tournamentLinkedList, LinkedList<History> randomLinkedList) {
         this.tournamentLinkedList = tournamentLinkedList;

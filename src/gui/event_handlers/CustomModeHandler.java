@@ -84,7 +84,7 @@ public class CustomModeHandler implements EventHandler {
 
             String numberOfRoundsx = rounds_value.getText().toString();
             String repeatx = repeat_value.getValue().toString();
-            String twinx = repeat_value.getValue().toString();
+            String twinx = twin_value.getValue().toString();
             String randomx = random_value.getValue().toString();
 
             modeData.add(new ModeData(Variables.SCORE_MATRIX, finalMatrix));

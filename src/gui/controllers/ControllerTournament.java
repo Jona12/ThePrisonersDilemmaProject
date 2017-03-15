@@ -135,6 +135,8 @@ public class ControllerTournament implements Initializable {
         tournament_tournamentEntriesSelection_selectDeselectButton.setOnAction(customEventHandler);
         tournament_runSimulationButton.setOnAction(customEventHandler);
         tournament_stopSimulationButton.setOnAction(customEventHandler);
+
+        tournament_saveResultButton.setOnAction(customEventHandler);
     }
 
     private void setListViews() {
