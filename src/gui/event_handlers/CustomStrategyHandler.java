@@ -5,6 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.control.*;
+import main.CommonFunctions;
 import main.TournamentMode;
 import main.Variables;
 
@@ -63,7 +64,7 @@ public class CustomStrategyHandler implements EventHandler {
                     textArea.clear();
                 }
             }
-            listView_custom.setItems(FXCollections.observableArrayList(Variables.getStrategies(false, true)));
+            listView_custom.setItems(FXCollections.observableArrayList(CommonFunctions.getStrategies(false, true)));
         } else if (event.getSource() == add) {
             textArea.clear();
             save.setDisable(false);
@@ -91,7 +92,7 @@ public class CustomStrategyHandler implements EventHandler {
                 }
 
             }
-            listView_custom.setItems(FXCollections.observableArrayList(Variables.getStrategies(false, true)));
+            listView_custom.setItems(FXCollections.observableArrayList(CommonFunctions.getStrategies(false, true)));
 
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Strategy saved");

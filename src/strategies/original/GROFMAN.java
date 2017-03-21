@@ -1,7 +1,7 @@
 package strategies.original;
 
 import main.History;
-import main.StrategyFunctions;
+import main.CommonFunctions;
 import main.Variables;
 
 /**
@@ -20,6 +20,6 @@ public class GROFMAN {
         if (h.getPreviousRoundScore()[0].equals(h.getPreviousRoundScore()[1])) {
             return Variables.COOPERATE;
         }
-        return StrategyFunctions.randomChoice(2 / 7);
+        return CommonFunctions.randomChoice(2 / 7);
     }
 }

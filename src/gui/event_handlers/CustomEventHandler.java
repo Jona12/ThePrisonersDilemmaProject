@@ -1,5 +1,6 @@
 package gui.event_handlers;
 
+import gui.controllers.ControllerAnalysis;
 import gui.controllers.ControllerCustomMode;
 import gui.data_structures.Observables;
 import gui.data_structures.RankData;
@@ -16,6 +17,7 @@ import javafx.scene.Scene;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
@@ -69,15 +71,25 @@ public class CustomEventHandler implements EventHandler {
     private Thread thread;
     private Tournament tournament;
     private Button simulateButton;
-    private Button saveButton;
     private Analysis analysis;
+
+    private String result;
 
     @Override
     public void handle(Event event) {
 
         String text = ((Button) event.getSource()).getText();
         if (isLauncher) {
-            handleWindowLaunches(event);
+
+            String temp = (String) nodeHashMap.get(event.getSource())[0];
+            if (temp.equals("fxml/analysis.fxml")) {
+                result = handleLoad();
+                if (result != null) {
+                    handleWindowLaunches(event);
+                }
+            } else {
+                handleWindowLaunches(event);
+            }
         } else {
             Button button = (Button) event.getSource();
             if (text.equals(select_original) || text.equals(deselect_original)) {
@@ -97,6 +109,28 @@ public class CustomEventHandler implements EventHandler {
                 handleSave();
             }
         }
+    }
+
+    private String handleLoad() {
+
+        LinkedHashSet<String> results = CommonFunctions.loadResultsList();
+        ChoiceDialog<String> choiceDialog = new ChoiceDialog<>(null, results);
+
+        choiceDialog.setTitle("Result Name Selection");
+        choiceDialog.setHeaderText("Please select one of the results below");
+        Optional<String> optional = choiceDialog.showAndWait();
+
+        if (optional.isPresent()) {
+            String selected = choiceDialog.getSelectedItem();
+            return selected;
+        }
+
+//        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+//        alert.setTitle("No Result Selected");
+//        alert.setHeaderText(null);
+//        alert.setContentText("Please select a result");
+//        alert.showAndWait();
+        return null;
     }
 
     private void handleSave() {
@@ -126,17 +160,25 @@ public class CustomEventHandler implements EventHandler {
             alert.showAndWait();
         } else {
             try {
+
                 path = "src/main/results_data/" + result + ".txt";
                 FileOutputStream fileOutputStream = new FileOutputStream(path);
                 ObjectOutputStream out = new ObjectOutputStream(fileOutputStream);
                 out.writeObject(analysis.getTournamentLinkedList());
 
+                path = "src/main/results_data/" + result + "_MATCH_" + ".txt";
+                fileOutputStream = new FileOutputStream(path);
+                out = new ObjectOutputStream(fileOutputStream);
+                out.writeObject(analysis.getTournamentResult());
+
                 if (analysis.getRandomLinkedList() != null) {
                     path = "src/main/results_data/" + result + "_RANDOM_.txt";
                     fileOutputStream = new FileOutputStream(path);
                     out = new ObjectOutputStream(fileOutputStream);
-                    out.writeObject(analysis.getTournamentLinkedList());
+                    out.writeObject(analysis.getRandomLinkedList());
                 }
+
+
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             } catch (IOException ex) {
@@ -183,6 +225,12 @@ public class CustomEventHandler implements EventHandler {
                 double height = screenSize.getHeight();
                 stage.setWidth(width);
                 stage.setHeight(height);
+
+                if (window.equals("fxml/analysis.fxml")) {
+                    ControllerAnalysis controllerAnalysis = loader.getController();
+                    controllerAnalysis.setResult(result);
+                    result = null;
+                }
 
             } else {
                 if (window.equals("fxml/edit_custom_mode.fxml")) {
@@ -284,9 +332,9 @@ public class CustomEventHandler implements EventHandler {
                     }
                     HashMap<String, HashMap<Object, Object>> modeHashMap = TournamentMode.getModesHashMap();
                     if ((boolean) modeHashMap.get(observables.getMode()).get(Variables.RANDOM)) {
-                        analysis = new Analysis(tournament.getTournamentLinkedList(), tournament.getRandomLinkedList());
+                        analysis = new Analysis(tournament.getTournamentLinkedList(), tournament.getTournamentResult(), tournament.getRandomLinkedList());
                     } else {
-                        analysis = new Analysis(tournament.getTournamentLinkedList());
+                        analysis = new Analysis(tournament.getTournamentResult(), tournament.getTournamentLinkedList());
                     }
                     HashMap<String, Integer> hashMap = analysis.fetchTournamentScores(true, false, false);
 

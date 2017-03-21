@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.BarChart?>
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.chart.StackedBarChart?>
@@ -15,8 +16,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.65"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.controllers.ControllerAnalysis">
+<BorderPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.controllers.ControllerAnalysis">
     <center>
         <Accordion fx:id="accordion" BorderPane.alignment="CENTER">
             <panes>
@@ -24,71 +24,42 @@
                     <content>
                         <AnchorPane prefHeight="200.0" prefWidth="200.0">
                             <children>
-                                <SplitPane dividerPositions="0.4" prefHeight="318.0" prefWidth="598.0"
-                                           AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-                                           AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                <SplitPane dividerPositions="0.4" prefHeight="318.0" prefWidth="598.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                     <items>
                                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                                             <children>
-                                                <VBox prefHeight="296.0" prefWidth="226.0" AnchorPane.bottomAnchor="0.0"
-                                                      AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-                                                      AnchorPane.topAnchor="0.0">
+                                                <VBox prefHeight="296.0" prefWidth="226.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                     <children>
                                                         <AnchorPane prefHeight="200.0" prefWidth="200.0">
                                                             <children>
-                                                                <Label fx:id="match_high" prefHeight="99.0"
-                                                                       prefWidth="226.0"
-                                                                       text="The highest scoring match is: [matchID] with a combined score of [score]. [strategy1] scored [score1], while [strategy2] scored [score2]."
-                                                                       textAlignment="CENTER" wrapText="true"
-                                                                       AnchorPane.bottomAnchor="0.0"
-                                                                       AnchorPane.leftAnchor="0.0"
-                                                                       AnchorPane.rightAnchor="0.0"
-                                                                       AnchorPane.topAnchor="0.0"/>
+                                                                <Label fx:id="match_high" prefHeight="99.0" prefWidth="226.0" text="The highest scoring match is: [matchID] with a combined score of [score]. [strategy1] scored [score1], while [strategy2] scored [score2]." textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                                             </children>
                                                         </AnchorPane>
                                                         <AnchorPane prefHeight="200.0" prefWidth="200.0">
                                                             <children>
-                                                                <Label fx:id="match_low" prefHeight="99.0"
-                                                                       prefWidth="226.0"
-                                                                       text="The lowest scoring match is: [matchID] with a combined score of [score]. [strategy1] scored [score1], while [strategy2] scored [score2]."
-                                                                       textAlignment="CENTER" wrapText="true"
-                                                                       AnchorPane.bottomAnchor="0.0"
-                                                                       AnchorPane.leftAnchor="0.0"
-                                                                       AnchorPane.rightAnchor="0.0"
-                                                                       AnchorPane.topAnchor="0.0"/>
+                                                                <Label fx:id="match_low" prefHeight="99.0" prefWidth="226.0" text="The lowest scoring match is: [matchID] with a combined score of [score]. [strategy1] scored [score1], while [strategy2] scored [score2]." textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                                             </children>
                                                         </AnchorPane>
                                                         <AnchorPane prefHeight="200.0" prefWidth="200.0">
                                                             <children>
-                                                                <Label fx:id="match_average" prefHeight="99.0"
-                                                                       prefWidth="226.0"
-                                                                       text="On average, a match in the tournament has a total combined score of [score]."
-                                                                       textAlignment="CENTER" wrapText="true"
-                                                                       AnchorPane.bottomAnchor="0.0"
-                                                                       AnchorPane.leftAnchor="0.0"
-                                                                       AnchorPane.rightAnchor="0.0"
-                                                                       AnchorPane.topAnchor="0.0"/>
+                                                                <Label fx:id="match_average" prefHeight="99.0" prefWidth="226.0" text="On average, a match in the tournament has a total combined score of [score]." textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                                             </children>
                                                         </AnchorPane>
                                                     </children>
                                                 </VBox>
                                             </children>
                                             <padding>
-                                                <Insets left="15.0" right="15.0"/>
+                                                <Insets left="15.0" right="15.0" />
                                             </padding>
                                         </AnchorPane>
                                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                                             <children>
-                                                <StackedBarChart fx:id="match_graph" prefHeight="296.0"
-                                                                 prefWidth="342.0" AnchorPane.bottomAnchor="0.0"
-                                                                 AnchorPane.leftAnchor="0.0"
-                                                                 AnchorPane.rightAnchor="0.0"
-                                                                 AnchorPane.topAnchor="0.0">
+                                                <StackedBarChart fx:id="match_graph" prefHeight="296.0" prefWidth="342.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                     <xAxis>
-                                                        <CategoryAxis side="BOTTOM"/>
+                                                        <CategoryAxis side="BOTTOM" />
                                                     </xAxis>
                                                     <yAxis>
-                                                        <NumberAxis side="LEFT"/>
+                                                        <NumberAxis side="LEFT" />
                                                     </yAxis>
                                                 </StackedBarChart>
                                             </children>
@@ -103,74 +74,45 @@
                     <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                             <children>
-                                <SplitPane dividerPositions="0.4" prefHeight="318.0" prefWidth="598.0"
-                                           AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-                                           AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                <SplitPane dividerPositions="0.4" prefHeight="318.0" prefWidth="598.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                     <items>
                                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                                             <children>
-                                                <VBox prefHeight="296.0" prefWidth="226.0" AnchorPane.bottomAnchor="0.0"
-                                                      AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-                                                      AnchorPane.topAnchor="0.0">
+                                                <VBox prefHeight="296.0" prefWidth="226.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                     <children>
                                                         <AnchorPane prefHeight="200.0" prefWidth="200.0">
                                                             <children>
-                                                                <Label fx:id="strategy_high" prefHeight="99.0"
-                                                                       prefWidth="1808.0"
-                                                                       text="The highest scoring strategy is: [strategy1] with a total combined score of [score1]. [strategy1] [outcome1] more often than [outcome2] over the course of the tournament. Its highest scoring match is [matchID] where it scored [matchScore1] and its opponent, [strategy2], scored [matchScore2]."
-                                                                       textAlignment="CENTER" wrapText="true"
-                                                                       AnchorPane.bottomAnchor="0.0"
-                                                                       AnchorPane.leftAnchor="0.0"
-                                                                       AnchorPane.rightAnchor="0.0"
-                                                                       AnchorPane.topAnchor="0.0"/>
+                                                                <Label fx:id="strategy_high" prefHeight="99.0" prefWidth="1808.0" text="The highest scoring strategy is: [strategy1] with a total combined score of [score1]. [strategy1] [outcome1] more often than [outcome2] over the course of the tournament. Its highest scoring match is [matchID] where it scored [matchScore1] and its opponent, [strategy2], scored [matchScore2]." textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                                             </children>
                                                         </AnchorPane>
                                                         <AnchorPane prefHeight="200.0" prefWidth="200.0">
                                                             <children>
-                                                                <Label fx:id="strategy_low" prefHeight="99.0"
-                                                                       prefWidth="1803.0"
-                                                                       text="The lowest scoring strategy is: [strategy1] with a total combined score of [score1]. [strategy1] [outcome1] more often than [outcome2] over the course of the tournament. Its highest scoring match is [matchID] where it scored [matchScore1] and its opponent, [strategy2], scored [matchScore2]."
-                                                                       textAlignment="CENTER" wrapText="true"
-                                                                       AnchorPane.bottomAnchor="0.0"
-                                                                       AnchorPane.leftAnchor="0.0"
-                                                                       AnchorPane.rightAnchor="0.0"
-                                                                       AnchorPane.topAnchor="0.0"/>
+                                                                <Label fx:id="strategy_low" prefHeight="99.0" prefWidth="1803.0" text="The lowest scoring strategy is: [strategy1] with a total combined score of [score1]. [strategy1] [outcome1] more often than [outcome2] over the course of the tournament. Its highest scoring match is [matchID] where it scored [matchScore1] and its opponent, [strategy2], scored [matchScore2]." textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                                             </children>
                                                         </AnchorPane>
                                                         <AnchorPane prefHeight="200.0" prefWidth="200.0">
                                                             <children>
-                                                                <Label fx:id="strategy_average" prefHeight="99.0"
-                                                                       prefWidth="489.0"
-                                                                       text="On average, a strategy in the tournament has a total combined score of [score]."
-                                                                       textAlignment="CENTER" wrapText="true"
-                                                                       AnchorPane.bottomAnchor="0.0"
-                                                                       AnchorPane.leftAnchor="0.0"
-                                                                       AnchorPane.rightAnchor="0.0"
-                                                                       AnchorPane.topAnchor="0.0"/>
+                                                                <Label fx:id="strategy_average" prefHeight="99.0" prefWidth="489.0" text="On average, a strategy in the tournament has a total combined score of [score]." textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                                             </children>
                                                         </AnchorPane>
                                                     </children>
                                                 </VBox>
                                             </children>
                                             <padding>
-                                                <Insets left="15.0" right="15.0"/>
+                                                <Insets left="15.0" right="15.0" />
                                             </padding>
                                         </AnchorPane>
                                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
-                                            <children>
-                                                <StackedBarChart fx:id="strategy_graph" prefHeight="296.0"
-                                                                 prefWidth="342.0" AnchorPane.bottomAnchor="0.0"
-                                                                 AnchorPane.leftAnchor="0.0"
-                                                                 AnchorPane.rightAnchor="0.0"
-                                                                 AnchorPane.topAnchor="0.0">
-                                                    <xAxis>
-                                                        <CategoryAxis side="BOTTOM"/>
-                                                    </xAxis>
-                                                    <yAxis>
-                                                        <NumberAxis side="LEFT"/>
-                                                    </yAxis>
-                                                </StackedBarChart>
-                                            </children>
+                                 <children>
+                                    <BarChart fx:id="strategy_graph" prefHeight="296.0" prefWidth="342.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                      <xAxis>
+                                        <CategoryAxis side="BOTTOM" />
+                                      </xAxis>
+                                      <yAxis>
+                                        <NumberAxis side="LEFT" />
+                                      </yAxis>
+                                    </BarChart>
+                                 </children>
                                         </AnchorPane>
                                     </items>
                                 </SplitPane>
@@ -182,83 +124,56 @@
                     <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                             <children>
-                                <SplitPane dividerPositions="0.6" prefHeight="318.0" prefWidth="598.0"
-                                           AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-                                           AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                <SplitPane dividerPositions="0.6" prefHeight="318.0" prefWidth="598.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                     <items>
                                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                                             <children>
-                                                <VBox prefHeight="296.0" prefWidth="226.0" AnchorPane.bottomAnchor="0.0"
-                                                      AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-                                                      AnchorPane.topAnchor="0.0">
+                                                <VBox prefHeight="296.0" prefWidth="226.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                     <children>
                                                         <Label text="Niceness">
                                                             <font>
-                                                                <Font name="Arial Bold" size="13.0"/>
+                                                                <Font name="Arial Bold" size="13.0" />
                                                             </font>
                                                         </Label>
                                                         <AnchorPane prefHeight="200.0" prefWidth="200.0">
                                                             <children>
-                                                                <Label fx:id="analysis_nice" layoutY="1.0"
-                                                                       prefHeight="99.0" prefWidth="226.0"
-                                                                       text="Strategies that are nice do not defect first in their matches. In the tournament, out of all [strategyAmount] strategies, [niceAmount] were nice. "
-                                                                       textAlignment="CENTER" wrapText="true"
-                                                                       AnchorPane.bottomAnchor="-1.0"
-                                                                       AnchorPane.leftAnchor="0.0"
-                                                                       AnchorPane.rightAnchor="0.0"
-                                                                       AnchorPane.topAnchor="1.0"/>
+                                                                <Label fx:id="analysis_nice" layoutY="1.0" prefHeight="99.0" prefWidth="226.0" text="Strategies that are nice do not defect first in their matches. In the tournament, out of all [strategyAmount] strategies, [niceAmount] were nice. " textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="-1.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="1.0" />
                                                             </children>
                                                         </AnchorPane>
                                                         <Label text="Forgiveness">
                                                             <font>
-                                                                <Font name="Arial Bold" size="13.0"/>
+                                                                <Font name="Arial Bold" size="13.0" />
                                                             </font>
                                                         </Label>
                                                         <AnchorPane prefHeight="200.0" prefWidth="200.0">
                                                             <children>
-                                                                <Label fx:id="analysis_forgive" prefHeight="99.0"
-                                                                       prefWidth="226.0"
-                                                                       text="Forgiveness describes the propensity to cooperate in the moves after the other strategy defected. In the tournament, the most forgiving strategy is [strategy1], while the least forgiving strategy is [strategy2]."
-                                                                       textAlignment="CENTER" wrapText="true"
-                                                                       AnchorPane.bottomAnchor="0.0"
-                                                                       AnchorPane.leftAnchor="0.0"
-                                                                       AnchorPane.rightAnchor="0.0"
-                                                                       AnchorPane.topAnchor="0.0"/>
+                                                                <Label fx:id="analysis_forgive" prefHeight="99.0" prefWidth="226.0" text="Forgiveness describes the propensity to cooperate in the moves after the other strategy defected. In the tournament, the most forgiving strategy is [strategy1], while the least forgiving strategy is [strategy2]." textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                                             </children>
                                                         </AnchorPane>
                                                         <Label text="Kingmaker">
                                                             <font>
-                                                                <Font name="Arial Bold" size="13.0"/>
+                                                                <Font name="Arial Bold" size="13.0" />
                                                             </font>
                                                         </Label>
                                                         <AnchorPane prefHeight="200.0" prefWidth="200.0">
                                                             <children>
-                                                                <Label fx:id="analysis_king" prefHeight="99.0"
-                                                                       prefWidth="226.0"
-                                                                       text="Kingmakers are low scoring strategies that largely determine the rankings of top scoring strategies. In this tournament, strategies that can be described as a Kingmaker include: [kingmakers]"
-                                                                       textAlignment="CENTER" wrapText="true"
-                                                                       AnchorPane.bottomAnchor="0.0"
-                                                                       AnchorPane.leftAnchor="0.0"
-                                                                       AnchorPane.rightAnchor="0.0"
-                                                                       AnchorPane.topAnchor="0.0"/>
+                                                                <Label fx:id="analysis_king" prefHeight="99.0" prefWidth="226.0" text="Kingmakers are low scoring strategies that largely determine the rankings of top scoring strategies. In this tournament, strategies that can be described as a Kingmaker include: [kingmakers]" textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                                             </children>
                                                         </AnchorPane>
                                                     </children>
                                                 </VBox>
                                             </children>
                                             <padding>
-                                                <Insets left="15.0" right="15.0"/>
+                                                <Insets left="15.0" right="15.0" />
                                             </padding>
                                         </AnchorPane>
                                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                                             <children>
-                                                <TableView fx:id="analysis_table" prefHeight="296.0" prefWidth="342.0"
-                                                           AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-                                                           AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                <TableView fx:id="analysis_table" prefHeight="296.0" prefWidth="342.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                     <columns>
-                                                        <TableColumn fx:id="rank" prefWidth="75.0" text="Rank"/>
-                                                        <TableColumn fx:id="entry" prefWidth="75.0" text="Entry"/>
-                                                        <TableColumn fx:id="score" prefWidth="75.0" text="Score"/>
+                                                        <TableColumn fx:id="rank" prefWidth="75.0" text="Rank" />
+                                                        <TableColumn fx:id="entry" prefWidth="75.0" text="Entry" />
+                                                        <TableColumn fx:id="score" prefWidth="75.0" text="Score" />
                                                     </columns>
                                                 </TableView>
                                             </children>

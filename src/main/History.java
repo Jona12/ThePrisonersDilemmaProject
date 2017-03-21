@@ -8,7 +8,9 @@ import java.util.Map;
 /**
  * Created by dbrisingr on 06/02/2017.
  */
-public class History implements Serializable{
+public class History implements Serializable {
+
+    private static final long serialVersionUID = 42L;
 
     private History opponentHistory;
     private HashMap<String, int[][]> selfMatchResults;
@@ -88,52 +90,29 @@ public class History implements Serializable{
         return numberOfRounds;
     }
 
-    public int calculateMatchScores(boolean tournamentSum, boolean matchSum, boolean roundSum) {
+    public int calculateMatchScores(boolean tournamentSum, boolean maxMatchSum, boolean minMatchSum) {
 
-        ArrayList<String> toReturn = new ArrayList<>();
         int sum = 0;
-
+        int temp = 0;
         for (Map.Entry<String, int[][]> entry : selfMatchResults.entrySet()) {
-            if (matchSum || roundSum) {
-                sum = 0;
+            if (maxMatchSum && temp > sum) {
+                sum = temp;
+            } else if (minMatchSum && temp < sum) {
+                sum = temp;
             }
+            temp = 0;
+
             String opponentName = entry.getKey();
-            if (matchSum || roundSum) {
-                toReturn.add(selfName + " vs. " + opponentName);
-            }
             int[][] actualRoundScore = entry.getValue();
+
             for (int i = 0; i < actualRoundScore.length; i++) {
-                if (tournamentSum || matchSum) {
+                if (tournamentSum) {
                     sum += selfMatchResults.get(opponentName)[i][0];
-                } else if (roundSum) {
-                    toReturn.add("round: " + i);
-                    toReturn.add("" + selfMatchResults.get(opponentName)[i][0]);
-                    toReturn.add("" + selfMatchResults.get(opponentName)[i][1]);
+                } else if (maxMatchSum) {
+                    temp += selfMatchResults.get(opponentName)[i][0];
                 }
             }
-            if (matchSum) {
-                toReturn.add(selfName + " match score: " + sum);
-                toReturn.add("");
-            }
-        }
-
-        if (tournamentSum) {
-            toReturn.add(selfName + " tournament score: " + sum);
         }
         return sum;
-    }
-
-    public int[] calculateAverageRoundScores() {
-        int[] averageScores = new int[numberOfRounds];
-        int count = 0;
-        for (Map.Entry<String, int[][]> entry : selfMatchResults.entrySet()) {
-            for (int i = 0; i < numberOfRounds; i++) {
-                averageScores[i] += entry.getValue()[i][0];
-            }
-        }
-        for (int i = 0; i < numberOfRounds; i++) {
-            averageScores[i] = averageScores[i] / selfMatchResults.size();
-        }
-        return averageScores;
     }
 }

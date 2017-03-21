@@ -58,6 +58,13 @@ public class ControllerCustomMode implements Initializable {
 
     public void setObservables(Observables observables) {
         this.observables = observables;
+
+        setupView();
+        populateFields();
+        setDefaultComboBox();
+    }
+
+    private void setupView() {
         TextField[] textFields = {
                 win_value, lose_value, draw_c_value, draw_d_value
         };
@@ -65,9 +72,6 @@ public class ControllerCustomMode implements Initializable {
                 random_value};
         CustomModeHandler customModeHandler = new CustomModeHandler(objects, observables);
         save_custom_mode.setOnAction(customModeHandler);
-
-        populateFields();
-        setDefaultComboBox();
     }
 
     private void setDefaultComboBox() {

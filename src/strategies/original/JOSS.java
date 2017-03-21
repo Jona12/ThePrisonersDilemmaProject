@@ -1,7 +1,7 @@
 package strategies.original;
 
 import main.History;
-import main.StrategyFunctions;
+import main.CommonFunctions;
 import main.Variables;
 
 /**
@@ -14,7 +14,7 @@ public class JOSS {
 
         if (h.getCurrentRound() > 0) {
             if (h.getPreviousRoundScore()[1].equals(Variables.COOPERATE)) {
-                return StrategyFunctions.randomChoice(probability);
+                return CommonFunctions.randomChoice(probability);
             }
         }
         return new TIT_FOR_TAT().calculate(h);

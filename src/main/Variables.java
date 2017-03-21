@@ -95,44 +95,4 @@ public class Variables {
         DRAW_C_SCORE = scoreMatrix[2];
         DRAW_D_SCORE = scoreMatrix[3];
     }
-
-    public static ArrayList<String> getStrategies(boolean all, boolean custom) {
-        File currentDir = new File("."); // Read current file location
-        File srcDir;
-        File strategiesDir;
-        ArrayList<String> strategies = new ArrayList<>();
-        try {
-            srcDir = new File(currentDir.getCanonicalFile(), "src"); // Construct the target directory file with the right parent directory
-            strategiesDir = new File(srcDir, "strategies");
-
-            String toAdd;
-            DirectoryStream<Path> dirStream = Files.newDirectoryStream(strategiesDir.toPath());
-            for (Path p : dirStream) {
-                if (p.toFile().isDirectory() && p.toFile().getName().equals("original") && (all || !custom)) {
-                    for (Path path : Files.newDirectoryStream(p)) {
-                        toAdd = path.getFileName().toString();
-                        toAdd = toAdd.substring(0, toAdd.indexOf(".java"));
-                        toAdd += " (original)";
-                        strategies.add(toAdd);
-                    }
-                } else if (p.toFile().isDirectory() && p.toFile().getName().equals("custom") && (custom || all)) {
-                    for (Path path : Files.newDirectoryStream(p)) {
-                        toAdd = path.getFileName().toString();
-                        toAdd = toAdd.substring(0, toAdd.indexOf(".java"));
-                        strategies.add(toAdd);
-                    }
-                } else if (p.toFile().isDirectory() && p.toFile().getName().equals("built_in") && (all || !custom)) {
-                    for (Path path : Files.newDirectoryStream(p)) {
-                        toAdd = path.getFileName().toString();
-                        toAdd = toAdd.substring(0, toAdd.indexOf(".java"));
-                        toAdd += " (built-in)";
-                        strategies.add(toAdd);
-                    }
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return strategies;
-    }
 }

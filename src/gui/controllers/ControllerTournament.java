@@ -17,6 +17,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.Callback;
+import main.CommonFunctions;
 import main.TournamentMode;
 import main.Variables;
 
@@ -243,7 +244,7 @@ public class ControllerTournament implements Initializable {
         });
 
         ObservableList<StrategyData> strategyData = observables.getStrategyData();
-        ArrayList<String> strategies = Variables.getStrategies(true, false);
+        ArrayList<String> strategies = CommonFunctions.getStrategies(true, false);
 
         for (String s : strategies) {
             strategyData.add(new StrategyData(s, false));
@@ -296,8 +297,8 @@ public class ControllerTournament implements Initializable {
         values[1][1] = "Custom Strategies";
 
         //tournament_GoToAnalysisButton
-        values[1][0] = "fxml/analysis.fxml";
-        values[1][1] = "Analysis";
+        values[2][0] = "fxml/analysis.fxml";
+        values[2][1] = "Analysis";
 
         int count = 0;
         for (Object[] v : values) {

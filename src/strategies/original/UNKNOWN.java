@@ -1,7 +1,7 @@
 package strategies.original;
 
 import main.History;
-import main.StrategyFunctions;
+import main.CommonFunctions;
 
 import java.util.Random;
 
@@ -16,6 +16,6 @@ public class UNKNOWN {
 
         float r = new Random().nextInt(upperBound-lowerBound) + lowerBound;
 
-        return StrategyFunctions.randomChoice(r);
+        return CommonFunctions.randomChoice(r);
     }
 }

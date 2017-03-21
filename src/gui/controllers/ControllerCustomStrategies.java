@@ -13,6 +13,7 @@ import javafx.scene.control.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Callback;
+import main.CommonFunctions;
 import main.Variables;
 
 import java.io.File;
@@ -60,11 +61,11 @@ public class ControllerCustomStrategies implements Initializable {
     }
 
     private void setListView() {
-        ArrayList<String> strategies = Variables.getStrategies(false, false);
+        ArrayList<String> strategies = CommonFunctions.getStrategies(false, false);
         ObservableList<String> strategyData = FXCollections.observableArrayList(strategies);
         strategy_list.setItems(strategyData);
 
-        ArrayList<String> strategies2 = Variables.getStrategies(false, true);
+        ArrayList<String> strategies2 = CommonFunctions.getStrategies(false, true);
         ObservableList<String> strategyData2 = FXCollections.observableArrayList(strategies2);
         list_view_edit.setItems(strategyData2);
     }

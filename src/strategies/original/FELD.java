@@ -1,7 +1,7 @@
 package strategies.original;
 
 import main.History;
-import main.StrategyFunctions;
+import main.CommonFunctions;
 
 /**
  * Created by dbrisingr on 28/02/2017.
@@ -19,6 +19,6 @@ public class FELD {
 
         float cooperation_prob = Math.max(start_coop_prob + slope * rounds, end_coop_prob);
 
-        return StrategyFunctions.randomChoice(cooperation_prob);
+        return CommonFunctions.randomChoice(cooperation_prob);
     }
 }

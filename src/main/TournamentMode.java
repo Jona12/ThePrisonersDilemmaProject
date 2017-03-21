@@ -149,7 +149,6 @@ public class TournamentMode {
             properties.load(new FileInputStream("src/main/mode_data/data.properties"));
         } catch (IOException e) {
             properties = storeCustomModeData(null);
-//                e.printStackTrace();
         }
 
         String arr = properties.getProperty(Variables.SCORE_MATRIX);
