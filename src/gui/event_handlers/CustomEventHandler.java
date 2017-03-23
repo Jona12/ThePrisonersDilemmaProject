@@ -164,18 +164,26 @@ public class CustomEventHandler implements EventHandler {
                 path = "src/main/results_data/" + result + ".txt";
                 FileOutputStream fileOutputStream = new FileOutputStream(path);
                 ObjectOutputStream out = new ObjectOutputStream(fileOutputStream);
+
                 out.writeObject(analysis.getTournamentLinkedList());
+                out.flush();
+                fileOutputStream.close();
 
                 path = "src/main/results_data/" + result + "_MATCH_" + ".txt";
                 fileOutputStream = new FileOutputStream(path);
                 out = new ObjectOutputStream(fileOutputStream);
                 out.writeObject(analysis.getTournamentResult());
+                out.flush();
+                fileOutputStream.close();
+
 
                 if (analysis.getRandomLinkedList() != null) {
                     path = "src/main/results_data/" + result + "_RANDOM_.txt";
                     fileOutputStream = new FileOutputStream(path);
                     out = new ObjectOutputStream(fileOutputStream);
                     out.writeObject(analysis.getRandomLinkedList());
+                    out.flush();
+                    fileOutputStream.close();
                 }
 
 

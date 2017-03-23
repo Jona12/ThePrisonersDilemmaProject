@@ -60,6 +60,7 @@ public class CommonFunctions {
                 e.printStackTrace();
             }
         }
+
         return arrayList;
     }
 

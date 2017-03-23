@@ -74,8 +74,7 @@ public class Tournament {
 
     public HashMap<String, History> runDefault() {
 
-        HashMap<String, History> historyHashMap;
-        historyHashMap = new HashMap<>();
+        HashMap<String, History> historyHashMap = new HashMap<>();
         for (String strategy : strategyArrayList) {
             historyHashMap.put(strategy, new History(numberOfRounds, strategy));
         }

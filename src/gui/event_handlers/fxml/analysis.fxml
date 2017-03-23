@@ -147,7 +147,7 @@
                                                         </Label>
                                                         <AnchorPane prefHeight="200.0" prefWidth="200.0">
                                                             <children>
-                                                                <Label fx:id="analysis_forgive" prefHeight="99.0" prefWidth="226.0" text="Forgiveness describes the propensity to cooperate in the moves after the other strategy defected. In the tournament, the most forgiving strategy is [strategy1], while the least forgiving strategy is [strategy2]." textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                                <Label fx:id="analysis_forgive" prefHeight="99.0" prefWidth="226.0" text="Forgiveness describes the propensity to cooperate in the moves after the other strategy defected. In the application, the most forgiving strategies include ALWAYS_COOPERATE, TLK, and JOSS. The least forgiving strategy is ALWAYS_DEFECT." textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                                             </children>
                                                         </AnchorPane>
                                                         <Label text="Kingmaker">

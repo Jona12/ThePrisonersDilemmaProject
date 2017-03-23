@@ -1,11 +1,13 @@
 package gui.controllers;
 
+import gui.data_structures.RankData;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.*;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import main.Analysis;
 import main.CommonFunctions;
 import main.History;
@@ -78,6 +80,10 @@ public class ControllerAnalysis implements Initializable {
         setupView();
         calculateMatchData();
         calculateStrategyData();
+
+        Variables.setScoreMatrix(new int[]{5, 0, 3, 1});
+        calculateAnalysisData();
+//        Variables.setScoreMatrix(null);
     }
 
     private void setupView() {
@@ -245,12 +251,10 @@ public class ControllerAnalysis implements Initializable {
     private int calculateStrategy(boolean high) {
 
         String s;
-        int matchScore1;
+        int matchScore1 = 0;
         if (high) {
-            matchScore1 = 0;
             s = strategy_high.getText();
         } else {
-            matchScore1 = 999999;
             s = strategy_low.getText();
         }
 
@@ -280,7 +284,7 @@ public class ControllerAnalysis implements Initializable {
         int score = strategySum / count;
 
 
-        LinkedList<HashMap<String, History>> linkedList = analysis.getTournamentLinkedList();
+        LinkedList<HashMap<String, History>> linkedList = tournamentLinkedList;
         int defect = 0;
         int cooperate = 0;
         for (HashMap<String, History> historyHashMap : linkedList) {
@@ -309,29 +313,29 @@ public class ControllerAnalysis implements Initializable {
             outcome2 = "cooperates";
         }
 
+        String strategy2 = "";
         String matchID = "";
         int matchScore2 = 0;
         for (Map.Entry<String, int[]> entry : tournamentResult.entrySet()) {
             if (entry.getKey().contains(strategy1)) {
-                if (high) {
-                    if (entry.getValue()[0] > matchScore1) {
-                        matchID = entry.getKey().substring(0, entry.getKey().indexOf("_"));
-                        matchScore1 = entry.getValue()[0];
-                        matchScore2 = entry.getValue()[1];
-                    }
-                } else {
-                    if (entry.getValue()[0] < matchScore1) {
-                        matchID = entry.getKey().substring(0, entry.getKey().indexOf("_"));
-                        matchScore1 = entry.getValue()[0];
-                        matchScore2 = entry.getValue()[1];
-                    }
+                if (entry.getValue()[0] > matchScore1) {
+                    matchID = entry.getKey().substring(0, entry.getKey().indexOf("_"));
+                    matchScore1 = entry.getValue()[0];
+                    matchScore2 = entry.getValue()[1];
                 }
-
+                if (matchID.contains("_vs._")) {
+                    strategy2 = matchID.substring(matchID.indexOf("._") + 2);
+                } else if (matchID.contains("_RAND")) {
+                    strategy2 = "RANDOM";
+                } else {
+                    strategy2 = strategy1;
+                }
             }
         }
 
 
         s = s.replace("[strategy1]", strategy1);
+        s = s.replace("[strategy2]", strategy2);
         s = s.replace("[score1]", Integer.toString(score1));
         s = s.replace("[outcome1]", outcome1);
         s = s.replace("[outcome2]", outcome2);
@@ -378,16 +382,113 @@ public class ControllerAnalysis implements Initializable {
 
     }
 
-
-    private void calculateAnalysisNice() {
+    private void calculateAnalysisData() {
+        calculateAnalysisNice();
+        calculateAnalysisKing();
+        calculateAnalysisGraph();
     }
 
-    private void calculateAnalysisForgive() {
+    private void calculateAnalysisNice() {
+
+
+        int strategyAmount = tournamentLinkedList.getFirst().size() + 1;
+        int niceAmount = 0;
+        for (HashMap<String, History> hashMap : tournamentLinkedList) {
+            for (Map.Entry<String, History> entry : hashMap.entrySet()) {
+                HashMap<String, int[][]> stringHashMap = entry.getValue().getSelfMatchResults();
+                loop:
+                for (Map.Entry<String, int[][]> stringEntry : stringHashMap.entrySet()) {
+                    String[][] temp = Variables.calculateMatchScoreString(stringEntry.getValue());
+                    for (int i = 0; i < temp.length; i++) {
+                        if (temp[i][0].equals(Variables.DEFECT)) {
+                            break loop;
+                        } else if (temp[i][0].equals(Variables.COOPERATE)
+                                && temp[i][1].equals(Variables.DEFECT)) {
+                            niceAmount++;
+                            break loop;
+                        }
+                    }
+                }
+            }
+        }
+
+        String s = analysis_nice.getText();
+        s = s.replace("[strategyAmount]", Integer.toString(strategyAmount));
+        s = s.replace("[niceAmount]", Integer.toString(niceAmount));
+        analysis_nice.setText(s);
     }
 
     private void calculateAnalysisKing() {
+
+        ArrayList<String> highStrategyNames = new ArrayList<>();
+        ArrayList<String> lowStrategyNames = new ArrayList<>();
+        HashMap<String, Integer> hashMap = analysis.fetchTournamentScores(true, false, false);
+        int count = 0;
+        for (Map.Entry<String, Integer> entry : hashMap.entrySet()) {
+            if (count < 3) {
+                highStrategyNames.add(entry.getKey());
+            }
+            if (count++ > hashMap.size() - 5) {
+                if (!entry.getKey().equals("RANDOM")) {
+                    lowStrategyNames.add(entry.getKey());
+                }
+            }
+        }
+
+        HashSet<String> finalList = new HashSet<>();
+
+
+        HashMap<String, History> historyHashMap = tournamentLinkedList.getFirst();
+
+        String low;
+        String high;
+
+        for (int i = 0; i < lowStrategyNames.size(); i++) {
+            for (int j = 0; j < highStrategyNames.size(); j++) {
+
+                low = lowStrategyNames.get(i);
+                high = highStrategyNames.get(j);
+
+                int[][] array = historyHashMap.get(low).getSelfMatchResults().get(high);
+                int lowScore = 0;
+                int highScore = 0;
+
+                for (int x = 0; x < array.length; x++) {
+                    lowScore += array[x][0];
+                    highScore += array[x][1];
+
+                }
+                if (lowScore > 0 && highScore / lowScore > 1.8) {
+                    finalList.add(low);
+                } else if (lowScore == 0) {
+                    finalList.add(low);
+                }
+
+            }
+        }
+
+        String temp = "";
+        for (String t : finalList) {
+            temp += t + ", ";
+        }
+        temp = temp.substring(0, temp.length() - 2);
+        String s = analysis_king.getText();
+        s = s.replace("[kingmakers]", temp);
+        analysis_king.setText(s);
     }
 
     private void calculateAnalysisGraph() {
+        ObservableList<RankData> rankData = FXCollections.observableArrayList();
+        int counter = 1;
+        HashMap<String, Integer> hashMap = analysis.fetchTournamentScores(true, false, false);
+        for (Map.Entry<String, Integer> entry : hashMap.entrySet()) {
+            rankData.add(new RankData(counter++, entry.getKey(), entry.getValue()));
+        }
+
+        entry.setPrefWidth(300);
+        rank.setCellValueFactory(new PropertyValueFactory<RankData, Integer>("rank"));
+        entry.setCellValueFactory(new PropertyValueFactory<RankData, String>("entry"));
+        score.setCellValueFactory(new PropertyValueFactory<RankData, Integer>("score"));
+        analysis_table.setItems(rankData);
     }
 }
