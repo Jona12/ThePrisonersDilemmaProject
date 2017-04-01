@@ -227,7 +227,8 @@ public class CustomEventHandler implements EventHandler {
             });
 
             stage.setScene(scene);
-            if (!window.equals("fxml/edit_custom_mode.fxml") && !window.equals("fxml/strategies.fxml")) {
+            if (!window.equals("fxml/edit_custom_mode.fxml") && !window.equals("fxml/strategies.fxml")
+                    && !window.contains("concept")) {
                 Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
                 double width = screenSize.getWidth();
                 double height = screenSize.getHeight();

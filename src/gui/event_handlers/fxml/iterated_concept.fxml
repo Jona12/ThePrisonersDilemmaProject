@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1">
+   <top>
+      <Label text="Iterated Prisoner's Dilemma Concepts" BorderPane.alignment="CENTER">
+         <font>
+            <Font name="SansSerif Bold" size="30.0" />
+         </font>
+         <padding>
+            <Insets top="20.0" />
+         </padding>
+      </Label>
+   </top>
+   <center>
+      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+         <children>
+            <AnchorPane prefHeight="200.0" prefWidth="200.0">
+               <children>
+                  <Label alignment="CENTER" prefHeight="200.0" text="The iterated Prisoner's Dilemma problem is an extension of the original Prisoner's Dilemma in which the two individuals will interact with each other more than once, and they will remember their previous interactions. The game can either be played an unknown number of times, or a fixed number of times. " textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <padding>
+                        <Insets left="15.0" right="15.0" />
+                     </padding>
+                  </Label>
+               </children>
+            </AnchorPane>
+            <AnchorPane fx:id="anchorPane_image" prefHeight="200.0" prefWidth="200.0">
+               <children>
+                  <Label alignment="CENTER" prefHeight="115.0" prefWidth="600.0" text="Consider the situation in which the leaders of two countries, A and B, have agreed to a peace treaty, promising that they will not attempt to take over any the land of the other one until the treaty has expired. Given that the treaty will expire in 200 days' time under any circumstances, the leaders will have the opportunity to either cooperate with or disregard the treaty every single day. Let us also assume that every piece of land holds valuable resources that each country is trying to attain." textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <padding>
+                        <Insets left="15.0" right="15.0" />
+                     </padding>
+                  </Label>
+               </children></AnchorPane>
+            <AnchorPane prefHeight="200.0" prefWidth="200.0">
+               <children>
+                  <Label alignment="CENTER" prefHeight="115.0" text="The best case scenario for leader A is to always have leader B cooperate, and for leader A himself to defect. This way for every interaction (day), leader A will gain the most while B gains the least. However, an added complexity is that leader B will remember every time leader A defects and thus leader B may decide to punish leader A at the next interaction (day). The more leader A defects, the higher the chances leader B will also defect in response." textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <padding>
+                        <Insets left="15.0" right="15.0" />
+                     </padding>
+                  </Label>
+               </children>
+            </AnchorPane>
+         </children>
+      </VBox>
+   </center>
+</BorderPane>

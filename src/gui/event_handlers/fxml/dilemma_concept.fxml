@@ -2,11 +2,13 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1">
    <top>
@@ -24,21 +26,41 @@
          <children>
             <AnchorPane prefHeight="200.0" prefWidth="200.0">
                <children>
-                  <Label prefHeight="200.0" text="Welcome to Iteration. Iteration is an application that is able to simulate Robert Axelrod’s iterated Prisoner’s Dilemma tournament. The tournament settings can also be modified in order for you to run your own tournament. Tournaments can be saved, and Iteration will also provide useful statistics and information through its Analysis feature." textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <Label alignment="CENTER" prefHeight="200.0" text="The Prisoner's Dilemma is a game that models the interaction between two individuals with the following general scenario: two individuals, A and B, are caught shorty after committing a crime and placed in two different cells (i.e. they are unable to communicate with each other). &#10;&#10;In this scenario let us assume that if A confesses that B has committed a crime, then we say A has betrayed B (and vice versa). If A does not confess that B has committed a crime, then we say A cooperates with B (and vice versa)." textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <padding>
                         <Insets left="15.0" right="15.0" />
                      </padding>
                   </Label>
                </children>
             </AnchorPane>
-            <AnchorPane fx:id="anchorPane_image" prefHeight="200.0" prefWidth="200.0" />
-            <AnchorPane prefHeight="200.0" prefWidth="200.0">
+            <AnchorPane fx:id="anchorPane_image" prefHeight="200.0" prefWidth="200.0">
                <children>
-                  <Label prefHeight="115.0" text="Welcome to Iteration. Iteration is an application that is able to simulate Robert Axelrod’s iterated Prisoner’s Dilemma tournament. The tournament settings can also be modified in order for you to run your own tournament. Tournaments can be saved, and Iteration will also provide useful statistics and information through its Analysis feature." textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <Label alignment="CENTER" prefHeight="115.0" prefWidth="600.0" text="The first individual, A, and the second individual, B, are both given the same offer: &#10;&#10;(1) If A betrays B, while B also betrays A, then both individuals will be given the original sentence.&#10;(2) If A betrays B, but B cooperates with A, then A will be set free and B will be given a heavier sentence.&#10;(3) If B betrays A, but A cooperates with B, then B will be set free and A will be given a heavier sentence.&#10;(4) If both denies, both will be given a lighter sentence." textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <padding>
                         <Insets left="15.0" right="15.0" />
                      </padding>
                   </Label>
+               </children></AnchorPane>
+            <AnchorPane prefHeight="200.0" prefWidth="200.0">
+               <children>
+                  <Label alignment="CENTER" prefHeight="115.0" text="A payoff matrix states the outcomes an individual will get depending on the scenarios above. As an example, in the figure shown below, if A (shown in green) cooperates and B (shown in blue) also cooperates then both will be sentenced for 1 year. If both betrays each other (defects) then both will be sentenced for 2 years each.&#10;&#10;The aim of the game is to achieve the highest score. In other words, the highest an individual can achieve is 0 in this case, which means they are set free. Any negative number denotes that the individual will be sentenced for that amount of years (ignoring the negative). For example, if A scores -2, then A will be sentenced for 2 years." textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <padding>
+                        <Insets left="15.0" right="15.0" />
+                     </padding>
+                  </Label>
+               </children>
+            </AnchorPane>
+            <AnchorPane prefHeight="200.0" prefWidth="200.0">
+               <children>
+                  <HBox alignment="CENTER" prefHeight="86.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <ImageView fitHeight="158.0" fitWidth="600.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../images/10.jpg" />
+                           </image>
+                        </ImageView>
+                     </children>
+                  </HBox>
                </children>
             </AnchorPane>
          </children>

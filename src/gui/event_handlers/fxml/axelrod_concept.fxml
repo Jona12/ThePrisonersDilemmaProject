@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1">
+   <top>
+      <Label text="Axelrod's Tournament Concepts" BorderPane.alignment="CENTER">
+         <font>
+            <Font name="SansSerif Bold" size="30.0" />
+         </font>
+         <padding>
+            <Insets top="20.0" />
+         </padding>
+      </Label>
+   </top>
+   <center>
+      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+         <children>
+            <AnchorPane prefHeight="200.0" prefWidth="200.0">
+               <children>
+                  <Label alignment="CENTER" prefHeight="200.0" text="Axelrod's paper, Effective Choice in the Prisoner's Dilemma, describes a &quot;'primer' on how to play the iterated Prisoner's Dilemma game effectively&quot;. Axelrod outlined the creation of a computer tournament that enables strategies to compete with one another. The tournament had 14 entries in total, whereby most authors of said entries were those who had published published articles on game theory or the Prisoner's Dilemma specifically." textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <padding>
+                        <Insets left="15.0" right="15.0" />
+                     </padding>
+                  </Label>
+               </children>
+            </AnchorPane>
+            <AnchorPane fx:id="anchorPane_image" prefHeight="200.0" prefWidth="200.0">
+               <children>
+                  <Label alignment="CENTER" prefHeight="115.0" prefWidth="600.0" text="The computer tournament had the following constraints:&#10;(1) The tournament will be in the form of a round robin such that each strategy is matched with every other strategy&#10;(2) Each strategy will also play against its own twin.&#10;(3) Each strategy will also play against the RANDOM strategy.&#10;(4) Each game will last for 200 rounds.&#10;(5) There is no limit for how long a strategy takes to run." textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <padding>
+                        <Insets left="15.0" right="15.0" />
+                     </padding>
+                  </Label>
+               </children></AnchorPane>
+            <AnchorPane prefHeight="200.0" prefWidth="200.0">
+               <children>
+                  <Label alignment="CENTER" prefHeight="115.0" text="The winning entry was a strategy named TIT FOR TAT, which cooperates in the first move, and copies the opponent's previous move from then on. TIT FOR TAT was the simplest of all entries, taking only four lines of code in BASIC, the programming language used in the computer program.&#10;&#10;The figure below is the payoff matrix that was used in the tournament." textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <padding>
+                        <Insets left="15.0" right="15.0" />
+                     </padding>
+                  </Label>
+               </children>
+            </AnchorPane>
+            <AnchorPane prefHeight="200.0" prefWidth="200.0">
+               <children>
+                  <HBox alignment="CENTER" prefHeight="150.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <ImageView fitHeight="96.0" fitWidth="600.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../images/11.jpg" />
+                           </image>
+                        </ImageView>
+                     </children>
+                  </HBox>
+               </children>
+            </AnchorPane>
+         </children>
+      </VBox>
+   </center>
+</BorderPane>
