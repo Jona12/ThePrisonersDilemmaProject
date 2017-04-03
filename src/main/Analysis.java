@@ -12,12 +12,12 @@ import java.util.stream.Collectors;
  */
 public class Analysis {
 
-    private HashMap<String, int[]> tournamentResult;
+    private ArrayList<LinkedHashMap<String, int[]>> tournamentResultArray;
     private LinkedList<HashMap<String, History>> tournamentLinkedList;
     private LinkedList<History> randomLinkedList;
 
-    public HashMap<String, int[]> getTournamentResult() {
-        return tournamentResult;
+    public ArrayList<LinkedHashMap<String, int[]>> getTournamentResultArray() {
+        return tournamentResultArray;
     }
 
     public LinkedList<HashMap<String, History>> getTournamentLinkedList() {
@@ -28,17 +28,90 @@ public class Analysis {
         return randomLinkedList;
     }
 
-    public Analysis(LinkedList<HashMap<String, History>> tournamentLinkedList, HashMap<String, int[]> tournamentResult, LinkedList<History> randomLinkedList) {
+    public Analysis(LinkedList<HashMap<String, History>> tournamentLinkedList, ArrayList<LinkedHashMap<String, int[]>> tournamentResultArray, LinkedList<History> randomLinkedList) {
         this.tournamentLinkedList = tournamentLinkedList;
-        this.tournamentResult = tournamentResult;
+        this.tournamentResultArray = tournamentResultArray;
         this.randomLinkedList = randomLinkedList;
     }
 
-    public Analysis(HashMap<String, int[]> tournamentResult, LinkedList<HashMap<String, History>> tournamentLinkedList) {
-        this.tournamentResult = tournamentResult;
+    public Analysis(ArrayList<LinkedHashMap<String, int[]>> tournamentResultArray, LinkedList<HashMap<String, History>> tournamentLinkedList) {
+        this.tournamentResultArray = tournamentResultArray;
         this.tournamentLinkedList = tournamentLinkedList;
     }
 
+    public HashMap<String, Integer> fetchAverageScores() {
+        HashMap<String, Integer> averageScores = new HashMap<>();
+
+        String temp;
+        HashMap<String, ArrayList<Integer>> hashMap = new HashMap<>();
+        int[] ints;
+        for (HashMap<String, int[]> stringHashMap : tournamentResultArray) {
+            for (Map.Entry<String, int[]> entry : stringHashMap.entrySet()) {
+                temp = entry.getKey();
+                ints = entry.getValue();
+                String[] strings = fixMatchStrings(temp);
+
+                if (strings[0].equals(strings[1])) {
+                    if (hashMap.containsKey(strings[0])) {
+                        ArrayList<Integer> toPut = hashMap.get(strings[0]);
+                        toPut.add(ints[0]);
+                    } else {
+                        ArrayList<Integer> toPut = new ArrayList<>();
+                        toPut.add(ints[0]);
+                        hashMap.put(strings[0], toPut);
+                    }
+                } else {
+                    for (int i = 0; i < strings.length; i++) {
+                        if (hashMap.containsKey(strings[i])) {
+                            ArrayList<Integer> toPut = hashMap.get(strings[i]);
+                            toPut.add(ints[i]);
+                        } else {
+                            ArrayList<Integer> toPut = new ArrayList<>();
+                            toPut.add(ints[i]);
+                            hashMap.put(strings[i], toPut);
+                        }
+                    }
+                }
+            }
+        }
+
+        for (Map.Entry<String, ArrayList<Integer>> entry : hashMap.entrySet()) {
+            String s = entry.getKey();
+            int count = entry.getValue().size();
+            int totalScore = 0;
+//            System.out.println(s);
+            for (int i : entry.getValue()) {
+//                System.out.println(i);
+                totalScore += i;
+            }
+//            System.out.println(count);
+            int averageScore = totalScore / count;
+            averageScores.put(s, averageScore);
+        }
+
+        averageScores = (HashMap<String, Integer>) sortByValue(averageScores);
+        return averageScores;
+    }
+
+    public static String[] fixMatchStrings(String matchID) {
+        String[] strings = new String[2];
+        String strategy1, strategy2;
+
+        if (matchID.contains("_vs._")) {
+            strategy1 = matchID.substring(matchID.indexOf("_") + 1, matchID.indexOf("_vs._"));
+            strategy2 = matchID.substring(matchID.indexOf("._") + 2);
+        } else if (matchID.contains("_RAND")) {
+            strategy1 = matchID.substring(matchID.indexOf("_") + 1, matchID.indexOf("_RAND"));
+            strategy2 = "RANDOM";
+        } else {
+            strategy1 = matchID.substring(matchID.indexOf("_") + 1, matchID.indexOf("_TWIN"));
+            strategy2 = strategy1;
+        }
+        strings[0] = strategy1;
+        strings[1] = strategy2;
+
+        return strings;
+    }
 
     public HashMap<String, Integer> fetchTournamentScores(boolean tournamentSum, boolean maxMatchSum, boolean minMatchSum) {
 

@@ -1,5 +1,7 @@
 package gui.event_handlers;
 
+import gui.data_structures.Observables;
+import gui.data_structures.StrategyData;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
@@ -16,6 +18,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
@@ -32,18 +35,21 @@ public class CustomStrategyHandler implements EventHandler {
     private Button add;
     private Button delete;
 
+    private Observables observables;
 
-    public CustomStrategyHandler(Object[] components) {
+    public CustomStrategyHandler(Object[] components, Observables observables) {
         listView_original = (ListView) components[0];
         listView_custom = (ListView) components[1];
         textArea = (TextArea) components[2];
         save = (Button) components[3];
         add = (Button) components[4];
         delete = (Button) components[5];
+        this.observables = observables;
     }
 
     @Override
     public void handle(Event event) {
+        System.out.println(event.getSource().getClass());
         if (event.getSource() == delete) {
             if (listView_custom.getSelectionModel().getSelectedItem() != null) {
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -64,6 +70,7 @@ public class CustomStrategyHandler implements EventHandler {
                     textArea.clear();
                 }
             }
+            updateTournamentList();
             listView_custom.setItems(FXCollections.observableArrayList(CommonFunctions.getStrategies(false, true)));
         } else if (event.getSource() == add) {
             textArea.clear();
@@ -93,7 +100,7 @@ public class CustomStrategyHandler implements EventHandler {
 
             }
             listView_custom.setItems(FXCollections.observableArrayList(CommonFunctions.getStrategies(false, true)));
-
+            updateTournamentList();
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Strategy saved");
             alert.setHeaderText(null);
@@ -101,6 +108,18 @@ public class CustomStrategyHandler implements EventHandler {
             alert.showAndWait();
 
             save.setDisable(true);
+        }
+    }
+
+    private void updateTournamentList(){
+        if(observables != null){
+            ObservableList<StrategyData> strategyData = observables.getStrategyData();
+            strategyData.clear();
+            ArrayList<String> strategies = CommonFunctions.getStrategies(true, false);
+            strategies.remove("RANDOM (built-in)");
+            for (String s : strategies) {
+                strategyData.add(new StrategyData(s, false));
+            }
         }
     }
 }

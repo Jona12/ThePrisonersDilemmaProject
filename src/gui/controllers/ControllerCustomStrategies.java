@@ -45,15 +45,22 @@ public class ControllerCustomStrategies implements Initializable {
     @FXML
     private Accordion accordion;
 
+    private Observables observables;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         accordion.setExpandedPane(titled_pane);
         setListView();
         setTextArea();
+    }
+
+    public void setObservables(Observables observables){
+        this.observables = observables;
+
         Object[] components = {
                 strategy_list, list_view_edit, text_area, save, add, delete
         };
-        CustomStrategyHandler customStrategyHandler = new CustomStrategyHandler(components);
+        CustomStrategyHandler customStrategyHandler = new CustomStrategyHandler(components, observables);
         save.setOnAction(customStrategyHandler);
         save.setDisable(true);
         add.setOnAction(customStrategyHandler);

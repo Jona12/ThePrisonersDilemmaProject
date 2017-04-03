@@ -12,6 +12,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.CheckBoxTableCell;
@@ -48,8 +51,6 @@ public class ControllerTournament implements Initializable {
     @FXML
     private TitledPane tournament_tournamentEntriesSelection;
     @FXML
-    private Label tournament_tournamentEntriesSelection_selectMoreLabel;
-    @FXML
     private TableView tournament_tournamentEntriesSelection_tableView;
     @FXML
     private TableColumn tournament_tournamentEntriesSelection_tableView_strategyColumn;
@@ -80,31 +81,12 @@ public class ControllerTournament implements Initializable {
     @FXML
     private TitledPane tournament_payoff;
     @FXML
-    private PieChart tournament_payoffGraph;
+    private BarChart tournament_payoffGraph;
     //    private LineChart tournament_payoffGraph;
     @FXML
     private Button tournament_GoToAnalysisButton;
     @FXML
     private Button tournament_saveResultButton;
-
-    private Object[] objects = {
-            tournamentAccordion, tournament_modeSelection, tournament_modeSelection_listView,
-            tournament_modeSelection_editButton,
-            tournament_modeSelection_selectedModeSettings_tableView,
-            tournament_modeSelection_selectedModeSettings_tableView_variablesColumn,
-            tournament_modeSelection_selectedModeSettings_tableView_valuesColumn, tournament_tournamentEntriesSelection,
-            tournament_tournamentEntriesSelection_selectMoreLabel, tournament_tournamentEntriesSelection_tableView,
-            tournament_tournamentEntriesSelection_tableView_strategyColumn,
-            tournament_tournamentEntriesSelection_tableView_selectColumn,
-            tournament_tournamentEntriesSelection_selectOriginalButton,
-            tournament_tournamentEntriesSelection_editCustomStrategiesButton,
-            tournament_tournamentEntriesSelection_selectDeselectButton, tournament_runSimulationButton,
-            tournament_stopSimulationButton, resultsAccordion, tournament_rankTable, tournament_rankTable_tableView,
-            tournament_rankTable_tableView_rankColumn, tournament_rankTable_tableView_entryColumn,
-            tournament_rankTable_tableView_scoreColumn, tournament_payoff, tournament_payoffGraph,
-            tournament_GoToAnalysisButton,
-            tournament_saveResultButton
-    };
 
     private Observables observables;
 
@@ -129,7 +111,7 @@ public class ControllerTournament implements Initializable {
         CustomEventHandler customEventHandler1 = new CustomEventHandler(getNodeHashMap(), observables);
 
         tournament_modeSelection_editButton.setOnAction(customEventHandler1);
-        tournament_tournamentEntriesSelection_editCustomStrategiesButton.setOnAction(customEventHandlerLauncher);
+        tournament_tournamentEntriesSelection_editCustomStrategiesButton.setOnAction(customEventHandler1);
         tournament_GoToAnalysisButton.setOnAction(customEventHandlerLauncher);
 
         tournament_tournamentEntriesSelection_selectOriginalButton.setOnAction(customEventHandler);
@@ -245,6 +227,7 @@ public class ControllerTournament implements Initializable {
 
         ObservableList<StrategyData> strategyData = observables.getStrategyData();
         ArrayList<String> strategies = CommonFunctions.getStrategies(true, false);
+        strategies.remove("RANDOM (built-in)");
 
         for (String s : strategies) {
             strategyData.add(new StrategyData(s, false));
@@ -266,16 +249,17 @@ public class ControllerTournament implements Initializable {
 
     private void setPayoffGraph() {
 
-//        tournament_payoffGraph.setCreateSymbols(false);
-//        tournament_payoffGraph.getXAxis().setLabel("Rounds");
-//        tournament_payoffGraph.getYAxis().setLabel("Average Payoff");
-//        tournament_payoffGraph.setData(observables.getGraphData());
+        tournament_payoffGraph.setTitle("Total Scores of Strategies");
+        tournament_payoffGraph.getXAxis().setLabel("Strategy Names");
+        tournament_payoffGraph.getYAxis().setLabel("Overall Score");
+        tournament_payoffGraph.setLegendVisible(false);
+        tournament_payoffGraph.setAnimated(false);
+        tournament_payoffGraph.setData(observables.getGraphData());
 //        NumberAxis x = (NumberAxis) tournament_payoffGraph.getXAxis();
 //        x.setTickUnit(100);
 
         tournament_payoffGraph.setLegendVisible(false);
-        tournament_payoffGraph.setTitle("Payoff of Entries");
-        tournament_payoffGraph.setData(observables.getPieChartData());
+        tournament_payoffGraph.setData(observables.getGraphData());
 
     }
 
@@ -293,7 +277,7 @@ public class ControllerTournament implements Initializable {
         values[0][1] = "Mode Customisation";
 
         //tournament_tournamentEntriesSelection_editCustomStrategiesButton
-        values[1][0] = "fxml/edit_strategy.fxml";
+        values[1][0] = "fxml/strategies.fxml";
         values[1][1] = "Custom Strategies";
 
         //tournament_GoToAnalysisButton

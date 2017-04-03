@@ -4,7 +4,6 @@
 <?import javafx.scene.chart.BarChart?>
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.NumberAxis?>
-<?import javafx.scene.chart.StackedBarChart?>
 <?import javafx.scene.control.Accordion?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.SplitPane?>
@@ -24,7 +23,7 @@
                     <content>
                         <AnchorPane prefHeight="200.0" prefWidth="200.0">
                             <children>
-                                <SplitPane dividerPositions="0.4" prefHeight="318.0" prefWidth="598.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                <SplitPane dividerPositions="0.2" prefHeight="318.0" prefWidth="598.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                     <items>
                                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                                             <children>
@@ -53,16 +52,16 @@
                                             </padding>
                                         </AnchorPane>
                                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
-                                            <children>
-                                                <StackedBarChart fx:id="match_graph" prefHeight="296.0" prefWidth="342.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                                    <xAxis>
-                                                        <CategoryAxis side="BOTTOM" />
-                                                    </xAxis>
-                                                    <yAxis>
-                                                        <NumberAxis side="LEFT" />
-                                                    </yAxis>
-                                                </StackedBarChart>
-                                            </children>
+                                 <children>
+                                    <TableView fx:id="match_graph" prefHeight="296.0" prefWidth="342.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                      <columns>
+                                          <TableColumn fx:id="matchID" prefWidth="75.0" text="Match ID" />
+                                        <TableColumn fx:id="overallScore" prefWidth="75.0" text="Match Score" />
+                                        <TableColumn fx:id="score1" prefWidth="75.0" text="Strat. 1 Score" />
+                                          <TableColumn fx:id="score2" prefWidth="75.0" text="Strat. 2 Score" />
+                                      </columns>
+                                    </TableView>
+                                 </children>
                                         </AnchorPane>
                                     </items>
                                 </SplitPane>
@@ -173,7 +172,7 @@
                                                     <columns>
                                                         <TableColumn fx:id="rank" prefWidth="75.0" text="Rank" />
                                                         <TableColumn fx:id="entry" prefWidth="75.0" text="Entry" />
-                                                        <TableColumn fx:id="score" prefWidth="75.0" text="Score" />
+                                                        <TableColumn fx:id="score" prefWidth="75.0" text="Average Score" />
                                                     </columns>
                                                 </TableView>
                                             </children>

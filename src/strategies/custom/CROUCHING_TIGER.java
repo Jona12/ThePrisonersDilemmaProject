@@ -19,7 +19,7 @@ public class CROUCHING_TIGER {
                 }
             }
             if (defects > (h.getNumberOfRounds() / 2) * 0.75) return Variables.DEFECT;
-            else return Variables.COOPERATE;
+            return Variables.COOPERATE;
         }
     }
 }

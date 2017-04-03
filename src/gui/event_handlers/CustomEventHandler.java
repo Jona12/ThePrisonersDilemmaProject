@@ -2,6 +2,7 @@ package gui.event_handlers;
 
 import gui.controllers.ControllerAnalysis;
 import gui.controllers.ControllerCustomMode;
+import gui.controllers.ControllerCustomStrategies;
 import gui.data_structures.Observables;
 import gui.data_structures.RankData;
 import gui.data_structures.StrategyData;
@@ -15,6 +16,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.PieChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceDialog;
@@ -172,7 +174,7 @@ public class CustomEventHandler implements EventHandler {
                 path = "src/main/results_data/" + result + "_MATCH_" + ".txt";
                 fileOutputStream = new FileOutputStream(path);
                 out = new ObjectOutputStream(fileOutputStream);
-                out.writeObject(analysis.getTournamentResult());
+                out.writeObject(analysis.getTournamentResultArray());
                 out.flush();
                 fileOutputStream.close();
 
@@ -207,6 +209,7 @@ public class CustomEventHandler implements EventHandler {
         try {
             String window = (String) nodeHashMap.get(event.getSource())[0];
             String title = (String) nodeHashMap.get(event.getSource())[1];
+
             FXMLLoader loader = new FXMLLoader(getClass().getResource(window));
             root = loader.load();
 
@@ -245,6 +248,9 @@ public class CustomEventHandler implements EventHandler {
                 if (window.equals("fxml/edit_custom_mode.fxml")) {
                     ControllerCustomMode controller = loader.getController();
                     controller.setObservables(observables);
+                }else if(window.equals("fxml/strategies.fxml")){
+                    ControllerCustomStrategies controllerCustomStrategies = loader.getController();
+                    controllerCustomStrategies.setObservables(observables);
                 }
 
                 stage.setMinWidth(800);
@@ -341,11 +347,11 @@ public class CustomEventHandler implements EventHandler {
                     }
                     HashMap<String, HashMap<Object, Object>> modeHashMap = TournamentMode.getModesHashMap();
                     if ((boolean) modeHashMap.get(observables.getMode()).get(Variables.RANDOM)) {
-                        analysis = new Analysis(tournament.getTournamentLinkedList(), tournament.getTournamentResult(), tournament.getRandomLinkedList());
+                        analysis = new Analysis(tournament.getTournamentLinkedList(), tournament.getTournamentResultArray(), tournament.getRandomLinkedList());
                     } else {
-                        analysis = new Analysis(tournament.getTournamentResult(), tournament.getTournamentLinkedList());
+                        analysis = new Analysis(tournament.getTournamentResultArray(), tournament.getTournamentLinkedList());
                     }
-                    HashMap<String, Integer> hashMap = analysis.fetchTournamentScores(true, false, false);
+                    HashMap<String, Integer> hashMap = analysis.fetchAverageScores();
 
                     Platform.runLater(new Runnable() {
                         @Override
@@ -358,11 +364,24 @@ public class CustomEventHandler implements EventHandler {
                                 rankData.add(new RankData(counter++, entry.getKey(), entry.getValue()));
                             }
 
-                            ObservableList<PieChart.Data> pieData = observables.getPieChartData();
-                            pieData.clear();
-                            for (Map.Entry<String, Integer> entry : hashMap.entrySet()) {
-                                pieData.add(new PieChart.Data(entry.getKey(), entry.getValue()));
+//                            ObservableList<PieChart.Data> pieData = observables.getPieChartData();
+//                            pieData.clear();
+                            ArrayList<String> strategyNames = new ArrayList<>();
+                            ArrayList<Integer> integerArrayList = new ArrayList<>();
+
+                            for (Map.Entry<String, Integer> entry : analysis.fetchTournamentScores(true,
+                                    false, false).entrySet()) {
+                                strategyNames.add(entry.getKey());
+                                integerArrayList.add(entry.getValue());
                             }
+
+                            XYChart.Series series = new XYChart.Series();
+                            for (int i = 0; i < integerArrayList.size(); i++) {
+                                series.getData().add(new XYChart.Data<>(strategyNames.get(i), integerArrayList.get(i)));
+                            }
+                            ObservableList<XYChart.Series> graphData = observables.getGraphData();
+                            graphData.clear();
+                            graphData.add(series);
                         }
                     });
 

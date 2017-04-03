@@ -20,7 +20,6 @@ public class Variables {
     public static int DRAW_C_SCORE;
     public static int DRAW_D_SCORE;
 
-    public final static String STRATEGY = "Selected strategy name";
     public final static String STRATEGIES = "Strategies included";
     public final static String REPEAT = "Repeat entire tournament?";
     public final static String ROUNDS = "Number of total rounds";

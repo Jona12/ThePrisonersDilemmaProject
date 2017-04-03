@@ -1,5 +1,6 @@
 package gui.controllers;
 
+import gui.data_structures.MatchData;
 import gui.data_structures.RankData;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -8,10 +9,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.chart.*;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import main.Analysis;
-import main.CommonFunctions;
-import main.History;
-import main.Variables;
+import main.*;
 
 import java.net.URL;
 import java.util.*;
@@ -46,8 +44,19 @@ public class ControllerAnalysis implements Initializable {
     private Label analysis_forgive;
     @FXML
     private Label analysis_king;
+    //    @FXML
+//    private StackedBarChart match_graph;
     @FXML
-    private StackedBarChart match_graph;
+    private TableView match_graph;
+    @FXML
+    private TableColumn matchID;
+    @FXML
+    private TableColumn overallScore;
+    @FXML
+    private TableColumn score1;
+    @FXML
+    private TableColumn score2;
+
     @FXML
     private BarChart strategy_graph;
     @FXML
@@ -63,7 +72,7 @@ public class ControllerAnalysis implements Initializable {
     private Analysis analysis;
 
     private LinkedList<HashMap<String, History>> tournamentLinkedList;
-    private HashMap<String, int[]> tournamentResult;
+    private ArrayList<LinkedHashMap<String, int[]>> tournamentResultArray;
     private LinkedList<History> randomLinkedList;
 
     @Override
@@ -90,10 +99,12 @@ public class ControllerAnalysis implements Initializable {
         ArrayList<Object> arrayList = CommonFunctions.loadResult(result);
 
         tournamentLinkedList = (LinkedList<HashMap<String, History>>) arrayList.get(0);
-        tournamentResult = (HashMap<String, int[]>) arrayList.get(1);
-        randomLinkedList = (LinkedList<History>) arrayList.get(2);
+        tournamentResultArray = (ArrayList<LinkedHashMap<String, int[]>>) arrayList.get(1);
+        if(arrayList.size() == 3){
+            randomLinkedList = (LinkedList<History>) arrayList.get(2);
+        }
 
-        analysis = new Analysis(tournamentLinkedList, tournamentResult, randomLinkedList);
+        analysis = new Analysis(tournamentLinkedList, tournamentResultArray, randomLinkedList);
     }
 
     private void calculateMatchData() {
@@ -117,7 +128,7 @@ public class ControllerAnalysis implements Initializable {
         int score1;
         int score2;
 
-        for (Map.Entry<String, int[]> entry : tournamentResult.entrySet()) {
+        for (Map.Entry<String, int[]> entry : tournamentResultArray.get(0).entrySet()) {
             int temp = 0;
             int[] current = entry.getValue();
             for (int i : current) {
@@ -132,9 +143,9 @@ public class ControllerAnalysis implements Initializable {
             }
         }
 
-        String[] strings = fixMatchStrings(matchID);
+        String[] strings = Analysis.fixMatchStrings(matchID);
 
-        int[] scores = tournamentResult.get(matchID);
+        int[] scores = tournamentResultArray.get(0).get(matchID);
         score1 = scores[0];
         score2 = scores[1];
 
@@ -173,7 +184,7 @@ public class ControllerAnalysis implements Initializable {
 
         int count = 0;
         int sum = 0;
-        for (Map.Entry<String, int[]> entry : tournamentResult.entrySet()) {
+        for (Map.Entry<String, int[]> entry : tournamentResultArray.get(0).entrySet()) {
             int[] current = entry.getValue();
             for (int i : current) {
                 sum += i;
@@ -187,58 +198,53 @@ public class ControllerAnalysis implements Initializable {
         match_average.setText(average);
     }
 
-    private String[] fixMatchStrings(String matchID) {
-        String[] strings = new String[2];
-        String strategy1, strategy2;
-
-        if (matchID.contains("_vs._")) {
-            strategy1 = matchID.substring(matchID.indexOf("_") + 1, matchID.indexOf("_vs._"));
-            strategy2 = matchID.substring(matchID.indexOf("._") + 2);
-        } else if (matchID.contains("_RAND")) {
-            strategy1 = matchID.substring(matchID.indexOf("_") + 1, matchID.indexOf("_RAND"));
-            strategy2 = "RANDOM";
-        } else {
-            strategy1 = matchID.substring(matchID.indexOf("_") + 1, matchID.indexOf("_TWIN"));
-            strategy2 = strategy1;
-        }
-        strings[0] = strategy1;
-        strings[1] = strategy2;
-
-        return strings;
-    }
-
     private void calculateMatchGraph() {
 
-        ArrayList<String> stringArrayList = new ArrayList<>();
-        ArrayList<Integer> integerArrayList = new ArrayList<>();
-        ArrayList<Integer> integerArrayList2 = new ArrayList<>();
+//        ArrayList<String> stringArrayList = new ArrayList<>();
+//        ArrayList<Integer> integerArrayList = new ArrayList<>();
+//        ArrayList<Integer> integerArrayList2 = new ArrayList<>();
+//
+//        for (Map.Entry<String, int[]> entry : tournamentResultArray.get(0).entrySet()) {
+//
+//            String toAdd = entry.getKey().substring(0, entry.getKey().indexOf("_"));
+//            stringArrayList.add(toAdd);
+//
+//            integerArrayList.add(entry.getValue()[0]);
+//            integerArrayList2.add(entry.getValue()[1]);
+//
+//        }
 
-        for (Map.Entry<String, int[]> entry : tournamentResult.entrySet()) {
-
-            String toAdd = entry.getKey().substring(0, entry.getKey().indexOf("_"));
-            stringArrayList.add(toAdd);
-
-            integerArrayList.add(entry.getValue()[0]);
-            integerArrayList2.add(entry.getValue()[1]);
-
+        ObservableList<MatchData> matchData = FXCollections.observableArrayList();
+//        int counter = 1;
+//        HashMap<String, Integer> hashMap = analysis.fetchTournamentScores(true, false, false);
+//        for (Map.Entry<String, Integer> entry : hashMap.entrySet()) {
+//            matchData.add(new MatchData(counter++, entry.getKey(), entry.getValue()));
+//        }
+        for (HashMap<String, int[]> integerHashMap : tournamentResultArray) {
+            for (Map.Entry<String, int[]> entry : integerHashMap.entrySet()) {
+                int[] array = entry.getValue();
+                int overall = array[0] + array[1];
+                matchData.add(new MatchData(entry.getKey(), overall, array[0], array[1]));
+            }
         }
 
-        XYChart.Series series = new XYChart.Series();
-        XYChart.Series series2 = new XYChart.Series();
+        matchID.setPrefWidth(450);
+        overallScore.setPrefWidth(100);
+        score1.setPrefWidth(100);
+        score2.setPrefWidth(100);
 
-        match_graph.setTitle("Match Scores Sample");
-        match_graph.getXAxis().setLabel("Match Number");
-        match_graph.getYAxis().setLabel("Overall Score");
-        match_graph.setAnimated(true);
-        series.setName("Strategy 1 Score");
-        series2.setName("Strategy 2 Score");
+        matchID.setCellValueFactory(new PropertyValueFactory<MatchData, String>("matchID"));
+        overallScore.setCellValueFactory(new PropertyValueFactory<MatchData, String>("overallScore"));
+        score1.setCellValueFactory(new PropertyValueFactory<Match, Integer>("score1"));
+        score2.setCellValueFactory(new PropertyValueFactory<Match, Integer>("score2"));
+        match_graph.setItems(matchData);
 
-        for (int i = 0; i < 10; i++) {
-            series.getData().add(new XYChart.Data<>(stringArrayList.get(i), integerArrayList.get(i)));
-            series2.getData().add(new XYChart.Data<>(stringArrayList.get(i), integerArrayList2.get(i)));
-        }
-        match_graph.getData().clear();
-        match_graph.getData().addAll(series, series2);
+//        for (int i = 0; i < 10; i++) {
+//            series.getData().add(new XYChart.Data<>(stringArrayList.get(i), integerArrayList.get(i)));
+//            series2.getData().add(new XYChart.Data<>(stringArrayList.get(i), integerArrayList2.get(i)));
+//        }
+//        match_graph.getData().clear();
+//        match_graph.getData().addAll(series, series2);
     }
 
     private void calculateStrategyData() {
@@ -316,7 +322,7 @@ public class ControllerAnalysis implements Initializable {
         String strategy2 = "";
         String matchID = "";
         int matchScore2 = 0;
-        for (Map.Entry<String, int[]> entry : tournamentResult.entrySet()) {
+        for (Map.Entry<String, int[]> entry : tournamentResultArray.get(0).entrySet()) {
             if (entry.getKey().contains(strategy1)) {
                 if (entry.getValue()[0] > matchScore1) {
                     matchID = entry.getKey().substring(0, entry.getKey().indexOf("_"));
@@ -480,12 +486,13 @@ public class ControllerAnalysis implements Initializable {
     private void calculateAnalysisGraph() {
         ObservableList<RankData> rankData = FXCollections.observableArrayList();
         int counter = 1;
-        HashMap<String, Integer> hashMap = analysis.fetchTournamentScores(true, false, false);
+        HashMap<String, Integer> hashMap = analysis.fetchAverageScores();
         for (Map.Entry<String, Integer> entry : hashMap.entrySet()) {
             rankData.add(new RankData(counter++, entry.getKey(), entry.getValue()));
         }
 
-        entry.setPrefWidth(300);
+        entry.setPrefWidth(250);
+        score.setPrefWidth(150);
         rank.setCellValueFactory(new PropertyValueFactory<RankData, Integer>("rank"));
         entry.setCellValueFactory(new PropertyValueFactory<RankData, String>("entry"));
         score.setCellValueFactory(new PropertyValueFactory<RankData, Integer>("score"));

@@ -100,7 +100,7 @@ public class ControllerCustomMode implements Initializable {
     }
 
     private void populateFields() {
-        HashMap<String, HashMap<Object, Object>> modeHashMap = TournamentMode.getInstance().getModesHashMap();
+        HashMap<String, HashMap<Object, Object>> modeHashMap = TournamentMode.getModesHashMap();
         int[] scoreMatrix = (int[]) modeHashMap.get(TournamentMode.MODE_CUSTOM).get(Variables.SCORE_MATRIX);
         int numberOfRounds = (int) modeHashMap.get(TournamentMode.MODE_CUSTOM).get(Variables.ROUNDS);
         repeat = (int) modeHashMap.get(TournamentMode.MODE_CUSTOM).get(Variables.REPEAT);
