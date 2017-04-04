@@ -20,9 +20,9 @@ public class Tournament {
     private HashMap<String, HashMap<Object, Object>> modeHashMap;
     private LinkedHashMap<String, int[]> tournamentResult;
 
-    private ArrayList<LinkedHashMap<String, int[]>> tournamentResultArray;
-    private LinkedList<HashMap<String, History>> tournamentLinkedList;
-    private LinkedList<History> randomLinkedList;
+    private ArrayList<LinkedHashMap<String, int[]>> matchScoresArrayList;
+    private LinkedList<HashMap<String, History>> tournamentScoresLinkedList;
+    private LinkedList<History> randomHistoryLinkedList;
 
     private int numberOfRounds;
     private int repeat;
@@ -42,34 +42,34 @@ public class Tournament {
 
         Variables.setScoreMatrix((int[]) modeHashMap.get(mode).get(Variables.SCORE_MATRIX));
 
-        tournamentLinkedList = new LinkedList<>();
-        randomLinkedList = new LinkedList<>();
+        tournamentScoresLinkedList = new LinkedList<>();
+        randomHistoryLinkedList = new LinkedList<>();
         tournamentResult = new LinkedHashMap<>();
-        tournamentResultArray = new ArrayList<>();
+        matchScoresArrayList = new ArrayList<>();
         count = 0;
     }
 
     public void executeMatches() {
         // run default and add result to linked list
-        tournamentLinkedList.add(runDefault());
+        tournamentScoresLinkedList.add(runDefault());
         if (twin) {
-            runTwin(tournamentLinkedList.get(0), 0);
+            runTwin(tournamentScoresLinkedList.get(0), 0);
         }
         if (random) {
-            randomLinkedList.add(runRandom(tournamentLinkedList.get(0), 0));
+            randomHistoryLinkedList.add(runRandom(tournamentScoresLinkedList.get(0), 0));
         }
-        tournamentResultArray.add(tournamentResult);
+        matchScoresArrayList.add(tournamentResult);
         tournamentResult = new LinkedHashMap<>();
         if (repeat > 0) {
             for (int i = 0; i < repeat; i++) {
-                tournamentLinkedList.add(runDefault());
+                tournamentScoresLinkedList.add(runDefault());
                 if (twin) {
-                    runTwin(tournamentLinkedList.get(i + 1), i + 1);
+                    runTwin(tournamentScoresLinkedList.get(i + 1), i + 1);
                 }
                 if (random) {
-                    randomLinkedList.add(runRandom(tournamentLinkedList.get(0), i + 1));
+                    randomHistoryLinkedList.add(runRandom(tournamentScoresLinkedList.get(0), i + 1));
                 }
-                tournamentResultArray.add(tournamentResult);
+                matchScoresArrayList.add(tournamentResult);
                 tournamentResult = new LinkedHashMap<>();
             }
         }
@@ -144,15 +144,15 @@ public class Tournament {
         return randomHistory;
     }
 
-    public ArrayList<LinkedHashMap<String, int[]>> getTournamentResultArray() {
-        return tournamentResultArray;
+    public ArrayList<LinkedHashMap<String, int[]>> getmatchScoresArrayList() {
+        return matchScoresArrayList;
     }
 
-    public LinkedList<HashMap<String, History>> getTournamentLinkedList() {
-        return tournamentLinkedList;
+    public LinkedList<HashMap<String, History>> gettournamentScoresLinkedList() {
+        return tournamentScoresLinkedList;
     }
 
-    public LinkedList<History> getRandomLinkedList() {
-        return randomLinkedList;
+    public LinkedList<History> getrandomHistoryLinkedList() {
+        return randomHistoryLinkedList;
     }
 }

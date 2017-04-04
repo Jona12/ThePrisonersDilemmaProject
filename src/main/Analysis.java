@@ -12,31 +12,31 @@ import java.util.stream.Collectors;
  */
 public class Analysis {
 
-    private ArrayList<LinkedHashMap<String, int[]>> tournamentResultArray;
-    private LinkedList<HashMap<String, History>> tournamentLinkedList;
-    private LinkedList<History> randomLinkedList;
+    private ArrayList<LinkedHashMap<String, int[]>> matchScoresArrayList;
+    private LinkedList<HashMap<String, History>> tournamentScoresLinkedList;
+    private LinkedList<History> randomHistoryLinkedList;
 
-    public ArrayList<LinkedHashMap<String, int[]>> getTournamentResultArray() {
-        return tournamentResultArray;
+    public ArrayList<LinkedHashMap<String, int[]>> getmatchScoresArrayList() {
+        return matchScoresArrayList;
     }
 
-    public LinkedList<HashMap<String, History>> getTournamentLinkedList() {
-        return tournamentLinkedList;
+    public LinkedList<HashMap<String, History>> gettournamentScoresLinkedList() {
+        return tournamentScoresLinkedList;
     }
 
-    public LinkedList<History> getRandomLinkedList() {
-        return randomLinkedList;
+    public LinkedList<History> getrandomHistoryLinkedList() {
+        return randomHistoryLinkedList;
     }
 
-    public Analysis(LinkedList<HashMap<String, History>> tournamentLinkedList, ArrayList<LinkedHashMap<String, int[]>> tournamentResultArray, LinkedList<History> randomLinkedList) {
-        this.tournamentLinkedList = tournamentLinkedList;
-        this.tournamentResultArray = tournamentResultArray;
-        this.randomLinkedList = randomLinkedList;
+    public Analysis(LinkedList<HashMap<String, History>> tournamentScoresLinkedList, ArrayList<LinkedHashMap<String, int[]>> matchScoresArrayList, LinkedList<History> randomHistoryLinkedList) {
+        this.tournamentScoresLinkedList = tournamentScoresLinkedList;
+        this.matchScoresArrayList = matchScoresArrayList;
+        this.randomHistoryLinkedList = randomHistoryLinkedList;
     }
 
-    public Analysis(ArrayList<LinkedHashMap<String, int[]>> tournamentResultArray, LinkedList<HashMap<String, History>> tournamentLinkedList) {
-        this.tournamentResultArray = tournamentResultArray;
-        this.tournamentLinkedList = tournamentLinkedList;
+    public Analysis(ArrayList<LinkedHashMap<String, int[]>> matchScoresArrayList, LinkedList<HashMap<String, History>> tournamentScoresLinkedList) {
+        this.matchScoresArrayList = matchScoresArrayList;
+        this.tournamentScoresLinkedList = tournamentScoresLinkedList;
     }
 
     public HashMap<String, Integer> fetchAverageScores() {
@@ -45,7 +45,7 @@ public class Analysis {
         String temp;
         HashMap<String, ArrayList<Integer>> hashMap = new HashMap<>();
         int[] ints;
-        for (HashMap<String, int[]> stringHashMap : tournamentResultArray) {
+        for (HashMap<String, int[]> stringHashMap : matchScoresArrayList) {
             for (Map.Entry<String, int[]> entry : stringHashMap.entrySet()) {
                 temp = entry.getKey();
                 ints = entry.getValue();
@@ -114,8 +114,8 @@ public class Analysis {
 
         HashMap<String, Integer> finalScore = new HashMap<>();
         int score;
-        if (randomLinkedList != null) {
-            for (History history : randomLinkedList) {
+        if (randomHistoryLinkedList != null) {
+            for (History history : randomHistoryLinkedList) {
                 score = history.calculateMatchScores(tournamentSum, maxMatchSum, minMatchSum);
                 if (finalScore.get("RANDOM") == null) {
                     finalScore.put("RANDOM", score);
@@ -124,7 +124,7 @@ public class Analysis {
                 }
             }
         }
-        for (HashMap<String, History> historyHashMap : tournamentLinkedList) {
+        for (HashMap<String, History> historyHashMap : tournamentScoresLinkedList) {
             for (Map.Entry<String, History> entry : historyHashMap.entrySet()) {
                 score = entry.getValue().calculateMatchScores(tournamentSum, maxMatchSum, minMatchSum);
                 if (finalScore.get(entry.getKey()) == null) {

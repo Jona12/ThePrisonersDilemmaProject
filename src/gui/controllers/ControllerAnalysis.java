@@ -46,8 +46,6 @@ public class ControllerAnalysis implements Initializable {
     private Label analysis_forgive;
     @FXML
     private Label analysis_king;
-    //    @FXML
-//    private StackedBarChart match_graph;
     @FXML
     private TableView match_graph;
     @FXML
@@ -73,9 +71,9 @@ public class ControllerAnalysis implements Initializable {
     private String result;
     private Analysis analysis;
 
-    private LinkedList<HashMap<String, History>> tournamentLinkedList;
-    private ArrayList<LinkedHashMap<String, int[]>> tournamentResultArray;
-    private LinkedList<History> randomLinkedList;
+    private LinkedList<HashMap<String, History>> tournamentScoresLinkedList;
+    private ArrayList<LinkedHashMap<String, int[]>> matchScoresArrayList;
+    private LinkedList<History> randomHistoryLinkedList;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -100,13 +98,13 @@ public class ControllerAnalysis implements Initializable {
     private void setupView() {
         ArrayList<Object> arrayList = CommonFunctions.loadResult(result);
 
-        tournamentLinkedList = (LinkedList<HashMap<String, History>>) arrayList.get(0);
-        tournamentResultArray = (ArrayList<LinkedHashMap<String, int[]>>) arrayList.get(1);
+        tournamentScoresLinkedList = (LinkedList<HashMap<String, History>>) arrayList.get(0);
+        matchScoresArrayList = (ArrayList<LinkedHashMap<String, int[]>>) arrayList.get(1);
         if (arrayList.size() == 3) {
-            randomLinkedList = (LinkedList<History>) arrayList.get(2);
+            randomHistoryLinkedList = (LinkedList<History>) arrayList.get(2);
         }
 
-        analysis = new Analysis(tournamentLinkedList, tournamentResultArray, randomLinkedList);
+        analysis = new Analysis(tournamentScoresLinkedList, matchScoresArrayList, randomHistoryLinkedList);
     }
 
     private void calculateMatchData() {
@@ -130,7 +128,7 @@ public class ControllerAnalysis implements Initializable {
         int score1;
         int score2;
 
-        for (Map.Entry<String, int[]> entry : tournamentResultArray.get(0).entrySet()) {
+        for (Map.Entry<String, int[]> entry : matchScoresArrayList.get(0).entrySet()) {
             int temp = 0;
             int[] current = entry.getValue();
             for (int i : current) {
@@ -147,7 +145,7 @@ public class ControllerAnalysis implements Initializable {
 
         String[] strings = Analysis.fixMatchStrings(matchID);
 
-        int[] scores = tournamentResultArray.get(0).get(matchID);
+        int[] scores = matchScoresArrayList.get(0).get(matchID);
         score1 = scores[0];
         score2 = scores[1];
 
@@ -186,7 +184,7 @@ public class ControllerAnalysis implements Initializable {
 
         int count = 0;
         int sum = 0;
-        for (Map.Entry<String, int[]> entry : tournamentResultArray.get(0).entrySet()) {
+        for (Map.Entry<String, int[]> entry : matchScoresArrayList.get(0).entrySet()) {
             int[] current = entry.getValue();
             for (int i : current) {
                 sum += i;
@@ -203,7 +201,7 @@ public class ControllerAnalysis implements Initializable {
     private void calculateMatchGraph() {
 
         ObservableList<MatchData> matchData = FXCollections.observableArrayList();
-        for (HashMap<String, int[]> integerHashMap : tournamentResultArray) {
+        for (HashMap<String, int[]> integerHashMap : matchScoresArrayList) {
             for (Map.Entry<String, int[]> entry : integerHashMap.entrySet()) {
                 int[] array = entry.getValue();
                 int overall = array[0] + array[1];
@@ -268,7 +266,7 @@ public class ControllerAnalysis implements Initializable {
         int score = strategySum / count;
 
 
-        LinkedList<HashMap<String, History>> linkedList = tournamentLinkedList;
+        LinkedList<HashMap<String, History>> linkedList = tournamentScoresLinkedList;
         int defect = 0;
         int cooperate = 0;
         for (HashMap<String, History> historyHashMap : linkedList) {
@@ -300,7 +298,7 @@ public class ControllerAnalysis implements Initializable {
         String strategy2 = "";
         String matchID = "";
         int matchScore2 = 0;
-        for (Map.Entry<String, int[]> entry : tournamentResultArray.get(0).entrySet()) {
+        for (Map.Entry<String, int[]> entry : matchScoresArrayList.get(0).entrySet()) {
             if (entry.getKey().contains(strategy1)) {
                 if (entry.getValue()[0] > matchScore1) {
                     matchID = entry.getKey().substring(0, entry.getKey().indexOf("_"));
@@ -375,9 +373,9 @@ public class ControllerAnalysis implements Initializable {
     private void calculateAnalysisNice() {
 
 
-        int strategyAmount = tournamentLinkedList.getFirst().size() + 1;
+        int strategyAmount = tournamentScoresLinkedList.getFirst().size() + 1;
         int niceAmount = 0;
-        for (HashMap<String, History> hashMap : tournamentLinkedList) {
+        for (HashMap<String, History> hashMap : tournamentScoresLinkedList) {
             for (Map.Entry<String, History> entry : hashMap.entrySet()) {
                 HashMap<String, int[][]> stringHashMap = entry.getValue().getSelfMatchResults();
                 loop:
@@ -422,7 +420,7 @@ public class ControllerAnalysis implements Initializable {
         HashSet<String> finalList = new HashSet<>();
 
 
-        HashMap<String, History> historyHashMap = tournamentLinkedList.getFirst();
+        HashMap<String, History> historyHashMap = tournamentScoresLinkedList.getFirst();
 
         String low;
         String high;

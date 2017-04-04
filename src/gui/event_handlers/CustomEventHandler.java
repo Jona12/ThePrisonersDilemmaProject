@@ -167,23 +167,23 @@ public class CustomEventHandler implements EventHandler {
                 FileOutputStream fileOutputStream = new FileOutputStream(path);
                 ObjectOutputStream out = new ObjectOutputStream(fileOutputStream);
 
-                out.writeObject(analysis.getTournamentLinkedList());
+                out.writeObject(analysis.gettournamentScoresLinkedList());
                 out.flush();
                 fileOutputStream.close();
 
                 path = "src/main/results_data/" + result + "_MATCH_" + ".txt";
                 fileOutputStream = new FileOutputStream(path);
                 out = new ObjectOutputStream(fileOutputStream);
-                out.writeObject(analysis.getTournamentResultArray());
+                out.writeObject(analysis.getmatchScoresArrayList());
                 out.flush();
                 fileOutputStream.close();
 
 
-                if (analysis.getRandomLinkedList() != null) {
+                if (analysis.getrandomHistoryLinkedList() != null) {
                     path = "src/main/results_data/" + result + "_RANDOM_.txt";
                     fileOutputStream = new FileOutputStream(path);
                     out = new ObjectOutputStream(fileOutputStream);
-                    out.writeObject(analysis.getRandomLinkedList());
+                    out.writeObject(analysis.getrandomHistoryLinkedList());
                     out.flush();
                     fileOutputStream.close();
                 }
@@ -344,9 +344,9 @@ public class CustomEventHandler implements EventHandler {
                     }
                     HashMap<String, HashMap<Object, Object>> modeHashMap = TournamentMode.getModesHashMap();
                     if ((boolean) modeHashMap.get(observables.getMode()).get(Variables.RANDOM)) {
-                        analysis = new Analysis(tournament.getTournamentLinkedList(), tournament.getTournamentResultArray(), tournament.getRandomLinkedList());
+                        analysis = new Analysis(tournament.gettournamentScoresLinkedList(), tournament.getmatchScoresArrayList(), tournament.getrandomHistoryLinkedList());
                     } else {
-                        analysis = new Analysis(tournament.getTournamentResultArray(), tournament.getTournamentLinkedList());
+                        analysis = new Analysis(tournament.getmatchScoresArrayList(), tournament.gettournamentScoresLinkedList());
                     }
                     HashMap<String, Integer> hashMap = analysis.fetchAverageScores();
 
