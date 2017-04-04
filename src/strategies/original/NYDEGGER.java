@@ -71,7 +71,6 @@ public class NYDEGGER {
         } else if (compare[0].equals(check[2][0]) && compare[1].equals(check[2][1])) {
             toReturn = weight;
         } else {
-            System.out.println(compare[0] + " " + compare[1]);
             toReturn = 3 * weight;
         }
         return toReturn;

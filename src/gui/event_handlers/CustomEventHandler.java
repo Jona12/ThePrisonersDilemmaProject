@@ -381,22 +381,6 @@ public class CustomEventHandler implements EventHandler {
                             graphData.add(series);
                         }
                     });
-
-
-                    // GRAPH DATA
-//                            ObservableList<XYChart.Series> graphData = observables.getGraphData();
-//                            graphData.clear();
-//
-//
-//                            for (Map.Entry<String, History> entry : tempHashMap.entrySet()) {
-//                                int[] averageScore = entry.getValue().calculateAverageRoundScores();
-//                                XYChart.Series series = new XYChart.Series();
-//                                series.setName(entry.getKey());
-//                                for (int i = 0; i < averageScore.length; i++) {
-//                                    series.getData().add(new XYChart.Data<>(i + 1, averageScore[i]));
-//                                }
-//                                graphData.add(series);
-//                            }
                     button.setDisable(false);
                     return null;
                 }

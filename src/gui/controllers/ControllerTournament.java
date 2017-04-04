@@ -8,6 +8,8 @@ import gui.event_handlers.CustomEventHandler;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
@@ -19,6 +21,8 @@ import javafx.scene.chart.PieChart;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
 import javafx.util.Callback;
 import main.CommonFunctions;
 import main.TournamentMode;
@@ -180,6 +184,7 @@ public class ControllerTournament implements Initializable {
         tournament_modeSelection_selectedModeSettings_tableView_variablesColumn.setCellValueFactory(new PropertyValueFactory<ModeData, String>("variable"));
         tournament_modeSelection_selectedModeSettings_tableView_valuesColumn.setCellValueFactory(new PropertyValueFactory<ModeData, String>("value"));
         tournament_modeSelection_selectedModeSettings_tableView.setItems(observables.getModeData());
+
     }
 
     private void setTournamentEntriesColumns() {
@@ -244,6 +249,7 @@ public class ControllerTournament implements Initializable {
         tournament_rankTable_tableView_entryColumn.setCellValueFactory(new PropertyValueFactory<RankData, String>("entry"));
         tournament_rankTable_tableView_scoreColumn.setCellValueFactory(new PropertyValueFactory<RankData, Integer>("score"));
         tournament_rankTable_tableView.setItems(observables.getRankData());
+        gui.CommonFunctions.setCopyAction(tournament_rankTable_tableView);
 
     }
 

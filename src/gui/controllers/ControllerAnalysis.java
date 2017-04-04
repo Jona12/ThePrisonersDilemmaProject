@@ -1,5 +1,6 @@
 package gui.controllers;
 
+import gui.*;
 import gui.data_structures.MatchData;
 import gui.data_structures.RankData;
 import javafx.collections.FXCollections;
@@ -10,6 +11,7 @@ import javafx.scene.chart.*;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import main.*;
+import main.CommonFunctions;
 
 import java.net.URL;
 import java.util.*;
@@ -100,7 +102,7 @@ public class ControllerAnalysis implements Initializable {
 
         tournamentLinkedList = (LinkedList<HashMap<String, History>>) arrayList.get(0);
         tournamentResultArray = (ArrayList<LinkedHashMap<String, int[]>>) arrayList.get(1);
-        if(arrayList.size() == 3){
+        if (arrayList.size() == 3) {
             randomLinkedList = (LinkedList<History>) arrayList.get(2);
         }
 
@@ -200,26 +202,7 @@ public class ControllerAnalysis implements Initializable {
 
     private void calculateMatchGraph() {
 
-//        ArrayList<String> stringArrayList = new ArrayList<>();
-//        ArrayList<Integer> integerArrayList = new ArrayList<>();
-//        ArrayList<Integer> integerArrayList2 = new ArrayList<>();
-//
-//        for (Map.Entry<String, int[]> entry : tournamentResultArray.get(0).entrySet()) {
-//
-//            String toAdd = entry.getKey().substring(0, entry.getKey().indexOf("_"));
-//            stringArrayList.add(toAdd);
-//
-//            integerArrayList.add(entry.getValue()[0]);
-//            integerArrayList2.add(entry.getValue()[1]);
-//
-//        }
-
         ObservableList<MatchData> matchData = FXCollections.observableArrayList();
-//        int counter = 1;
-//        HashMap<String, Integer> hashMap = analysis.fetchTournamentScores(true, false, false);
-//        for (Map.Entry<String, Integer> entry : hashMap.entrySet()) {
-//            matchData.add(new MatchData(counter++, entry.getKey(), entry.getValue()));
-//        }
         for (HashMap<String, int[]> integerHashMap : tournamentResultArray) {
             for (Map.Entry<String, int[]> entry : integerHashMap.entrySet()) {
                 int[] array = entry.getValue();
@@ -238,13 +221,8 @@ public class ControllerAnalysis implements Initializable {
         score1.setCellValueFactory(new PropertyValueFactory<Match, Integer>("score1"));
         score2.setCellValueFactory(new PropertyValueFactory<Match, Integer>("score2"));
         match_graph.setItems(matchData);
+        gui.CommonFunctions.setCopyAction(match_graph);
 
-//        for (int i = 0; i < 10; i++) {
-//            series.getData().add(new XYChart.Data<>(stringArrayList.get(i), integerArrayList.get(i)));
-//            series2.getData().add(new XYChart.Data<>(stringArrayList.get(i), integerArrayList2.get(i)));
-//        }
-//        match_graph.getData().clear();
-//        match_graph.getData().addAll(series, series2);
     }
 
     private void calculateStrategyData() {
@@ -497,5 +475,6 @@ public class ControllerAnalysis implements Initializable {
         entry.setCellValueFactory(new PropertyValueFactory<RankData, String>("entry"));
         score.setCellValueFactory(new PropertyValueFactory<RankData, Integer>("score"));
         analysis_table.setItems(rankData);
+        gui.CommonFunctions.setCopyAction(analysis_table);
     }
 }
