@@ -20,17 +20,6 @@ public class DAVIS {
             return Variables.COOPERATE;
         }
 
-        String[][] scores = h.getMatchScore();
-        String[] temp = new String[h.getNumberOfRounds()];
-        int i = 0;
-        for (String[] array : scores) {
-            temp[i++] = array[1];
-        }
-        Set<String> VALUES = new HashSet<>(Arrays.asList(temp));
-        if (VALUES.contains(Variables.DEFECT)) {
-            return Variables.DEFECT;
-        }else{
-            return Variables.COOPERATE;
-        }
+        return new GRUDGER().calculate(h);
     }
 }

@@ -79,12 +79,9 @@ public class Analysis {
             String s = entry.getKey();
             int count = entry.getValue().size();
             int totalScore = 0;
-//            System.out.println(s);
             for (int i : entry.getValue()) {
-//                System.out.println(i);
                 totalScore += i;
             }
-//            System.out.println(count);
             int averageScore = totalScore / count;
             averageScores.put(s, averageScore);
         }

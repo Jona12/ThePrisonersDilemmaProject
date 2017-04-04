@@ -29,12 +29,6 @@ public class TournamentMode {
 
     private static HashMap<String, HashMap<Object, Object>> modesHashMap;
 
-    private static String[] originalStrategies = {
-            "TIT_FOR_TAT (original)", "DAVIS (original)", "DOWNING_REVISED (original)", "FELD (original)",
-            "GROFMAN (original)", "JOSS (original)", "NYDEGGER (original)", "SHUBIK (original)",
-            "TULLOCK (original)", "UNKNOWN (original)"
-    };
-
     private static final String[] originalModesArray = {
             MODE_ORIGINAL, MODE_NO_RANDOM, MODE_NO_TWIN, MODE_NO_RANDOM_NO_TWIN, MODE_ORIGINAL_WITH_REPEAT, MODE_CUSTOM
     };
@@ -58,10 +52,6 @@ public class TournamentMode {
 
     public static String[] getOriginalModes() {
         return originalModesArray;
-    }
-
-    public static String[] getOriginalStrategies() {
-        return originalStrategies;
     }
 
     private static HashMap<Object, Object> prepareTempHashMap(String mode) {

@@ -54,10 +54,9 @@ public class StrategyManager {
 
                         fileManager.setLocation(StandardLocation.CLASS_OUTPUT, Arrays
                                 .asList(new File("out/production/ThePrisonersDilemmaProject/")));
-                        boolean success = compiler.getTask(null, fileManager, null, null, null,
+                        compiler.getTask(null, fileManager, null, null, null,
                                 fileManager.getJavaFileObjectsFromFiles(Arrays.asList(sourceFile)))
                                 .call();
-                        System.out.println(success);
                         fileManager.close();
 
                         classStrategy = Class.forName("strategies.custom." + strategyName);

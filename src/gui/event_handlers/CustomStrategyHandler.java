@@ -49,7 +49,6 @@ public class CustomStrategyHandler implements EventHandler {
 
     @Override
     public void handle(Event event) {
-        System.out.println(event.getSource().getClass());
         if (event.getSource() == delete) {
             if (listView_custom.getSelectionModel().getSelectedItem() != null) {
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -63,7 +62,7 @@ public class CustomStrategyHandler implements EventHandler {
                     try {
                         Files.delete(Paths.get(path));
                     } catch (NoSuchFileException x) {
-                        System.err.format("%s: no such" + " file or directory%n", path);
+                        x.printStackTrace();
                     } catch (IOException e) {
                         e.printStackTrace();
                     }

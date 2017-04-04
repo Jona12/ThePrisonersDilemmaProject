@@ -18,20 +18,17 @@ public class Tournament {
 
     private ArrayList<String> strategyArrayList;
     private HashMap<String, HashMap<Object, Object>> modeHashMap;
+    private LinkedHashMap<String, int[]> tournamentResult;
 
+    private ArrayList<LinkedHashMap<String, int[]>> tournamentResultArray;
     private LinkedList<HashMap<String, History>> tournamentLinkedList;
     private LinkedList<History> randomLinkedList;
 
     private int numberOfRounds;
-
     private int repeat;
     private boolean twin;
     private boolean random;
-
-    private ArrayList<LinkedHashMap<String, int[]>> tournamentResultArray;
-    private LinkedHashMap<String, int[]> tournamentResult;
     private int count;
-
 
     public Tournament(ArrayList<String> strategyArrayList, String mode) {
 
@@ -105,28 +102,6 @@ public class Tournament {
         return historyHashMap;
     }
 
-//    public void runRepeat() {
-//        Match match;
-//        String strategyOne, strategyTwo;
-//
-//        count = 0;
-//        for (int i = 0; i < strategies.length; i++) {
-//            for (int j = historyHashMap.size() - 1; j > i; j--) {
-//                strategyOne = strategies[i];
-//                strategyTwo = strategies[j];
-//
-//                String matchID = "#" + (count++) + strategyOne + "_" + strategyTwo + "REPEAT";
-//                match = new Match(matchID, historyHashMap.get(strategyOne), historyHashMap.get(strategyTwo), numberOfRounds);
-//                match.runMatch();
-//
-////                historyHashMap.put(strategyOne, temp[0]);
-////                historyHashMap.put(strategyTwo, temp[1]);
-//
-//                tournamentResult.put(matchID, match.getMatchResult());
-//            }
-//        }
-//    }
-
     public void runTwin(HashMap<String, History> historyHashMap, int repeatIteration) {
         Match match;
         String strategyOne, strategyTwo;
@@ -179,9 +154,5 @@ public class Tournament {
 
     public LinkedList<History> getRandomLinkedList() {
         return randomLinkedList;
-    }
-
-    public HashMap<String, int[]> getTournamentResult() {
-        return tournamentResult;
     }
 }

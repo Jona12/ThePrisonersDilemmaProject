@@ -12,7 +12,6 @@ public class History implements Serializable {
 
     private static final long serialVersionUID = 42L;
 
-    private History opponentHistory;
     private HashMap<String, int[][]> selfMatchResults;
     private HashMap<String, int[][]> opponentMatchResults;
 
@@ -24,13 +23,10 @@ public class History implements Serializable {
 
     private int numberOfRounds;
 
-    private HashMap<String, Object> strategyVariables;
-
     public History(int numberOfRounds, String selfName) {
         this.numberOfRounds = numberOfRounds;
         this.selfName = selfName;
         selfMatchResults = new HashMap<>();
-        strategyVariables = new HashMap<>();
     }
 
     public String getSelfName() {
@@ -65,14 +61,6 @@ public class History implements Serializable {
         return Variables.calculateMatchScoreString(integerMatchScore);
     }
 
-    public HashMap<String, Object> getStrategyVariables() {
-        return strategyVariables;
-    }
-
-    public void setStrategyVariables(HashMap<String, Object> strategyVariables) {
-        this.strategyVariables = strategyVariables;
-    }
-
     protected void setIntegerMatchScore(int[][] matchScore) {
         this.integerMatchScore = matchScore;
         selfMatchResults.put(currentOpponent, matchScore);
@@ -88,6 +76,40 @@ public class History implements Serializable {
 
     public int getNumberOfRounds() {
         return numberOfRounds;
+    }
+
+    public String calculateAverage(HashMap<String, int[][]> hashMap, boolean self) {
+        String toReturn = "";
+
+        int defect = 0, cooperate = 0, index;
+        if (self) {
+            index = 0;
+        } else {
+            index = 1;
+        }
+        for (Map.Entry<String, int[][]> entry : hashMap.entrySet()) {
+            int[][] value = entry.getValue();
+            int c = 0, d = 0;
+            for (int i = 0; i < value.length; i++) {
+                if (Variables.calculateRoundScoreString(value[i])[index].equals(Variables.COOPERATE)) {
+                    c++;
+                } else {
+                    d++;
+                }
+            }
+            if (c >= d) {
+                cooperate++;
+            } else {
+                defect++;
+            }
+        }
+        if (cooperate >= defect) {
+            toReturn = Variables.COOPERATE;
+        } else {
+            toReturn = Variables.DEFECT;
+        }
+
+        return toReturn;
     }
 
     public int calculateMatchScores(boolean tournamentSum, boolean maxMatchSum, boolean minMatchSum) {

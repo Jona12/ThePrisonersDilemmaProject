@@ -248,7 +248,7 @@ public class CustomEventHandler implements EventHandler {
                 if (window.equals("fxml/edit_custom_mode.fxml")) {
                     ControllerCustomMode controller = loader.getController();
                     controller.setObservables(observables);
-                }else if(window.equals("fxml/strategies.fxml")){
+                } else if (window.equals("fxml/strategies.fxml")) {
                     ControllerCustomStrategies controllerCustomStrategies = loader.getController();
                     controllerCustomStrategies.setObservables(observables);
                 }
@@ -268,19 +268,16 @@ public class CustomEventHandler implements EventHandler {
     private void handleOriginalSelection(Button button) {
         ObservableList<StrategyData> strategyData = observables.getStrategyData();
         String text = button.getText();
-        String[] originalEntries = TournamentMode.getOriginalStrategies();
-        List<String> temp = Arrays.asList(originalEntries);
-
         if (text.equals(select_original)) {
             for (StrategyData s : strategyData) {
-                if (temp.contains(s.strategyProperty().getValue())) {
+                if (s.strategyProperty().getValue().contains("(original)")) {
                     s.setSelect(true);
                 }
             }
             button.setText(deselect_original);
         } else {
             for (StrategyData s : strategyData) {
-                if (temp.contains(s.strategyProperty().getValue())) {
+                if (s.strategyProperty().getValue().contains("(original)")) {
                     s.setSelect(false);
                 }
             }
