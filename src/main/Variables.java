@@ -34,15 +34,6 @@ public class Variables {
     public final static String PAST_OPPONENT_ROUNDS = "PAST OPPONENT ROUNDS";
     public final static String PAST_OPPONENT_MATCHES = "PAST OPPONENT MATCHES";
 
-    private String[] modeValuesArray = {
-            STRATEGIES, REPEAT, ROUNDS, CURRENT_ROUND, ENTRIES, RANDOM, TWIN, SCORE_MATRIX, PAST_SELF_ROUNDS, PAST_SELF_MATCHES,
-            PAST_OPPONENT_ROUNDS, PAST_OPPONENT_MATCHES
-    };
-
-
-    private String[] getVariablesArray() {
-        return modeValuesArray;
-    }
 
     public static String[] calculateRoundScoreString(int[] input) {
 
@@ -69,7 +60,6 @@ public class Variables {
 
         return output;
     }
-
     public static String[][] calculateMatchScoreString(int[][] input) {
 
         String[][] output = new String[input.length][2];
@@ -77,13 +67,6 @@ public class Variables {
         for (int i = 0; i < input.length; i++) {
             output[i] = calculateRoundScoreString(input[i]);
         }
-
-        return output;
-    }
-
-    public static int[][] calculateScoreFromOutput(String[] input, int totalRounds) {
-        int[][] output = new int[totalRounds][2];
-
 
         return output;
     }

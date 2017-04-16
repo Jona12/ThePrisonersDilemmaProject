@@ -24,7 +24,7 @@ public class TournamentMode {
     public final static String MODE_NO_RANDOM = "NO RANDOM";
     public final static String MODE_NO_TWIN = "NO TWIN";
     public final static String MODE_NO_RANDOM_NO_TWIN = "NO RANDOM NO TWIN";
-    public final static String MODE_ORIGINAL_WITH_REPEAT = "ORIGINAL MODE, WITH 1 REPEAT";
+    public final static String MODE_ORIGINAL_WITH_REPEAT = "ORIGINAL WITH REPEAT";
     public final static String MODE_CUSTOM = "CUSTOM MODE";
 
     private static HashMap<String, HashMap<Object, Object>> modesHashMap;
@@ -33,11 +33,8 @@ public class TournamentMode {
             MODE_ORIGINAL, MODE_NO_RANDOM, MODE_NO_TWIN, MODE_NO_RANDOM_NO_TWIN, MODE_ORIGINAL_WITH_REPEAT, MODE_CUSTOM
     };
 
-    public HashMap<Object, Object> getVariables(String mode) {
-        return modesHashMap.get(mode);
-    }
 
-    public static HashMap<String, HashMap<Object, Object>> getModesHashMap() {
+    public static HashMap<String, HashMap<Object, Object>> generateModesHashMap() {
 
         modesHashMap = new HashMap<>();
         for (int i = 0; i < originalModesArray.length - 1; i++) {

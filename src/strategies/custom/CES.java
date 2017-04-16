@@ -16,7 +16,7 @@ public class CES {
         } else if (h.getCurrentRound() > h.getNumberOfRounds() * 0.8) {
             return Variables.DEFECT;
         } else {
-            String average = h.calculateAverage(h.getOpponentMatchResults(), true);
+            String average = h.calculateAverage(h.getOpponentMatchScores(), true);
             if (average.equals(Variables.COOPERATE)) return Variables.COOPERATE;
             return Variables.DEFECT;
         }

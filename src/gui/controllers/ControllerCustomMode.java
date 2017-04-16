@@ -100,7 +100,7 @@ public class ControllerCustomMode implements Initializable {
     }
 
     private void populateFields() {
-        HashMap<String, HashMap<Object, Object>> modeHashMap = TournamentMode.getModesHashMap();
+        HashMap<String, HashMap<Object, Object>> modeHashMap = TournamentMode.generateModesHashMap();
         int[] scoreMatrix = (int[]) modeHashMap.get(TournamentMode.MODE_CUSTOM).get(Variables.SCORE_MATRIX);
         int numberOfRounds = (int) modeHashMap.get(TournamentMode.MODE_CUSTOM).get(Variables.ROUNDS);
         repeat = (int) modeHashMap.get(TournamentMode.MODE_CUSTOM).get(Variables.REPEAT);
@@ -112,34 +112,7 @@ public class ControllerCustomMode implements Initializable {
         draw_c_value.setText("" + scoreMatrix[2]);
         draw_d_value.setText("" + scoreMatrix[3]);
         rounds_value.setText("" + numberOfRounds);
-//
-//        String finalMatrix = "WIN: " + scoreMatrix[0] + "\r\n" + "LOSE: " + scoreMatrix[1] +
-//                "\r\n" + "DRAW_C: " + scoreMatrix[2] + "\r\n" + "DRAW_D: " + scoreMatrix[3];
 
-//        HashMap<Object, Object> temp = new HashMap<>();
-
-//        String roundsValue = String.valueOf(numberOfRounds);
-//        String scoreMatrixValue = Arrays.toString(scoreMatrix);
-//        String repeatValue = String.valueOf(repeat);
-//        String twinValue = String.valueOf(twin);
-//        String randomValue = String.valueOf(random);
-//
-//        temp.put(Variables.ROUNDS, roundsValue);
-//        temp.put(Variables.SCORE_MATRIX, scoreMatrixValue);
-//        temp.put(Variables.REPEAT, repeatValue);
-//        temp.put(Variables.TWIN, twinValue);
-//        temp.put(Variables.RANDOM, randomValue);
-
-//        TournamentMode.storeCustomModeData(temp);
-//        if(observables.getMode().equals(TournamentMode.MODE_CUSTOM)){
-//            ObservableList<ModeData> modeDataObservableList = observables.getModeData();
-//            modeDataObservableList.clear();
-//            modeDataObservableList.add(new ModeData(Variables.SCORE_MATRIX, finalMatrix));
-//            modeDataObservableList.add(new ModeData(Variables.ROUNDS, "" + numberOfRounds));
-//            modeDataObservableList.add(new ModeData(Variables.REPEAT, "" + repeat));
-//            modeDataObservableList.add(new ModeData(Variables.TWIN, "" + twin));
-//            modeDataObservableList.add(new ModeData(Variables.RANDOM, "" + random));
-//        }
     }
 
 

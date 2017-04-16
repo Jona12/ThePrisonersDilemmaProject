@@ -8,21 +8,14 @@ import gui.event_handlers.CustomEventHandler;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.chart.BarChart;
-import javafx.scene.chart.LineChart;
-import javafx.scene.chart.NumberAxis;
-import javafx.scene.chart.PieChart;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.Clipboard;
-import javafx.scene.input.ClipboardContent;
 import javafx.util.Callback;
 import main.CommonFunctions;
 import main.TournamentMode;
@@ -153,7 +146,7 @@ public class ControllerTournament implements Initializable {
                     twin = (boolean) modeHashMap.get(Variables.TWIN);
                     random = (boolean) modeHashMap.get(Variables.RANDOM);
                 } else {
-                    HashMap<String, HashMap<Object, Object>> modeHashMap = TournamentMode.getModesHashMap();
+                    HashMap<String, HashMap<Object, Object>> modeHashMap = TournamentMode.generateModesHashMap();
 
                     int[] scoreMatrix = (int[]) modeHashMap.get(newValue).get(Variables.SCORE_MATRIX);
                     finalMatrix = "WIN: " + scoreMatrix[0] + "\r\n" + "LOSE: " + scoreMatrix[1] +

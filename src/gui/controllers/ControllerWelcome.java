@@ -57,7 +57,7 @@ public class ControllerWelcome implements Initializable {
         Button[] keys = {
                 welcomeLaunchTournamentButton, welcomeLaunchAnalysisButton, welcomeDilemmaButton,
                 welcomeIteratedButton, welcomeAxelrodButton, welcomeRunningTournamentButton,
-                welcomeCustomStrategiesButton, welcomeAnalysisButton, welcomeLaunchStrategiesButton
+                welcomeCustomStrategiesButton, welcomeAnalysisButton, welcomeLaunchStrategiesButton,
         };
         String[][] values = new String[9][2];
 
@@ -86,7 +86,7 @@ public class ControllerWelcome implements Initializable {
         values[7][1] = "Running A Tournament";
 
         values[8][0] = "fxml/strategies.fxml";
-        values[8][1] = "Custom Strategies";
+        values[8][1] = "Strategies";
         int count = 0;
         for (String[] v : values) {
             nodeHashMap.put(keys[count++], v);

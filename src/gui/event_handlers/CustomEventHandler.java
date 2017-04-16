@@ -15,7 +15,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -30,7 +29,6 @@ import main.*;
 import java.awt.*;
 import java.io.*;
 import java.util.*;
-import java.util.List;
 
 /**
  * Created by dbrisingr on 09/02/2017.
@@ -167,23 +165,23 @@ public class CustomEventHandler implements EventHandler {
                 FileOutputStream fileOutputStream = new FileOutputStream(path);
                 ObjectOutputStream out = new ObjectOutputStream(fileOutputStream);
 
-                out.writeObject(analysis.gettournamentScoresLinkedList());
+                out.writeObject(analysis.getTournamentScoresLinkedList());
                 out.flush();
                 fileOutputStream.close();
 
                 path = "src/main/results_data/" + result + "_MATCH_" + ".txt";
                 fileOutputStream = new FileOutputStream(path);
                 out = new ObjectOutputStream(fileOutputStream);
-                out.writeObject(analysis.getmatchScoresArrayList());
+                out.writeObject(analysis.getMatchScoresLinkedList());
                 out.flush();
                 fileOutputStream.close();
 
 
-                if (analysis.getrandomHistoryLinkedList() != null) {
+                if (analysis.getRandomHistoryLinkedList() != null) {
                     path = "src/main/results_data/" + result + "_RANDOM_.txt";
                     fileOutputStream = new FileOutputStream(path);
                     out = new ObjectOutputStream(fileOutputStream);
-                    out.writeObject(analysis.getrandomHistoryLinkedList());
+                    out.writeObject(analysis.getRandomHistoryLinkedList());
                     out.flush();
                     fileOutputStream.close();
                 }
@@ -342,11 +340,11 @@ public class CustomEventHandler implements EventHandler {
                     if (isCancelled()) {
                         return null;
                     }
-                    HashMap<String, HashMap<Object, Object>> modeHashMap = TournamentMode.getModesHashMap();
+                    HashMap<String, HashMap<Object, Object>> modeHashMap = TournamentMode.generateModesHashMap();
                     if ((boolean) modeHashMap.get(observables.getMode()).get(Variables.RANDOM)) {
-                        analysis = new Analysis(tournament.gettournamentScoresLinkedList(), tournament.getmatchScoresArrayList(), tournament.getrandomHistoryLinkedList());
+                        analysis = new Analysis(tournament.getTournamentScoresLinkedList(), tournament.getMatchScoresLinkedList(), tournament.getrandomHistoryLinkedList());
                     } else {
-                        analysis = new Analysis(tournament.getmatchScoresArrayList(), tournament.gettournamentScoresLinkedList());
+                        analysis = new Analysis(tournament.getMatchScoresLinkedList(), tournament.getTournamentScoresLinkedList());
                     }
                     HashMap<String, Integer> hashMap = analysis.fetchAverageScores();
 

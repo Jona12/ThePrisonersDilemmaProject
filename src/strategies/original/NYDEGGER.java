@@ -18,7 +18,7 @@ public class NYDEGGER {
         }
         if (currentRound == 2) {
             String[] firstRound = h.getMatchScore()[0];
-            String[] secondRound = h.getMatchScore()[0];
+            String[] secondRound = h.getMatchScore()[1];
             if (firstRound[0].equals(Variables.COOPERATE) && firstRound[1].equals(Variables.DEFECT)
                     && secondRound[0].equals(Variables.DEFECT) && secondRound[1].equals(Variables.COOPERATE)) {
                 return Variables.DEFECT;
@@ -27,7 +27,6 @@ public class NYDEGGER {
             }
         }
 
-        //
         int x, y, z;
         x = calculateInteger(h, 1, 16);
         y = calculateInteger(h, 2, 4);

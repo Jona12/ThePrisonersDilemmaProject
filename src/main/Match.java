@@ -17,10 +17,10 @@ public class Match {
     private History historyStrategyOne;
     private History historyStrategyTwo;
 
-    private int[] matchResult;
+    private int[] matchScore;
 
-    private int[][] tempOne;
-    private int[][] tempTwo;
+    private int[][] currentScoreStrategyOne;
+    private int[][] currentScoreStrategyTwo;
 
     private int currentScoreOne;
     private int currentScoreTwo;
@@ -39,21 +39,21 @@ public class Match {
 
         currentScoreOne = 0;
         currentScoreTwo = 0;
-        matchResult = new int[2];
+        matchScore = new int[2];
 
-        tempOne = new int[noOfRounds][2];
-        tempTwo = new int[noOfRounds][2];
+        currentScoreStrategyOne = new int[noOfRounds][2];
+        currentScoreStrategyTwo = new int[noOfRounds][2];
     }
 
     public void runMatch() {
         StrategyManager strategyOne;
         StrategyManager strategyTwo;
 
-        historyStrategyOne.setOpponentMatchResults(historyStrategyTwo.getSelfMatchResults());
-        historyStrategyTwo.setOpponentMatchResults(historyStrategyOne.getSelfMatchResults());
+        historyStrategyOne.setOpponentMatchScores(historyStrategyTwo.getSelfMatchScores());
+        historyStrategyTwo.setOpponentMatchScores(historyStrategyOne.getSelfMatchScores());
 
-        historyStrategyOne.setCurrentOpponent(strategyNameTwo);
-        historyStrategyTwo.setCurrentOpponent(strategyNameOne);
+        historyStrategyOne.setOpponentName(strategyNameTwo);
+        historyStrategyTwo.setOpponentName(strategyNameOne);
 
         try {
             for (int i = 0; i < noOfRounds; i++) {
@@ -75,11 +75,11 @@ public class Match {
             e.printStackTrace();
         }
 
-        matchResult[0] = currentScoreOne;
-        matchResult[1] = currentScoreTwo;
+        matchScore[0] = currentScoreOne;
+        matchScore[1] = currentScoreTwo;
 
-        historyStrategyOne.setCurrentOpponent(null);
-        historyStrategyTwo.setCurrentOpponent(null);
+        historyStrategyOne.setOpponentName(null);
+        historyStrategyTwo.setOpponentName(null);
 
     }
 
@@ -89,43 +89,43 @@ public class Match {
 
         if (resultStrategyOne.equals(Variables.COOPERATE) && resultStrategyTwo.equals(Variables.COOPERATE)) {
 
-            tempOne[currentRound][0] = draw_c_Score;
-            tempOne[currentRound][1] = draw_c_Score;
+            currentScoreStrategyOne[currentRound][0] = draw_c_Score;
+            currentScoreStrategyOne[currentRound][1] = draw_c_Score;
 
-            tempTwo[currentRound][0] = draw_c_Score;
-            tempTwo[currentRound][1] = draw_c_Score;
+            currentScoreStrategyTwo[currentRound][0] = draw_c_Score;
+            currentScoreStrategyTwo[currentRound][1] = draw_c_Score;
 
         } else if (resultStrategyOne.equals(Variables.COOPERATE) && resultStrategyTwo.equals(Variables.DEFECT)) {
 
-            tempOne[currentRound][0] = loseScore;
-            tempOne[currentRound][1] = winScore;
+            currentScoreStrategyOne[currentRound][0] = loseScore;
+            currentScoreStrategyOne[currentRound][1] = winScore;
 
-            tempTwo[currentRound][0] = winScore;
-            tempTwo[currentRound][1] = loseScore;
+            currentScoreStrategyTwo[currentRound][0] = winScore;
+            currentScoreStrategyTwo[currentRound][1] = loseScore;
 
         } else if (resultStrategyOne.equals(Variables.DEFECT) && resultStrategyTwo.equals(Variables.COOPERATE)) {
 
-            tempOne[currentRound][0] = winScore;
-            tempOne[currentRound][1] = loseScore;
+            currentScoreStrategyOne[currentRound][0] = winScore;
+            currentScoreStrategyOne[currentRound][1] = loseScore;
 
-            tempTwo[currentRound][0] = loseScore;
-            tempTwo[currentRound][1] = winScore;
+            currentScoreStrategyTwo[currentRound][0] = loseScore;
+            currentScoreStrategyTwo[currentRound][1] = winScore;
         } else {
-            tempOne[currentRound][0] = draw_d_Score;
-            tempOne[currentRound][1] = draw_d_Score;
+            currentScoreStrategyOne[currentRound][0] = draw_d_Score;
+            currentScoreStrategyOne[currentRound][1] = draw_d_Score;
 
-            tempTwo[currentRound][0] = draw_d_Score;
-            tempTwo[currentRound][1] = draw_d_Score;
+            currentScoreStrategyTwo[currentRound][0] = draw_d_Score;
+            currentScoreStrategyTwo[currentRound][1] = draw_d_Score;
         }
 
-        historyStrategyOne.setIntegerMatchScore(tempOne);
-        currentScoreOne += tempOne[currentRound][0];
-        historyStrategyTwo.setIntegerMatchScore(tempTwo);
-        currentScoreTwo += tempOne[currentRound][1];
+        historyStrategyOne.setCurrentMatchScore(currentScoreStrategyOne);
+        currentScoreOne += currentScoreStrategyOne[currentRound][0];
+        historyStrategyTwo.setCurrentMatchScore(currentScoreStrategyTwo);
+        currentScoreTwo += currentScoreStrategyOne[currentRound][1];
 
     }
 
-    public int[] getMatchResult() {
-        return matchResult;
+    public int[] getMatchScore() {
+        return matchScore;
     }
 }

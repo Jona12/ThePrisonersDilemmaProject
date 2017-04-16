@@ -1,8 +1,5 @@
 package main;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.*;
 
 /**
@@ -20,7 +17,7 @@ public class Tournament {
     private HashMap<String, HashMap<Object, Object>> modeHashMap;
     private LinkedHashMap<String, int[]> tournamentResult;
 
-    private ArrayList<LinkedHashMap<String, int[]>> matchScoresArrayList;
+    private LinkedList<LinkedHashMap<String, int[]>> matchScoresLinkedList;
     private LinkedList<HashMap<String, History>> tournamentScoresLinkedList;
     private LinkedList<History> randomHistoryLinkedList;
 
@@ -33,7 +30,7 @@ public class Tournament {
     public Tournament(ArrayList<String> strategyArrayList, String mode) {
 
         this.strategyArrayList = strategyArrayList;
-        modeHashMap = TournamentMode.getModesHashMap();
+        modeHashMap = TournamentMode.generateModesHashMap();
 
         numberOfRounds = (int) modeHashMap.get(mode).get(Variables.ROUNDS);
         repeat = (int) modeHashMap.get(mode).get(Variables.REPEAT);
@@ -45,7 +42,7 @@ public class Tournament {
         tournamentScoresLinkedList = new LinkedList<>();
         randomHistoryLinkedList = new LinkedList<>();
         tournamentResult = new LinkedHashMap<>();
-        matchScoresArrayList = new ArrayList<>();
+        matchScoresLinkedList = new LinkedList<>();
         count = 0;
     }
 
@@ -58,7 +55,7 @@ public class Tournament {
         if (random) {
             randomHistoryLinkedList.add(runRandom(tournamentScoresLinkedList.get(0), 0));
         }
-        matchScoresArrayList.add(tournamentResult);
+        matchScoresLinkedList.add(tournamentResult);
         tournamentResult = new LinkedHashMap<>();
         if (repeat > 0) {
             for (int i = 0; i < repeat; i++) {
@@ -69,7 +66,7 @@ public class Tournament {
                 if (random) {
                     randomHistoryLinkedList.add(runRandom(tournamentScoresLinkedList.get(0), i + 1));
                 }
-                matchScoresArrayList.add(tournamentResult);
+                matchScoresLinkedList.add(tournamentResult);
                 tournamentResult = new LinkedHashMap<>();
             }
         }
@@ -79,7 +76,7 @@ public class Tournament {
 
         HashMap<String, History> historyHashMap = new HashMap<>();
         for (String strategy : strategyArrayList) {
-            historyHashMap.put(strategy, new History(numberOfRounds, strategy));
+            historyHashMap.put(strategy, new History(numberOfRounds, strategy, repeat));
         }
         Match match;
         String strategyOne, strategyTwo;
@@ -95,7 +92,7 @@ public class Tournament {
                 String matchID = "#" + (count++) + "_" + strategyOne + "_vs._" + strategyTwo;
                 match = new Match(historyHashMap.get(strategyOne), historyHashMap.get(strategyTwo), numberOfRounds);
                 match.runMatch();
-                tournamentResult.put(matchID, match.getMatchResult());
+                tournamentResult.put(matchID, match.getMatchScore());
             }
         }
 
@@ -108,7 +105,7 @@ public class Tournament {
 
         HashMap<String, History> twinHistoryHashMap = new HashMap<>();
         for (String strategy : strategyArrayList) {
-            History history = new History(numberOfRounds, (strategy));
+            History history = new History(numberOfRounds, strategy, repeat);
             twinHistoryHashMap.put(strategy, history);
         }
         for (String s : strategyArrayList) {
@@ -119,7 +116,7 @@ public class Tournament {
             match = new Match(historyHashMap.get(strategyOne), twinHistoryHashMap.get(strategyTwo), numberOfRounds);
             match.runMatch();
 
-            tournamentResult.put(matchID, match.getMatchResult());
+            tournamentResult.put(matchID, match.getMatchScore());
         }
     }
 
@@ -127,7 +124,7 @@ public class Tournament {
         Match match;
         String strategyOne, strategyTwo = "RANDOM";
 
-        History randomHistory = new History(numberOfRounds, "RANDOM");
+        History randomHistory = new History(numberOfRounds, "RANDOM", repeat);
         for (String s : strategyArrayList) {
             strategyOne = s;
             if (!s.equals(strategyTwo)) {
@@ -137,18 +134,18 @@ public class Tournament {
                 match = new Match(historyHashMap.get(strategyOne), randomHistory, numberOfRounds);
                 match.runMatch();
 
-                tournamentResult.put(matchID, match.getMatchResult());
+                tournamentResult.put(matchID, match.getMatchScore());
 
             }
         }
         return randomHistory;
     }
 
-    public ArrayList<LinkedHashMap<String, int[]>> getmatchScoresArrayList() {
-        return matchScoresArrayList;
+    public LinkedList<LinkedHashMap<String, int[]>> getMatchScoresLinkedList() {
+        return matchScoresLinkedList;
     }
 
-    public LinkedList<HashMap<String, History>> gettournamentScoresLinkedList() {
+    public LinkedList<HashMap<String, History>> getTournamentScoresLinkedList() {
         return tournamentScoresLinkedList;
     }
 

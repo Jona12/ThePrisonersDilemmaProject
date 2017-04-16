@@ -12,37 +12,39 @@ public class History implements Serializable {
 
     private static final long serialVersionUID = 42L;
 
-    private HashMap<String, int[][]> selfMatchResults;
-    private HashMap<String, int[][]> opponentMatchResults;
+    private HashMap<String, int[][]> selfMatchScores;
+    private HashMap<String, int[][]> opponentMatchScores;
 
     private int currentRound;
-    private int[][] integerMatchScore;
+    private int[][] currentMatchScore;
 
     private String selfName;
-    private String currentOpponent;
+    private String opponentName;
 
     private int numberOfRounds;
+    private int repeat;
 
-    public History(int numberOfRounds, String selfName) {
+    public History(int numberOfRounds, String selfName, int repeat) {
         this.numberOfRounds = numberOfRounds;
         this.selfName = selfName;
-        selfMatchResults = new HashMap<>();
+        selfMatchScores = new HashMap<>();
+        this.repeat = repeat;
     }
 
     public String getSelfName() {
         return selfName;
     }
 
-    public String getCurrentOpponent() {
-        return currentOpponent;
+    public String getopponentName() {
+        return opponentName;
     }
 
-    protected void setCurrentOpponent(String currentOpponent) {
-        this.currentOpponent = currentOpponent;
+    protected void setOpponentName(String opponentName) {
+        this.opponentName = opponentName;
     }
 
-    protected void setOpponentMatchResults(HashMap<String, int[][]> opponentMatchResults) {
-        this.opponentMatchResults = opponentMatchResults;
+    protected void setOpponentMatchScores(HashMap<String, int[][]> opponentMatchScores) {
+        this.opponentMatchScores = opponentMatchScores;
     }
 
     protected void setCurrentRound(int currentRound) {
@@ -54,24 +56,24 @@ public class History implements Serializable {
     }
 
     public String[] getPreviousRoundScore() {
-        return Variables.calculateRoundScoreString(integerMatchScore[currentRound - 1]);
+        return Variables.calculateRoundScoreString(currentMatchScore[currentRound - 1]);
     }
 
     public String[][] getMatchScore() {
-        return Variables.calculateMatchScoreString(integerMatchScore);
+        return Variables.calculateMatchScoreString(currentMatchScore);
     }
 
-    protected void setIntegerMatchScore(int[][] matchScore) {
-        this.integerMatchScore = matchScore;
-        selfMatchResults.put(currentOpponent, matchScore);
+    protected void setCurrentMatchScore(int[][] matchScore) {
+        this.currentMatchScore = matchScore;
+        selfMatchScores.put(opponentName, matchScore);
     }
 
-    public HashMap<String, int[][]> getSelfMatchResults() {
-        return selfMatchResults;
+    public HashMap<String, int[][]> getSelfMatchScores() {
+        return selfMatchScores;
     }
 
-    public HashMap<String, int[][]> getOpponentMatchResults() {
-        return opponentMatchResults;
+    public HashMap<String, int[][]> getOpponentMatchScores() {
+        return opponentMatchScores;
     }
 
     public int getNumberOfRounds() {
@@ -79,7 +81,7 @@ public class History implements Serializable {
     }
 
     public String calculateAverage(HashMap<String, int[][]> hashMap, boolean self) {
-        String toReturn = "";
+        String toReturn;
 
         int defect = 0, cooperate = 0, index;
         if (self) {
@@ -116,7 +118,7 @@ public class History implements Serializable {
 
         int sum = 0;
         int temp = 0;
-        for (Map.Entry<String, int[][]> entry : selfMatchResults.entrySet()) {
+        for (Map.Entry<String, int[][]> entry : selfMatchScores.entrySet()) {
             if (maxMatchSum && temp > sum) {
                 sum = temp;
             } else if (minMatchSum && temp < sum) {
@@ -129,9 +131,9 @@ public class History implements Serializable {
 
             for (int i = 0; i < actualRoundScore.length; i++) {
                 if (tournamentSum) {
-                    sum += selfMatchResults.get(opponentName)[i][0];
+                    sum += selfMatchScores.get(opponentName)[i][0];
                 } else if (maxMatchSum) {
-                    temp += selfMatchResults.get(opponentName)[i][0];
+                    temp += selfMatchScores.get(opponentName)[i][0];
                 }
             }
         }

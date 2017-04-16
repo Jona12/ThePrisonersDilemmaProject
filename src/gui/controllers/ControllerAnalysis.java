@@ -72,7 +72,7 @@ public class ControllerAnalysis implements Initializable {
     private Analysis analysis;
 
     private LinkedList<HashMap<String, History>> tournamentScoresLinkedList;
-    private ArrayList<LinkedHashMap<String, int[]>> matchScoresArrayList;
+    private LinkedList<LinkedHashMap<String, int[]>> matchScoresLinkedList;
     private LinkedList<History> randomHistoryLinkedList;
 
     @Override
@@ -99,12 +99,12 @@ public class ControllerAnalysis implements Initializable {
         ArrayList<Object> arrayList = CommonFunctions.loadResult(result);
 
         tournamentScoresLinkedList = (LinkedList<HashMap<String, History>>) arrayList.get(0);
-        matchScoresArrayList = (ArrayList<LinkedHashMap<String, int[]>>) arrayList.get(1);
+        matchScoresLinkedList = (LinkedList<LinkedHashMap<String, int[]>>) arrayList.get(1);
         if (arrayList.size() == 3) {
             randomHistoryLinkedList = (LinkedList<History>) arrayList.get(2);
         }
 
-        analysis = new Analysis(tournamentScoresLinkedList, matchScoresArrayList, randomHistoryLinkedList);
+        analysis = new Analysis(tournamentScoresLinkedList, matchScoresLinkedList, randomHistoryLinkedList);
     }
 
     private void calculateMatchData() {
@@ -128,24 +128,26 @@ public class ControllerAnalysis implements Initializable {
         int score1;
         int score2;
 
-        for (Map.Entry<String, int[]> entry : matchScoresArrayList.get(0).entrySet()) {
-            int temp = 0;
-            int[] current = entry.getValue();
-            for (int i : current) {
-                temp += i;
-            }
-            if (high && temp > score) {
-                score = temp;
-                matchID = entry.getKey();
-            } else if (!high && temp < score) {
-                score = temp;
-                matchID = entry.getKey();
+        for (LinkedHashMap<String, int[]> hashMap : matchScoresLinkedList) {
+            for (Map.Entry<String, int[]> entry : hashMap.entrySet()) {
+                int temp = 0;
+                int[] current = entry.getValue();
+                for (int i : current) {
+                    temp += i;
+                }
+                if (high && temp > score) {
+                    score = temp;
+                    matchID = entry.getKey();
+                } else if (!high && temp < score) {
+                    score = temp;
+                    matchID = entry.getKey();
+                }
             }
         }
 
         String[] strings = Analysis.fixMatchStrings(matchID);
 
-        int[] scores = matchScoresArrayList.get(0).get(matchID);
+        int[] scores = matchScoresLinkedList.getFirst().get(matchID);
         score1 = scores[0];
         score2 = scores[1];
 
@@ -184,12 +186,15 @@ public class ControllerAnalysis implements Initializable {
 
         int count = 0;
         int sum = 0;
-        for (Map.Entry<String, int[]> entry : matchScoresArrayList.get(0).entrySet()) {
-            int[] current = entry.getValue();
-            for (int i : current) {
-                sum += i;
+
+        for (LinkedHashMap<String, int[]> hashMap : matchScoresLinkedList) {
+            for (Map.Entry<String, int[]> entry : hashMap.entrySet()) {
+                int[] current = entry.getValue();
+                for (int i : current) {
+                    sum += i;
+                }
+                count++;
             }
-            count++;
         }
         int score = sum / count;
 
@@ -201,11 +206,12 @@ public class ControllerAnalysis implements Initializable {
     private void calculateMatchGraph() {
 
         ObservableList<MatchData> matchData = FXCollections.observableArrayList();
-        for (HashMap<String, int[]> integerHashMap : matchScoresArrayList) {
-            for (Map.Entry<String, int[]> entry : integerHashMap.entrySet()) {
+        for (LinkedHashMap<String, int[]> hashMap : matchScoresLinkedList) {
+            for (Map.Entry<String, int[]> entry : hashMap.entrySet()) {
                 int[] array = entry.getValue();
                 int overall = array[0] + array[1];
                 matchData.add(new MatchData(entry.getKey(), overall, array[0], array[1]));
+
             }
         }
 
@@ -271,7 +277,7 @@ public class ControllerAnalysis implements Initializable {
         int cooperate = 0;
         for (HashMap<String, History> historyHashMap : linkedList) {
             History h = historyHashMap.get(strategy1);
-            HashMap<String, int[][]> stringHashMap = h.getSelfMatchResults();
+            HashMap<String, int[][]> stringHashMap = h.getSelfMatchScores();
             for (int[][] entry : stringHashMap.values()) {
                 String[][] strings = Variables.calculateMatchScoreString(entry);
                 for (String[] array : strings) {
@@ -298,19 +304,22 @@ public class ControllerAnalysis implements Initializable {
         String strategy2 = "";
         String matchID = "";
         int matchScore2 = 0;
-        for (Map.Entry<String, int[]> entry : matchScoresArrayList.get(0).entrySet()) {
-            if (entry.getKey().contains(strategy1)) {
-                if (entry.getValue()[0] > matchScore1) {
-                    matchID = entry.getKey().substring(0, entry.getKey().indexOf("_"));
-                    matchScore1 = entry.getValue()[0];
-                    matchScore2 = entry.getValue()[1];
-                }
-                if (matchID.contains("_vs._")) {
-                    strategy2 = matchID.substring(matchID.indexOf("._") + 2);
-                } else if (matchID.contains("_RAND")) {
-                    strategy2 = "RANDOM";
-                } else {
-                    strategy2 = strategy1;
+
+        for (LinkedHashMap<String, int[]> hashMap1 : matchScoresLinkedList) {
+            for (Map.Entry<String, int[]> entry : hashMap1.entrySet()) {
+                if (entry.getKey().contains(strategy1)) {
+                    if (entry.getValue()[0] > matchScore1) {
+                        matchID = entry.getKey().substring(0, entry.getKey().indexOf("_"));
+                        matchScore1 = entry.getValue()[0];
+                        matchScore2 = entry.getValue()[1];
+                    }
+                    if (matchID.contains("_vs._")) {
+                        strategy2 = matchID.substring(matchID.indexOf("._") + 2);
+                    } else if (matchID.contains("_RAND")) {
+                        strategy2 = "RANDOM";
+                    } else {
+                        strategy2 = strategy1;
+                    }
                 }
             }
         }
@@ -377,7 +386,7 @@ public class ControllerAnalysis implements Initializable {
         int niceAmount = 0;
         for (HashMap<String, History> hashMap : tournamentScoresLinkedList) {
             for (Map.Entry<String, History> entry : hashMap.entrySet()) {
-                HashMap<String, int[][]> stringHashMap = entry.getValue().getSelfMatchResults();
+                HashMap<String, int[][]> stringHashMap = entry.getValue().getSelfMatchScores();
                 loop:
                 for (Map.Entry<String, int[][]> stringEntry : stringHashMap.entrySet()) {
                     String[][] temp = Variables.calculateMatchScoreString(stringEntry.getValue());
@@ -431,7 +440,7 @@ public class ControllerAnalysis implements Initializable {
                 low = lowStrategyNames.get(i);
                 high = highStrategyNames.get(j);
 
-                int[][] array = historyHashMap.get(low).getSelfMatchResults().get(high);
+                int[][] array = historyHashMap.get(low).getSelfMatchScores().get(high);
                 int lowScore = 0;
                 int highScore = 0;
 
@@ -453,7 +462,9 @@ public class ControllerAnalysis implements Initializable {
         for (String t : finalList) {
             temp += t + ", ";
         }
-        temp = temp.substring(0, temp.length() - 2);
+        if(temp.length() > 0) {
+            temp = temp.substring(0, temp.length() - 2);
+        }
         String s = analysis_king.getText();
         s = s.replace("[kingmakers]", temp);
         analysis_king.setText(s);
