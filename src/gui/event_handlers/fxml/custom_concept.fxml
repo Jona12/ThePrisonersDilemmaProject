@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1">
+   <top>
+      <AnchorPane>
+         <BorderPane.margin>
+            <Insets left="15.0" right="15.0" />
+         </BorderPane.margin>
+         <children>
+            <Label prefHeight="160.0" prefWidth="600.0" text="To customise strategies, click the Launch Strategies Window button in the Welcome window, or the Strategy Codes button in the Tournament window. The Strategies window allows you to see all strategies that are currently stored in the application. Furthermore, you can also edit custom strategies, or insert new ones." textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+         </children>
+      </AnchorPane>
+   </top>
+   <center>
+      <AnchorPane>
+         <BorderPane.margin>
+            <Insets left="15.0" right="15.0" />
+         </BorderPane.margin>
+         <children>
+            <Label prefHeight="151.0" prefWidth="570.0" text="Tap the Editable Strategies section in the window and press the + button. The right pane will now be empty allowing you to enter your strategies. You are also given the option to copy and paste other strategies stored in the application. Once you are done, click the Save Strategy button to name and save your strategy." textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="72.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+         </children>
+      </AnchorPane>
+   </center>
+   <bottom>
+      <AnchorPane BorderPane.alignment="CENTER">
+         <BorderPane.margin>
+            <Insets left="15.0" right="15.0" />
+         </BorderPane.margin>
+         <children>
+            <Label layoutY="-90.0" prefHeight="107.0" prefWidth="570.0" text="Your strategy will then be immediately available to view / edit should you wish to do so. The new strategy will also be available to run in a tournament without needing to close the application first." textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-90.0" />
+         </children>
+      </AnchorPane>
+   </bottom>
+</BorderPane>

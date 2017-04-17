@@ -130,7 +130,7 @@ public class Tournament {
             if (!s.equals(strategyTwo)) {
                 String matchID = "#" + (count++) + "_" + s + "_RAND" + "_ITERATION_" + repeatIteration;
 
-//                match = new Match(matchID, historyHashMap.get(strategyOne), twinHistoryHashMap.get(strategyTwo), numberOfRounds);
+
                 match = new Match(historyHashMap.get(strategyOne), randomHistory, numberOfRounds);
                 match.runMatch();
 

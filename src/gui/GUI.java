@@ -10,6 +10,8 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 
+import javax.swing.*;
+
 /**
  * Created by dbrisingr on 08/02/2017.
  */
@@ -37,7 +39,7 @@ public class GUI extends Application {
             });
 
 
-            primaryStage.getIcons().add(new Image("file:src/images/logo.png"));
+            primaryStage.getIcons().add(new Image("/images/logo.png"));
             primaryStage.setTitle("Robin - Welcome");
             primaryStage.setScene(scene);
             primaryStage.setMinWidth(800);

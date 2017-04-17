@@ -92,7 +92,6 @@ public class ControllerAnalysis implements Initializable {
 
         Variables.setScoreMatrix(new int[]{5, 0, 3, 1});
         calculateAnalysisData();
-//        Variables.setScoreMatrix(null);
     }
 
     private void setupView() {

@@ -76,10 +76,7 @@ public class ControllerTournament implements Initializable {
     @FXML
     private TableColumn tournament_rankTable_tableView_scoreColumn;
     @FXML
-    private TitledPane tournament_payoff;
-    @FXML
     private BarChart tournament_payoffGraph;
-    //    private LineChart tournament_payoffGraph;
     @FXML
     private Button tournament_GoToAnalysisButton;
     @FXML
@@ -207,7 +204,6 @@ public class ControllerTournament implements Initializable {
                                 int rowNo = row.getIndex();
                                 TableView.TableViewSelectionModel sm = getTableView().getSelectionModel();
                                 if (item) {
-//                                    if (tournament_tournamentEntriesSelection.isExpanded()) {}
                                     sm.select(rowNo);
                                 } else {
 
@@ -224,7 +220,7 @@ public class ControllerTournament implements Initializable {
         });
 
         ObservableList<StrategyData> strategyData = observables.getStrategyData();
-        ArrayList<String> strategies = CommonFunctions.getStrategies(true, false);
+        ArrayList<String> strategies = new CommonFunctions().getStrategies(true, false);
         strategies.remove("RANDOM (built-in)");
 
         for (String s : strategies) {
@@ -254,9 +250,6 @@ public class ControllerTournament implements Initializable {
         tournament_payoffGraph.setLegendVisible(false);
         tournament_payoffGraph.setAnimated(false);
         tournament_payoffGraph.setData(observables.getGraphData());
-//        NumberAxis x = (NumberAxis) tournament_payoffGraph.getXAxis();
-//        x.setTickUnit(100);
-
         tournament_payoffGraph.setLegendVisible(false);
         tournament_payoffGraph.setData(observables.getGraphData());
 
@@ -271,15 +264,12 @@ public class ControllerTournament implements Initializable {
         };
         Object[][] values = new String[3][2];
 
-        //tournament_modeSelection_editButton
         values[0][0] = "fxml/edit_custom_mode.fxml";
         values[0][1] = "Mode Customisation";
 
-        //tournament_tournamentEntriesSelection_editCustomStrategiesButton
         values[1][0] = "fxml/strategies.fxml";
         values[1][1] = "Custom Strategies";
 
-        //tournament_GoToAnalysisButton
         values[2][0] = "fxml/analysis.fxml";
         values[2][1] = "Analysis";
 

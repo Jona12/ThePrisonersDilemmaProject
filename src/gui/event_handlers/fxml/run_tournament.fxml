@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1">
+   <top>
+      <AnchorPane>
+         <BorderPane.margin>
+            <Insets left="15.0" right="15.0" />
+         </BorderPane.margin>
+         <children>
+            <Label prefHeight="160.0" prefWidth="600.0" text="To open a Tournament window, simply click the Launch Tournament Window button in the Welcome window. In the Tournament window, you must select a tournament mode from the modes available. If you would like to customise the custom mode, simply click the Edit Custom Mode button under Mode Selection. When selecting a mode, the specified settings will also be displayed." textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+         </children>
+      </AnchorPane>
+   </top>
+   <center>
+      <AnchorPane>
+         <BorderPane.margin>
+            <Insets left="15.0" right="15.0" />
+         </BorderPane.margin>
+         <children>
+            <Label prefHeight="151.0" prefWidth="570.0" text="Afterwards, select as many strategies you want to include in the tournament. Depending on the tournament mode selected, there may be a minimum amount of strategies required. For example, if NO RANDOM is selected, then at least two strategies must be selected. To run a tournament, click on the Run Simulation button. To stop the simulation at any time, click the Stop Simulation button." textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="72.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+         </children>
+      </AnchorPane>
+   </center>
+   <bottom>
+      <AnchorPane BorderPane.alignment="CENTER">
+         <BorderPane.margin>
+            <Insets left="15.0" right="15.0" />
+         </BorderPane.margin>
+         <children>
+            <Label layoutY="-90.0" prefHeight="107.0" prefWidth="570.0" text="Once the simulation has finished execution, tournament results will be displayed on the right. Two types of data visualisation are provided. These are a rank table, and a total payoff graph. To save the tournament result, click the Save Result button. Once saved, you may view additional tournament information by clicking the Go To Analysis button and selecting the recently saved tournament." textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-90.0" />
+         </children>
+      </AnchorPane>
+   </bottom>
+</BorderPane>
