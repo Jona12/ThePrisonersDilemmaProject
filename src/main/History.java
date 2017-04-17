@@ -35,7 +35,7 @@ public class History implements Serializable {
         return selfName;
     }
 
-    public String getopponentName() {
+    public String getOpponentName() {
         return opponentName;
     }
 
