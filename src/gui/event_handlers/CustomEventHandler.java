@@ -128,6 +128,8 @@ public class CustomEventHandler implements EventHandler {
         return null;
     }
 
+    private final static String osPath = System.getProperty("user.home");
+
     private void handleSave() {
         TextInputDialog dialog = new TextInputDialog();
         dialog.setTitle("File Name Required");
@@ -138,7 +140,7 @@ public class CustomEventHandler implements EventHandler {
         String title;
         String contentText;
 
-        String path = "src/main/results_data/" + result + ".txt";
+        String path = osPath+"src/main/results_data/" + result + ".txt";
         File f = new File(path);
         if ((f.exists() && !f.isDirectory()) || analysis == null) {
             if (f.exists() && !f.isDirectory()) {
@@ -156,7 +158,7 @@ public class CustomEventHandler implements EventHandler {
         } else {
             try {
 
-                path = "src/main/results_data/" + result + ".txt";
+                path = osPath+"src/main/results_data/" + result + ".txt";
                 FileOutputStream fileOutputStream = new FileOutputStream(path);
                 ObjectOutputStream out = new ObjectOutputStream(fileOutputStream);
 
@@ -173,7 +175,7 @@ public class CustomEventHandler implements EventHandler {
 
 
                 if (analysis.getRandomHistoryLinkedList() != null) {
-                    path = "src/main/results_data/" + result + "_RANDOM_.txt";
+                    path = osPath+"src/main/results_data/" + result + "_RANDOM_.txt";
                     fileOutputStream = new FileOutputStream(path);
                     out = new ObjectOutputStream(fileOutputStream);
                     out.writeObject(analysis.getRandomHistoryLinkedList());
