@@ -70,7 +70,7 @@ public class CustomStrategyHandler implements EventHandler {
                 }
             }
             updateTournamentList();
-            listView_custom.setItems(FXCollections.observableArrayList(new CommonFunctions().getStrategies(false, true)));
+            listView_custom.setItems(FXCollections.observableArrayList(CommonFunctions.getStrategies(false, true)));
         } else if (event.getSource() == add) {
             textArea.clear();
             save.setDisable(false);
@@ -98,7 +98,7 @@ public class CustomStrategyHandler implements EventHandler {
                 }
 
             }
-            listView_custom.setItems(FXCollections.observableArrayList(new CommonFunctions().getStrategies(false, true)));
+            listView_custom.setItems(FXCollections.observableArrayList(CommonFunctions.getStrategies(false, true)));
             updateTournamentList();
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Strategy saved");
@@ -114,7 +114,7 @@ public class CustomStrategyHandler implements EventHandler {
         if(observables != null){
             ObservableList<StrategyData> strategyData = observables.getStrategyData();
             strategyData.clear();
-            ArrayList<String> strategies = new CommonFunctions().getStrategies(true, false);
+            ArrayList<String> strategies = CommonFunctions.getStrategies(true, false);
             strategies.remove("RANDOM (built-in)");
             for (String s : strategies) {
                 strategyData.add(new StrategyData(s, false));

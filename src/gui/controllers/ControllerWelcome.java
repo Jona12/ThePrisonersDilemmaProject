@@ -48,9 +48,6 @@ public class ControllerWelcome implements Initializable {
         welcomeLaunchAnalysisButton.setOnAction(customEventHandler);
         welcomeIteratedButton.setOnAction(customEventHandler);
         welcomeAxelrodButton.setOnAction(customEventHandler);
-        welcomeRunningTournamentButton.setOnAction(customEventHandler);
-        welcomeCustomStrategiesButton.setOnAction(customEventHandler);
-        welcomeAnalysisButton.setOnAction(customEventHandler);
     }
 
     private HashMap<Node, Object[]> getNodeHashMap() {
@@ -60,7 +57,7 @@ public class ControllerWelcome implements Initializable {
         Button[] keys = {
                 welcomeLaunchTournamentButton, welcomeLaunchAnalysisButton, welcomeDilemmaButton,
                 welcomeIteratedButton, welcomeAxelrodButton, welcomeRunningTournamentButton,
-                welcomeCustomStrategiesButton, welcomeAnalysisButton, welcomeLaunchStrategiesButton
+                welcomeCustomStrategiesButton, welcomeAnalysisButton, welcomeLaunchStrategiesButton,
         };
         String[][] values = new String[9][2];
 
@@ -79,14 +76,14 @@ public class ControllerWelcome implements Initializable {
         values[4][0] = "fxml/axelrod_concept.fxml";
         values[4][1] = "Robert Axelrod's Original Tournament";
 
-        values[5][0] = "fxml/run_tournament.fxml";
-        values[5][1] = "Running A Tournament";
+        values[5][0] = "fxml/custom_concept.fxml";
+        values[5][1] = "Designing Custom Strategies";
 
-        values[6][0] = "fxml/custom_concept.fxml";
-        values[6][1] = "Designing Custom Strategies";
+        values[6][0] = "fxml/analysis_concept.fxml";
+        values[6][1] = "Running A Tournament";
 
-        values[7][0] = "fxml/analysis_concept.fxml";
-        values[7][1] = "Running An Analysis";
+        values[7][0] = "fxml/run_tournament.fxml";
+        values[7][1] = "Running A Tournament";
 
         values[8][0] = "fxml/strategies.fxml";
         values[8][1] = "Strategies";
