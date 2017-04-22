@@ -118,7 +118,6 @@ public class ControllerCustomStrategies implements Initializable {
             }
         });
 
-
         list_view_edit.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
             @Override
             public void changed(ObservableValue observable, Object oldValue, Object newValue) {
@@ -131,7 +130,7 @@ public class ControllerCustomStrategies implements Initializable {
 
                 if (newValue != null) {
                     try {
-                        s = new Scanner(new File(osPath+"/src/strategies/custom/" + newValue + ".java")).useDelimiter("'");
+                        s = new Scanner(new File("src/strategies/custom/" + newValue + ".java")).useDelimiter("'");
                         while (s.hasNext()) {
                             if (s.hasNextInt()) {
                                 text_area.appendText(s.nextInt() + " ");
@@ -147,5 +146,4 @@ public class ControllerCustomStrategies implements Initializable {
         });
 
     }
-    private final static String osPath = System.getProperty("user.home");
 }

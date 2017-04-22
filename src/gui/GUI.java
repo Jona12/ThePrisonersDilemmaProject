@@ -11,7 +11,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 
 import javax.swing.*;
-import java.io.File;
 
 /**
  * Created by dbrisingr on 08/02/2017.
@@ -23,24 +22,9 @@ public class GUI extends Application {
     }
 
     private boolean controlPressed = false;
-    private final static String osPath = System.getProperty("user.home");
+
     @Override
     public void start(Stage primaryStage) {
-
-        File directory = new File(osPath+"/src/strategies/custom/");
-        File folder = new File(osPath+"/src/main/results_data");
-        File mode = new File(osPath+"/src/main/mode_data/");
-        if (! directory.exists()){
-            directory.mkdirs();
-            // If you require it to make the entire directory path including parents,
-            // use directory.mkdirs(); here instead.
-        }
-        if(!folder.exists()){
-            folder.mkdirs();
-        }
-        if(!mode.exists()){
-            mode.mkdirs();
-        }
         try {
             Parent root = FXMLLoader.load(getClass().getResource("event_handlers/fxml/welcome.fxml"));
             Scene scene = new Scene(root);
