@@ -28,6 +28,7 @@ import main.*;
 
 import java.awt.*;
 import java.io.*;
+import java.net.URL;
 import java.util.*;
 
 /**
@@ -124,12 +125,6 @@ public class CustomEventHandler implements EventHandler {
             String selected = choiceDialog.getSelectedItem();
             return selected;
         }
-
-//        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-//        alert.setTitle("No Result Selected");
-//        alert.setHeaderText(null);
-//        alert.setContentText("Please select a result");
-//        alert.showAndWait();
         return null;
     }
 
@@ -212,7 +207,7 @@ public class CustomEventHandler implements EventHandler {
             root = loader.load();
 
             Stage stage = new Stage();
-            stage.getIcons().add(new Image("file:src/images/logo.png"));
+            stage.getIcons().add(new Image("/images/logo.png"));
             stage.setTitle("Robin - " + title);
 
             Scene scene = new Scene(root);
@@ -229,7 +224,7 @@ public class CustomEventHandler implements EventHandler {
 
             stage.setScene(scene);
             if (!window.equals("fxml/edit_custom_mode.fxml") && !window.equals("fxml/strategies.fxml")
-                    && !window.contains("concept")) {
+                    && !window.contains("concept") && !title.contains("Running")) {
                 Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
                 double width = screenSize.getWidth();
                 double height = screenSize.getHeight();
@@ -358,9 +353,6 @@ public class CustomEventHandler implements EventHandler {
                             for (Map.Entry<String, Integer> entry : hashMap.entrySet()) {
                                 rankData.add(new RankData(counter++, entry.getKey(), entry.getValue()));
                             }
-
-//                            ObservableList<PieChart.Data> pieData = observables.getPieChartData();
-//                            pieData.clear();
                             ArrayList<String> strategyNames = new ArrayList<>();
                             ArrayList<Integer> integerArrayList = new ArrayList<>();
 

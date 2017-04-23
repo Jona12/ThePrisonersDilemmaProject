@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1">
+   <top>
+      <AnchorPane>
+         <BorderPane.margin>
+            <Insets left="15.0" right="15.0" />
+         </BorderPane.margin>
+         <children>
+            <Label prefHeight="160.0" prefWidth="600.0" text="To view an analysis of a tournament, ensure that you have saved the results for that specific tournament. You can do so from the tournament window. To open the Analysis window, click the Launch Analysis Window button from the Welcome window or from the Tournament window." textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+         </children>
+      </AnchorPane>
+   </top>
+   <center>
+      <AnchorPane>
+         <BorderPane.margin>
+            <Insets left="15.0" right="15.0" />
+         </BorderPane.margin>
+         <children>
+            <Label prefHeight="151.0" prefWidth="570.0" text="The Analysis window contains all of the information stored about the tournament. This includes data per match, and data per strategy. Some analysis are also provided on the left side of the panes." textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="72.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+         </children>
+      </AnchorPane>
+   </center>
+   <bottom>
+      <AnchorPane BorderPane.alignment="CENTER">
+         <BorderPane.margin>
+            <Insets left="15.0" right="15.0" />
+         </BorderPane.margin>
+         <children>
+            <Label layoutY="-90.0" prefHeight="107.0" prefWidth="570.0" text="If you want to copy data, simply select the rows you want to copy, right click, and paste anywhere on your computer. This functionality works especially well on a spreadsheet software (e.g. Excel) as the rows and columns are adjusted automatically." textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-90.0" />
+         </children>
+      </AnchorPane>
+   </bottom>
+</BorderPane>
