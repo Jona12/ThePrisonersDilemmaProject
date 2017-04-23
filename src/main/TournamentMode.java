@@ -91,7 +91,6 @@ public class TournamentMode {
         return tempHashMap;
     }
 
-    private final static String osPath = System.getProperty("user.home");
     public static Properties storeCustomModeData(HashMap<Object, Object> toPut) {
 
         HashMap<Object, Object> temp;
@@ -123,7 +122,7 @@ public class TournamentMode {
         properties.putAll(temp);
 
         try {
-            properties.store(new FileOutputStream(osPath+"/src/main/mode_data/data.properties"), null);
+            properties.store(new FileOutputStream("src/main/mode_data/data.properties"), null);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -134,7 +133,7 @@ public class TournamentMode {
         Properties properties = new Properties();
 
         try {
-            properties.load(new FileInputStream(osPath+"/src/main/mode_data/data.properties"));
+            properties.load(new FileInputStream("src/main/mode_data/data.properties"));
         } catch (IOException e) {
             properties = storeCustomModeData(null);
         }

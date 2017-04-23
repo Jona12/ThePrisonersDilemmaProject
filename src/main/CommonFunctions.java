@@ -16,27 +16,20 @@ import java.util.*;
  */
 public class CommonFunctions {
 
-    private final static String osPath = System.getProperty("user.home");
     public static LinkedHashSet<String> loadResultsList() {
 
         LinkedHashSet<String> results = new LinkedHashSet<>();
 
-
-        File folder = new File(osPath+"/src/main/results_data");
-
+        File folder = new File("src/main/results_data");
         File[] listOfFiles = folder.listFiles();
-        System.out.println(listOfFiles);
-        System.out.println("ok");
-        if(listOfFiles != null){
-            for (int i = 0; i < listOfFiles.length; i++) {
-                if (listOfFiles[i].isFile()) {
-                    String temp = listOfFiles[i].getName();
-                    temp = temp.substring(temp.indexOf('[') + 1, temp.indexOf(']'));
-                    results.add(temp);
-                }
+
+        for (int i = 0; i < listOfFiles.length; i++) {
+            if (listOfFiles[i].isFile()) {
+                String temp = listOfFiles[i].getName();
+                temp = temp.substring(temp.indexOf('[') + 1, temp.indexOf(']'));
+                results.add(temp);
             }
         }
-
 
         return results;
     }
@@ -45,7 +38,7 @@ public class CommonFunctions {
 
         ArrayList<Object> arrayList = new ArrayList<>();
         ArrayList<String> resultNames = new ArrayList<>();
-        String pathName = osPath+"src/main/results_data/";
+        String pathName = "src/main/results_data/";
         File folder = new File(pathName);
         File[] listOfFiles = folder.listFiles();
         for (int i = 0; i < listOfFiles.length; i++) {
@@ -72,7 +65,7 @@ public class CommonFunctions {
     }
 
     public static ArrayList<String> getStrategies(boolean all, boolean custom) {
-        File currentDir = new File(osPath); // Read current file location
+        File currentDir = new File("."); // Read current file location
         File srcDir;
         File strategiesDir;
         ArrayList<String> strategies = new ArrayList<>();

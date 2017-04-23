@@ -46,7 +46,7 @@ public class CustomStrategyHandler implements EventHandler {
         delete = (Button) components[5];
         this.observables = observables;
     }
-    private final static String osPath = System.getProperty("user.home");
+
     @Override
     public void handle(Event event) {
         if (event.getSource() == delete) {
@@ -57,7 +57,7 @@ public class CustomStrategyHandler implements EventHandler {
                 Optional<ButtonType> confirm = alert.showAndWait();
 
                 String result = listView_custom.getSelectionModel().getSelectedItem().toString();
-                String path = osPath+"/src/strategies/custom/" + result + ".java";
+                String path = "src/strategies/custom/" + result + ".java";
                 if (confirm.get() == ButtonType.OK) {
                     try {
                         Files.delete(Paths.get(path));
@@ -84,12 +84,8 @@ public class CustomStrategyHandler implements EventHandler {
             if (result.isPresent() && !check.contains(result.get())) {
                 ObservableList<CharSequence> paragraph = textArea.getParagraphs();
                 Iterator<CharSequence> iterator = paragraph.iterator();
-
-                File directory = new File(osPath+"/src/strategies/custom/");
                 try {
-                    File file = new File(directory.toPath() + "/" + result.get() + ".java");
-                    FileWriter fw = new FileWriter(file);
-                    BufferedWriter bf = new BufferedWriter(fw);
+                    BufferedWriter bf = new BufferedWriter(new FileWriter(new File("src/strategies/custom/" + result.get() + ".java")));
                     while (iterator.hasNext()) {
                         CharSequence seq = iterator.next();
                         bf.append(seq);
